@@ -145,6 +145,18 @@ When making changes, verify:
 - [ ] Hover effects on cards and buttons
 - [ ] Form validation in referral section
 
+## CRITICAL DEVELOPMENT RULE
+
+**MANDATORY**: Every single code change MUST be immediately committed and pushed to GitHub. This includes:
+- After EVERY file edit (HTML, CSS, JS, MD)
+- After EVERY new feature addition
+- After EVERY bug fix
+- After EVERY refactoring
+- No batching of changes allowed
+- Push immediately after each atomic change
+
+This ensures continuous deployment and real-time GitHub Pages updates.
+
 ## Deployment Notes
 
 ### GitHub Pages Status
@@ -157,3 +169,11 @@ When making changes, verify:
 2. Verify main branch is selected as source
 3. Check for build errors in Actions tab
 4. Confirm index.html exists in root directory
+
+## Changelog
+
+All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
+
+### 2025-08-16
+- Added CRITICAL DEVELOPMENT RULE for immediate Git pushes after every change
+- Added Changelog section to CLAUDE.md for tracking all modifications
