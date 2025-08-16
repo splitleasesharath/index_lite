@@ -577,8 +577,8 @@ body {
 
 /* Footer */
 .main-footer {
-    background: #1a1a1a;
-    color: #9ca3af;
+    background: var(--bg-purple);
+    color: rgba(255, 255, 255, 0.9);
     padding: 3rem 2rem 1rem;
 }
 
@@ -600,7 +600,7 @@ body {
 
 .footer-column a {
     display: block;
-    color: #9ca3af;
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     margin-bottom: 0.75rem;
     transition: color 0.3s ease;
@@ -636,8 +636,8 @@ body {
 .import-input {
     width: 100%;
     padding: 0.75rem;
-    background: #2a2a2a;
-    border: 1px solid #3a3a3a;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-md);
     color: white;
     margin-bottom: 1rem;
@@ -665,7 +665,7 @@ body {
 .footer-bottom {
     text-align: center;
     padding-top: 2rem;
-    border-top: 1px solid #3a3a3a;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -674,7 +674,7 @@ body {
 }
 
 .footer-bottom a {
-    color: #9ca3af;
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
 }
 
