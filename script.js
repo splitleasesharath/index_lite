@@ -16,6 +16,7 @@ function initializeApp() {
     setupAnimations();
     setupAuthModal();
     setupHeroDaySelector();
+    setupFooterNavigation();
 }
 
 // Navigation Functionality
@@ -1023,6 +1024,68 @@ function redirectToSearch(daysSelected, preset) {
     setTimeout(() => {
         window.open(searchUrl, '_blank');
     }, 1000);
+}
+
+// Footer Navigation Functionality
+function setupFooterNavigation() {
+    // Footer links that require authentication (open modal)
+    const authRequiredLinks = [
+        'List Property Now',
+        'How to List', 
+        'Speak to an Agent'
+    ];
+    
+    // Footer links that navigate to external pages
+    const externalLinks = {
+        'Terms of Use': 'https://www.split.lease/policies/terms-of-use',
+        'About Periodic Tenancy': 'https://www.split.lease/about',
+        'About the Team': 'https://www.split.lease/team',
+        'Careers at Split Lease': 'https://www.split.lease/careers',
+        'View Blog': 'https://www.split.lease/blog',
+        'Explore Split Leases': 'https://www.split.lease/search',
+        'Success Stories': 'https://www.split.lease/success-stories',
+        'View FAQ': 'https://www.split.lease/faq',
+        'Legal Section': 'https://www.split.lease/legal',
+        'Guarantees': 'https://www.split.lease/guarantees',
+        'Free House Manual': 'https://www.split.lease/house-manual'
+    };
+    
+    // Add click handlers to all footer links
+    const footerLinks = document.querySelectorAll('.footer-column a');
+    
+    footerLinks.forEach(link => {
+        const linkText = link.textContent.trim();
+        
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (authRequiredLinks.includes(linkText)) {
+                // Open login modal for auth-required links
+                showToast(`${linkText} requires authentication`);
+                setTimeout(() => {
+                    openAuthModal();
+                }, 1000);
+            } else if (externalLinks[linkText]) {
+                // Navigate to external page
+                showToast(`Opening ${linkText}...`);
+                setTimeout(() => {
+                    window.open(externalLinks[linkText], '_blank');
+                }, 1000);
+            } else {
+                // Default action for other links
+                showToast(`${linkText} functionality coming soon!`);
+            }
+        });
+    });
+    
+    // Handle Emergency assistance button
+    const emergencyBtn = document.querySelector('.footer-column a.emergency');
+    if (emergencyBtn) {
+        emergencyBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('For emergencies, call 911. For urgent Split Lease matters, use our chat support.');
+        });
+    }
 }
 
 // Export functions for global use
