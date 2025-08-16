@@ -404,7 +404,18 @@ function setupListings() {
     
     if (showMoreBtn) {
         showMoreBtn.addEventListener('click', function() {
-            loadMoreListings();
+            // Use current day selection if available, otherwise default to all days
+            const daysParam = (typeof selectedDays !== 'undefined' && selectedDays.length > 0) 
+                ? selectedDays.join(',') 
+                : '1,2,3,4,5,6';
+            
+            const searchUrl = `https://www.split.lease/search?days-selected=${daysParam}`;
+            
+            showToast('Loading more rentals...');
+            
+            setTimeout(() => {
+                window.open(searchUrl, '_blank');
+            }, 1000);
         });
     }
     
