@@ -408,6 +408,28 @@ body {
 
 .day-badge:hover {
     transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+}
+
+/* Schedule card specific hover effects to indicate group selection */
+.schedule-card .day-badge {
+    position: relative;
+}
+
+.schedule-card .day-badge:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
 }
 
 .schedule-controls {
@@ -461,104 +483,102 @@ body {
     color: white;
 }
 
-/* Lottie Animation Controls */
-.lottie-container {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.lottie-animation-controls {
+/* Schedule Visual Styles */
+.schedule-visual {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    gap: 3rem;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(91, 33, 182, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+    border-radius: 12px;
 }
 
-.lottie-animation-controls .control-btn {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #e5e7eb;
-    background: white;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
-
-.lottie-animation-controls .control-btn:hover {
-    background: var(--bg-light);
-    border-color: var(--primary-color);
-}
-
-.lottie-animation-controls .control-btn.active {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-
-.lottie-animation-controls .control-btn img {
-    width: 16px;
-    height: 16px;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-}
-
-.lottie-animation-controls .control-btn:hover img {
-    opacity: 1;
-}
-
-.lottie-animation-controls .control-btn.active img {
-    opacity: 1;
-    filter: brightness(0) invert(1);
-}
-
-.lottie-seek-input {
+.calendar-grid {
     flex: 1;
-    max-width: 120px;
-    height: 4px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: #e5e7eb;
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
+    max-width: 350px;
 }
 
-.lottie-seek-input::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    text-align: center;
 }
 
-.lottie-seek-input::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s ease;
+.calendar-header span {
+    font-weight: 600;
+    color: var(--text-gray);
+    font-size: 0.875rem;
+    padding: 0.5rem;
 }
 
-.lottie-seek-input:hover::-webkit-slider-thumb {
-    transform: scale(1.2);
+.calendar-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.lottie-seek-input:hover::-moz-range-thumb {
-    transform: scale(1.2);
+.calendar-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.calendar-week .day {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.calendar-week .day.active {
+    background: rgba(91, 33, 182, 0.1);
+    box-shadow: 0 2px 8px rgba(91, 33, 182, 0.2);
+}
+
+.calendar-week .day.active:hover {
+    transform: scale(1.1);
+    background: rgba(91, 33, 182, 0.15);
+}
+
+.schedule-info {
+    flex: 1;
+    padding: 1rem;
+}
+
+.schedule-tagline {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.schedule-description {
+    font-size: 1.125rem;
+    color: var(--text-gray);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .schedule-visual {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+    
+    .calendar-grid {
+        max-width: 100%;
+    }
+    
+    .schedule-info {
+        text-align: center;
+    }
 }
 
 /* Benefits Section */

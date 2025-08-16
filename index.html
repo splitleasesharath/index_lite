@@ -103,27 +103,59 @@
         <!-- Weeknight Listings -->
         <div class="schedule-card">
             <h3>Weeknight Listings</h3>
-            <div class="lottie-container">
-                <div class="day-selector">
-                    <span class="day-badge inactive">S</span>
-                    <span class="day-badge active">M</span>
-                    <span class="day-badge active">T</span>
-                    <span class="day-badge active">W</span>
-                    <span class="day-badge active">T</span>
-                    <span class="day-badge active">F</span>
-                    <span class="day-badge inactive">S</span>
+            <div class="schedule-visual">
+                <div class="calendar-grid">
+                    <div class="calendar-header">
+                        <span>S</span>
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                    </div>
+                    <div class="calendar-body">
+                        <div class="calendar-week">
+                            <span class="day"></span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day"></span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day"></span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day"></span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day"></span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day"></span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day"></span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day active">🏠</span>
+                            <span class="day"></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="lottie-animation-controls">
-                    <button class="control-btn play-pause" data-schedule="weeknight" title="Play/Pause">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 5V19L19 12L8 5Z' fill='currentColor'/%3E%3C/svg%3E" alt="Play" />
-                    </button>
-                    <button class="control-btn stop" data-schedule="weeknight" title="Stop">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='6' y='6' width='12' height='12' fill='currentColor'/%3E%3C/svg%3E" alt="Stop" />
-                    </button>
-                    <input type="range" class="lottie-seek-input" min="0" max="100" value="0" data-schedule="weeknight" title="Seek" />
-                    <button class="control-btn loop-toggle" data-schedule="weeknight" title="Toggle Loop">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 1L21 5L17 9' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M3 11V9C3 5.13401 6.13401 2 10 2H21' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M7 23L3 19L7 15' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M21 13V15C21 18.866 17.866 22 14 22H3' stroke='currentColor' stroke-width='2' fill='none'/%3E%3C/svg%3E" alt="Loop" />
-                    </button>
+                <div class="schedule-info">
+                    <p class="schedule-tagline">Perfect for commuters</p>
+                    <p class="schedule-description">Stay Monday through Friday</p>
                 </div>
             </div>
             <button class="explore-btn">Explore weeknight listings</button>
@@ -132,27 +164,59 @@
         <!-- Weekend Listings -->
         <div class="schedule-card">
             <h3>Weekend Listings</h3>
-            <div class="lottie-container">
-                <div class="day-selector">
-                    <span class="day-badge active">S</span>
-                    <span class="day-badge inactive">M</span>
-                    <span class="day-badge inactive">T</span>
-                    <span class="day-badge inactive">W</span>
-                    <span class="day-badge inactive">T</span>
-                    <span class="day-badge active">F</span>
-                    <span class="day-badge active">S</span>
+            <div class="schedule-visual">
+                <div class="calendar-grid">
+                    <div class="calendar-header">
+                        <span>S</span>
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                    </div>
+                    <div class="calendar-body">
+                        <div class="calendar-week">
+                            <span class="day active">🏖️</span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day active">🏖️</span>
+                            <span class="day active">🏖️</span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day active">🏖️</span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day active">🏖️</span>
+                            <span class="day active">🏖️</span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day active">🏖️</span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day active">🏖️</span>
+                            <span class="day active">🏖️</span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day active">🏖️</span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day"></span>
+                            <span class="day active">🏖️</span>
+                            <span class="day active">🏖️</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="lottie-animation-controls">
-                    <button class="control-btn play-pause" data-schedule="weekend" title="Play/Pause">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 5V19L19 12L8 5Z' fill='currentColor'/%3E%3C/svg%3E" alt="Play" />
-                    </button>
-                    <button class="control-btn stop" data-schedule="weekend" title="Stop">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='6' y='6' width='12' height='12' fill='currentColor'/%3E%3C/svg%3E" alt="Stop" />
-                    </button>
-                    <input type="range" class="lottie-seek-input" min="0" max="100" value="0" data-schedule="weekend" title="Seek" />
-                    <button class="control-btn loop-toggle" data-schedule="weekend" title="Toggle Loop">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 1L21 5L17 9' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M3 11V9C3 5.13401 6.13401 2 10 2H21' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M7 23L3 19L7 15' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M21 13V15C21 18.866 17.866 22 14 22H3' stroke='currentColor' stroke-width='2' fill='none'/%3E%3C/svg%3E" alt="Loop" />
-                    </button>
+                <div class="schedule-info">
+                    <p class="schedule-tagline">Weekend getaways</p>
+                    <p class="schedule-description">Friday through Sunday stays</p>
                 </div>
             </div>
             <button class="explore-btn">Explore weeks of the month</button>
@@ -161,30 +225,62 @@
         <!-- Monthly Listings -->
         <div class="schedule-card">
             <h3>Month Listings</h3>
-            <div class="lottie-container">
-                <div class="day-selector">
-                    <span class="day-badge active">S</span>
-                    <span class="day-badge active">M</span>
-                    <span class="day-badge active">T</span>
-                    <span class="day-badge active">W</span>
-                    <span class="day-badge active">T</span>
-                    <span class="day-badge active">F</span>
-                    <span class="day-badge active">S</span>
+            <div class="schedule-visual">
+                <div class="calendar-grid">
+                    <div class="calendar-header">
+                        <span>S</span>
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                    </div>
+                    <div class="calendar-body">
+                        <div class="calendar-week">
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                        </div>
+                        <div class="calendar-week">
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                            <span class="day active">🏡</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="lottie-animation-controls">
-                    <button class="control-btn play-pause" data-schedule="monthly" title="Play/Pause">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 5V19L19 12L8 5Z' fill='currentColor'/%3E%3C/svg%3E" alt="Play" />
-                    </button>
-                    <button class="control-btn stop" data-schedule="monthly" title="Stop">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='6' y='6' width='12' height='12' fill='currentColor'/%3E%3C/svg%3E" alt="Stop" />
-                    </button>
-                    <input type="range" class="lottie-seek-input" min="0" max="100" value="0" data-schedule="monthly" title="Seek" />
-                    <button class="control-btn loop-toggle" data-schedule="monthly" title="Toggle Loop">
-                        <img src="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 1L21 5L17 9' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M3 11V9C3 5.13401 6.13401 2 10 2H21' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M7 23L3 19L7 15' stroke='currentColor' stroke-width='2' fill='none'/%3E%3Cpath d='M21 13V15C21 18.866 17.866 22 14 22H3' stroke='currentColor' stroke-width='2' fill='none'/%3E%3C/svg%3E" alt="Loop" />
-                    </button>
+                <div class="schedule-info">
+                    <p class="schedule-tagline">Full-time living</p>
+                    <p class="schedule-description">All days of the week</p>
                 </div>
             </div>
-            <button class="explore-btn primary">Explore weeknight listings</button>
+            <button class="explore-btn primary">Explore monthly listings</button>
         </div>
     </section>
 
