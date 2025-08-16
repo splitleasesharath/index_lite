@@ -14,6 +14,7 @@ function initializeApp() {
     setupSupport();
     setupReferral();
     setupAnimations();
+    setupAuthModal();
 }
 
 // Navigation Functionality
@@ -598,6 +599,118 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = toastStyles;
 document.head.appendChild(styleSheet);
 
+// Auth Modal Functions
+function setupAuthModal() {
+    // Close modal on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAuthModal();
+        }
+    });
+}
+
+// Open auth modal
+function openAuthModal() {
+    const modal = document.getElementById('authModal');
+    modal.classList.add('active');
+    showWelcomeScreen();
+    document.body.style.overflow = 'hidden';
+}
+
+// Close auth modal
+function closeAuthModal() {
+    const modal = document.getElementById('authModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    // Reset forms
+    document.querySelectorAll('.auth-form').forEach(form => {
+        form.reset();
+    });
+}
+
+// Show welcome screen
+function showWelcomeScreen() {
+    hideAllScreens();
+    document.getElementById('welcomeScreen').classList.add('active');
+}
+
+// Show login form
+function showLoginForm() {
+    hideAllScreens();
+    document.getElementById('loginScreen').classList.add('active');
+}
+
+// Show signup form
+function showSignupForm() {
+    hideAllScreens();
+    document.getElementById('signupScreen').classList.add('active');
+}
+
+// Hide all auth screens
+function hideAllScreens() {
+    document.querySelectorAll('.auth-screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+}
+
+// Toggle password visibility
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const toggle = input.parentElement.querySelector('.password-toggle');
+    const eyeIcon = toggle.querySelector('.eye-icon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        eyeIcon.textContent = '👁';
+    }
+}
+
+// Handle login form submission
+function handleLogin(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) {
+        showToast('Please fill in all fields');
+        return;
+    }
+    
+    // Simulate login process
+    showToast('Login functionality coming soon!');
+    closeAuthModal();
+}
+
+// Handle signup form submission
+function handleSignup(event) {
+    event.preventDefault();
+    
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('signupEmail').value;
+    
+    if (!firstName || !lastName || !email) {
+        showToast('Please fill in all fields');
+        return;
+    }
+    
+    // Simulate signup process
+    showToast('Registration functionality coming soon!');
+    closeAuthModal();
+}
+
 // Export functions for global use
 window.closeChatWidget = closeChatWidget;
 window.showToast = showToast;
+window.openAuthModal = openAuthModal;
+window.closeAuthModal = closeAuthModal;
+window.showLoginForm = showLoginForm;
+window.showSignupForm = showSignupForm;
+window.togglePassword = togglePassword;
+window.handleLogin = handleLogin;
+window.handleSignup = handleSignup;

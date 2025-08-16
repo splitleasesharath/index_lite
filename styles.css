@@ -751,6 +751,237 @@ body {
     transform: scale(1.05);
 }
 
+/* Auth Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.auth-screen {
+    display: none;
+}
+
+.auth-screen.active {
+    display: block;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.modal-logo {
+    display: inline-flex;
+    margin-bottom: 1rem;
+}
+
+.modal-logo .logo-placeholder {
+    width: 60px;
+    height: 60px;
+    background: var(--bg-purple);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.modal-header h2 {
+    color: var(--text-dark);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: var(--bg-purple);
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.auth-form {
+    margin-top: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #666;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--bg-purple);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(91, 33, 182, 0.1);
+}
+
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #666;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.auth-btn-primary {
+    background: var(--bg-purple);
+    color: white;
+}
+
+.auth-btn-primary:hover {
+    background: var(--bg-purple-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+}
+
+.auth-btn-outline {
+    background: white;
+    color: var(--bg-purple);
+    border: 2px solid var(--bg-purple);
+}
+
+.auth-btn-outline:hover {
+    background: var(--bg-purple);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+}
+
+.form-note {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-help {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #666;
+}
+
+.auth-footer a {
+    color: var(--bg-purple);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-container {
