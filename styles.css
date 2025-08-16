@@ -1,11 +1,13 @@
 /* Global Reset and Variables */
 :root {
-    --primary-color: #5856D6;
-    --primary-hover: #4744B8;
+    --primary-color: #5B21B6;
+    --primary-hover: #4C1D95;
     --text-dark: #1a1a1a;
     --text-gray: #6b7280;
     --bg-light: #f9fafb;
     --bg-white: #ffffff;
+    --bg-purple: #5B21B6;
+    --bg-purple-dark: #4C1D95;
     --border-color: #e5e7eb;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -37,7 +39,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: var(--bg-white);
+    background: var(--bg-purple);
     box-shadow: var(--shadow-sm);
     z-index: 1000;
     transition: all 0.3s ease;
@@ -72,8 +74,8 @@ body {
 .logo-placeholder {
     width: 40px;
     height: 40px;
-    background: var(--primary-color);
-    color: white;
+    background: white;
+    color: var(--primary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -85,7 +87,7 @@ body {
 .logo-text {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--text-dark);
+    color: white;
     line-height: 1.2;
 }
 
@@ -96,14 +98,14 @@ body {
 
 .nav-link {
     text-decoration: none;
-    color: var(--text-gray);
+    color: white;
     font-weight: 500;
     transition: color 0.3s ease;
     position: relative;
 }
 
 .nav-link:hover {
-    color: var(--primary-color);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .nav-link::after {
@@ -113,7 +115,7 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--primary-color);
+    background: white;
     transition: width 0.3s ease;
 }
 
@@ -128,7 +130,7 @@ body {
 }
 
 .divider {
-    color: var(--border-color);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 /* Hero Section */
