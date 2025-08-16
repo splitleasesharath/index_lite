@@ -367,26 +367,38 @@ function updateAnimationFrame(scheduleType, scheduleCard, frame) {
 
 // Listings Functionality
 function setupListings() {
-    const exploreButtons = document.querySelectorAll('.explore-btn, .cta-button');
+    const exploreButtons = document.querySelectorAll('.explore-btn');
+    const ctaButtons = document.querySelectorAll('.cta-button');
     const showMoreBtn = document.querySelector('.show-more-btn');
     
+    // Handle schedule explore buttons
     exploreButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Simulate loading listings
-            this.classList.add('loading');
-            this.innerHTML = '<span class="spinner"></span> Loading...';
+            const buttonText = this.textContent.toLowerCase();
             
-            setTimeout(() => {
-                this.classList.remove('loading');
-                this.textContent = this.textContent.replace('Loading...', 'Explore Rentals');
-                showToast('Loading available rentals...');
-                
-                // Scroll to listings section
-                const listingsSection = document.querySelector('.listings-section');
-                if (listingsSection) {
-                    listingsSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 1500);
+            if (buttonText.includes('weekend') || buttonText.includes('weeks of the month')) {
+                // Weekend/weeks schedule: Fri-Sun + Mon-Tue (days 6,0,1,2)
+                redirectToSearch('6,7,1,2', 'weekends');
+            } else if (buttonText.includes('weeknight')) {
+                // Weeknight schedule: Mon-Fri (days 2,3,4,5,6)  
+                redirectToSearch('2,3,4,5,6', 'weeknights');
+            } else {
+                // Default explore action
+                redirectToSearch('1,2,3,4,5', 'default');
+            }
+        });
+    });
+    
+    // Handle general CTA buttons
+    ctaButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Use the hero day selector selection if available
+            if (typeof selectedDays !== 'undefined' && selectedDays.length > 0) {
+                exploreRentals();
+            } else {
+                // Default to weeknight schedule
+                redirectToSearch('1,2,3,4,5', 'default');
+            }
         });
     });
     
@@ -947,6 +959,24 @@ function exploreRentals() {
     showToast('Redirecting to search results...');
     
     // Small delay to show the toast, then redirect
+    setTimeout(() => {
+        window.open(searchUrl, '_blank');
+    }, 1000);
+}
+
+function redirectToSearch(daysSelected, preset) {
+    const params = new URLSearchParams();
+    params.set('days-selected', daysSelected);
+    params.set('weekly-frequency', 'Every week');
+    
+    if (preset && preset !== 'default') {
+        params.set('preset', preset);
+    }
+    
+    const searchUrl = `https://www.split.lease/search?${params.toString()}`;
+    
+    showToast(`Redirecting to ${preset} listings...`);
+    
     setTimeout(() => {
         window.open(searchUrl, '_blank');
     }, 1000);
