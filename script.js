@@ -113,9 +113,50 @@ function updateScheduleDisplay(scheduleCard) {
 
 // Schedule Controls (Play/Pause/Stop)
 function setupScheduleControls() {
-    const controlButtons = document.querySelectorAll('.control-btn');
+    // Lottie Animation Controls
+    const playPauseButtons = document.querySelectorAll('.play-pause');
+    const stopButtons = document.querySelectorAll('.stop');
+    const seekInputs = document.querySelectorAll('.lottie-seek-input');
+    const loopButtons = document.querySelectorAll('.loop-toggle');
     
-    controlButtons.forEach(button => {
+    // Play/Pause buttons
+    playPauseButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const scheduleType = this.dataset.schedule;
+            const scheduleCard = this.closest('.schedule-card');
+            handlePlayPause(scheduleType, scheduleCard, this);
+        });
+    });
+    
+    // Stop buttons
+    stopButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const scheduleType = this.dataset.schedule;
+            const scheduleCard = this.closest('.schedule-card');
+            handleStop(scheduleType, scheduleCard, this);
+        });
+    });
+    
+    // Seek sliders
+    seekInputs.forEach(slider => {
+        slider.addEventListener('input', function() {
+            const scheduleType = this.dataset.schedule;
+            const scheduleCard = this.closest('.schedule-card');
+            handleSeek(scheduleType, scheduleCard, this.value);
+        });
+    });
+    
+    // Loop toggle buttons
+    loopButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const scheduleType = this.dataset.schedule;
+            handleLoopToggle(scheduleType, this);
+        });
+    });
+    
+    // Legacy control buttons (for backwards compatibility)
+    const legacyControlButtons = document.querySelectorAll('.control-btn:not(.play-pause):not(.stop):not(.loop-toggle)');
+    legacyControlButtons.forEach(button => {
         button.addEventListener('click', function() {
             const action = this.classList.contains('play') ? 'play' :
                           this.classList.contains('pause') ? 'pause' : 'stop';
@@ -208,6 +249,120 @@ function resetSchedule(scheduleCard) {
             badge.classList.remove('inactive');
         });
     }
+}
+
+// Lottie Animation Control Handlers
+let scheduleStates = {
+    weeknight: { playing: false, looping: false, frame: 0, interval: null },
+    weekend: { playing: false, looping: false, frame: 0, interval: null },
+    monthly: { playing: false, looping: false, frame: 0, interval: null }
+};
+
+function handlePlayPause(scheduleType, scheduleCard, button) {
+    const state = scheduleStates[scheduleType];
+    const playIcon = 'data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M8 5V19L19 12L8 5Z\' fill=\'currentColor\'/%3E%3C/svg%3E';
+    const pauseIcon = 'data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect x=\'6\' y=\'6\' width=\'4\' height=\'12\' fill=\'currentColor\'/%3E%3Crect x=\'14\' y=\'6\' width=\'4\' height=\'12\' fill=\'currentColor\'/%3E%3C/svg%3E';
+    
+    if (state.playing) {
+        // Pause
+        pauseScheduleAnimation(scheduleType, scheduleCard);
+        button.querySelector('img').src = playIcon;
+        button.classList.remove('active');
+        showToast(`${scheduleType} animation paused`);
+    } else {
+        // Play
+        startScheduleAnimation(scheduleType, scheduleCard);
+        button.querySelector('img').src = pauseIcon;
+        button.classList.add('active');
+        showToast(`${scheduleType} animation started`);
+    }
+}
+
+function handleStop(scheduleType, scheduleCard, button) {
+    const state = scheduleStates[scheduleType];
+    const playPauseButton = scheduleCard.querySelector('.play-pause');
+    const seekSlider = scheduleCard.querySelector('.lottie-seek-input');
+    const playIcon = 'data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M8 5V19L19 12L8 5Z\' fill=\'currentColor\'/%3E%3C/svg%3E';
+    
+    pauseScheduleAnimation(scheduleType, scheduleCard);
+    state.frame = 0;
+    seekSlider.value = 0;
+    playPauseButton.querySelector('img').src = playIcon;
+    playPauseButton.classList.remove('active');
+    
+    // Reset to default day pattern
+    resetSchedule(scheduleCard);
+    showToast(`${scheduleType} animation stopped and reset`);
+}
+
+function handleSeek(scheduleType, scheduleCard, value) {
+    const state = scheduleStates[scheduleType];
+    state.frame = parseInt(value);
+    
+    // Update visual state based on seek position
+    updateAnimationFrame(scheduleType, scheduleCard, state.frame);
+    showToast(`Seeking to frame ${value}`);
+}
+
+function handleLoopToggle(scheduleType, button) {
+    const state = scheduleStates[scheduleType];
+    state.looping = !state.looping;
+    
+    if (state.looping) {
+        button.classList.add('active');
+        showToast(`${scheduleType} looping enabled`);
+    } else {
+        button.classList.remove('active');
+        showToast(`${scheduleType} looping disabled`);
+    }
+}
+
+function startScheduleAnimation(scheduleType, scheduleCard) {
+    const state = scheduleStates[scheduleType];
+    const seekSlider = scheduleCard.querySelector('.lottie-seek-input');
+    
+    state.playing = true;
+    
+    state.interval = setInterval(() => {
+        state.frame = (state.frame + 1) % 101; // 0-100 frame range
+        seekSlider.value = state.frame;
+        
+        updateAnimationFrame(scheduleType, scheduleCard, state.frame);
+        
+        // If reached end and not looping, stop
+        if (state.frame === 100 && !state.looping) {
+            handleStop(scheduleType, scheduleCard, scheduleCard.querySelector('.stop'));
+        }
+    }, 100); // 10fps animation
+}
+
+function pauseScheduleAnimation(scheduleType, scheduleCard) {
+    const state = scheduleStates[scheduleType];
+    state.playing = false;
+    
+    if (state.interval) {
+        clearInterval(state.interval);
+        state.interval = null;
+    }
+}
+
+function updateAnimationFrame(scheduleType, scheduleCard, frame) {
+    const dayBadges = scheduleCard.querySelectorAll('.day-badge');
+    const progress = frame / 100;
+    
+    // Create animated day selection based on frame
+    dayBadges.forEach((badge, index) => {
+        const delay = index * 0.1;
+        const shouldBeActive = (progress + delay) % 1 > 0.5;
+        
+        if (shouldBeActive) {
+            badge.classList.add('active');
+            badge.classList.remove('inactive');
+        } else {
+            badge.classList.remove('active');
+            badge.classList.add('inactive');
+        }
+    });
 }
 
 // Listings Functionality
