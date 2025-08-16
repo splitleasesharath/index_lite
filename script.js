@@ -410,10 +410,30 @@ function setupListings() {
     
     // Add click handlers to listing cards
     const listingCards = document.querySelectorAll('.listing-card');
-    listingCards.forEach(card => {
+    listingCards.forEach((card, index) => {
         card.addEventListener('click', function() {
             const title = this.querySelector('h3').textContent;
-            showToast(`Opening details for: ${title}`);
+            
+            // Property IDs from the original site
+            const propertyIds = [
+                '1586447992720x748691103167545300', // One Platt | Studio
+                '1586449069262x103395043556966670'  // Pied-à-terre
+            ];
+            
+            const propertyId = propertyIds[index] || propertyIds[0];
+            
+            // Use current day selection if available, otherwise default to weeknights
+            const daysParam = (typeof selectedDays !== 'undefined' && selectedDays.length > 0) 
+                ? selectedDays.join(',') 
+                : '1,2,3,4,5';
+            
+            const propertyUrl = `https://www.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
+            
+            showToast(`Opening ${title}...`);
+            
+            setTimeout(() => {
+                window.open(propertyUrl, '_blank');
+            }, 1000);
         });
     });
 }
@@ -471,7 +491,19 @@ function createListingCard(listing) {
     `;
     
     card.addEventListener('click', function() {
-        showToast(`Opening details for: ${listing.title}`);
+        // Use default property ID for new listings
+        const propertyId = '1586447992720x748691103167545300';
+        const daysParam = (typeof selectedDays !== 'undefined' && selectedDays.length > 0) 
+            ? selectedDays.join(',') 
+            : '1,2,3,4,5';
+        
+        const propertyUrl = `https://www.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
+        
+        showToast(`Opening ${listing.title}...`);
+        
+        setTimeout(() => {
+            window.open(propertyUrl, '_blank');
+        }, 1000);
     });
     
     return card;
