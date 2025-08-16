@@ -656,35 +656,32 @@ function handleSignup(event) {
     closeAuthModal();
 }
 
-// Hero Day Selector Functions
+// Hero Day Selector Functions - Simplified
 let selectedDays = [];
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function setupHeroDaySelector() {
-    // Initialize with default weeknight selection (M-F)
-    selectedDays = [1, 2, 3, 4, 5];
+    // Start with no days selected - clean slate
+    selectedDays = [];
     updateDayBadges();
     updateCheckinCheckout();
-    updateURL();
 }
 
 function toggleDay(dayIndex) {
+    // Simple toggle logic - if selected, remove it; if not, add it
     if (selectedDays.includes(dayIndex)) {
-        // Remove day from selection
         selectedDays = selectedDays.filter(d => d !== dayIndex);
     } else {
-        // Add day to selection
         selectedDays.push(dayIndex);
         selectedDays.sort((a, b) => a - b);
     }
     
     updateDayBadges();
     updateCheckinCheckout();
-    updateURL();
 }
 
 function updateDayBadges() {
-    const badges = document.querySelectorAll('.day-badge');
+    const badges = document.querySelectorAll('.hero-section .day-badge');
     badges.forEach((badge, index) => {
         if (selectedDays.includes(index)) {
             badge.classList.add('active');
@@ -704,25 +701,18 @@ function updateCheckinCheckout() {
         return;
     }
     
-    // Find the first and last selected days for continuous range
-    const firstDay = Math.min(...selectedDays);
-    const lastDay = Math.max(...selectedDays);
-    
-    checkinDayEl.textContent = dayNames[firstDay];
-    checkoutDayEl.textContent = dayNames[lastDay];
-    checkinCheckoutEl.style.display = 'flex';
-}
-
-function updateURL() {
-    if (selectedDays.length > 0) {
-        const params = new URLSearchParams();
-        params.set('days-selected', selectedDays.join(','));
-        const newURL = window.location.pathname + '?' + params.toString();
-        window.history.replaceState({}, '', newURL);
+    // Show selected days as a simple list
+    if (selectedDays.length === 1) {
+        checkinDayEl.textContent = dayNames[selectedDays[0]];
+        checkoutDayEl.textContent = dayNames[selectedDays[0]];
     } else {
-        // Remove query parameters if no days selected
-        window.history.replaceState({}, '', window.location.pathname);
+        // Show first and last day of selection
+        const firstDay = Math.min(...selectedDays);
+        const lastDay = Math.max(...selectedDays);
+        checkinDayEl.textContent = dayNames[firstDay];
+        checkoutDayEl.textContent = dayNames[lastDay];
     }
+    checkinCheckoutEl.style.display = 'flex';
 }
 
 function exploreRentals() {
@@ -731,35 +721,21 @@ function exploreRentals() {
         return;
     }
     
-    // Build URL parameters exactly like the original site
-    const params = new URLSearchParams();
-    params.set('weekly-frequency', 'Every week');
-    params.set('days-selected', selectedDays.join(','));
-    
-    // In this demo, redirect to the original Split Lease search page
-    // In a real clone, this would redirect to our own search page
-    const searchUrl = `https://www.split.lease/search?${params.toString()}`;
+    // Simple redirect with selected days
+    const searchUrl = `https://www.split.lease/search?days-selected=${selectedDays.join(',')}`;
     
     showToast('Redirecting to search results...');
     
-    // Small delay to show the toast, then redirect
     setTimeout(() => {
         window.open(searchUrl, '_blank');
     }, 1000);
 }
 
 function redirectToSearch(daysSelected, preset) {
-    const params = new URLSearchParams();
-    params.set('days-selected', daysSelected);
-    params.set('weekly-frequency', 'Every week');
+    // Simple redirect with just the days
+    const searchUrl = `https://www.split.lease/search?days-selected=${daysSelected}`;
     
-    if (preset && preset !== 'default') {
-        params.set('preset', preset);
-    }
-    
-    const searchUrl = `https://www.split.lease/search?${params.toString()}`;
-    
-    showToast(`Redirecting to ${preset} listings...`);
+    showToast(`Redirecting to ${preset || 'rental'} listings...`);
     
     setTimeout(() => {
         window.open(searchUrl, '_blank');
