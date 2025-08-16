@@ -40,8 +40,26 @@
         <div class="hero-content">
             <h1 class="hero-title">Ongoing Rentals for<br>Repeat Stays</h1>
             <p class="hero-subtitle">Select which days you'd like to stay in NYC and only pay for the nights you need.</p>
-            <p class="hero-tagline">Only pay for nights you need</p>
-            <button class="cta-button">Explore Rentals</button>
+            
+            <!-- Day Selector -->
+            <div class="day-selector">
+                <div class="day-badge" data-day="0" onclick="toggleDay(0)">S</div>
+                <div class="day-badge" data-day="1" onclick="toggleDay(1)">M</div>
+                <div class="day-badge" data-day="2" onclick="toggleDay(2)">T</div>
+                <div class="day-badge" data-day="3" onclick="toggleDay(3)">W</div>
+                <div class="day-badge" data-day="4" onclick="toggleDay(4)">T</div>
+                <div class="day-badge" data-day="5" onclick="toggleDay(5)">F</div>
+                <div class="day-badge" data-day="6" onclick="toggleDay(6)">S</div>
+            </div>
+            
+            <!-- Check-in/Check-out Display -->
+            <div class="checkin-checkout" id="checkinCheckout" style="display: none;">
+                <span><strong>Check-in:</strong> <span id="checkinDay"></span></span>
+                <span class="separator">•</span>
+                <span><strong>Check-out:</strong> <span id="checkoutDay"></span></span>
+            </div>
+            
+            <button class="cta-button" onclick="exploreRentals()">Explore Rentals</button>
         </div>
     </section>
 

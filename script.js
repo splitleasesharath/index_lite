@@ -15,6 +15,7 @@ function initializeApp() {
     setupReferral();
     setupAnimations();
     setupAuthModal();
+    setupHeroDaySelector();
 }
 
 // Navigation Functionality
@@ -704,6 +705,90 @@ function handleSignup(event) {
     closeAuthModal();
 }
 
+// Hero Day Selector Functions
+let selectedDays = [];
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+function setupHeroDaySelector() {
+    // Initialize with default weeknight selection (M-F)
+    selectedDays = [1, 2, 3, 4, 5];
+    updateDayBadges();
+    updateCheckinCheckout();
+    updateURL();
+}
+
+function toggleDay(dayIndex) {
+    if (selectedDays.includes(dayIndex)) {
+        // Remove day from selection
+        selectedDays = selectedDays.filter(d => d !== dayIndex);
+    } else {
+        // Add day to selection
+        selectedDays.push(dayIndex);
+        selectedDays.sort((a, b) => a - b);
+    }
+    
+    updateDayBadges();
+    updateCheckinCheckout();
+    updateURL();
+}
+
+function updateDayBadges() {
+    const badges = document.querySelectorAll('.day-badge');
+    badges.forEach((badge, index) => {
+        if (selectedDays.includes(index)) {
+            badge.classList.add('active');
+        } else {
+            badge.classList.remove('active');
+        }
+    });
+}
+
+function updateCheckinCheckout() {
+    const checkinCheckoutEl = document.getElementById('checkinCheckout');
+    const checkinDayEl = document.getElementById('checkinDay');
+    const checkoutDayEl = document.getElementById('checkoutDay');
+    
+    if (selectedDays.length === 0) {
+        checkinCheckoutEl.style.display = 'none';
+        return;
+    }
+    
+    // Find the first and last selected days for continuous range
+    const firstDay = Math.min(...selectedDays);
+    const lastDay = Math.max(...selectedDays);
+    
+    checkinDayEl.textContent = dayNames[firstDay];
+    checkoutDayEl.textContent = dayNames[lastDay];
+    checkinCheckoutEl.style.display = 'flex';
+}
+
+function updateURL() {
+    if (selectedDays.length > 0) {
+        const params = new URLSearchParams();
+        params.set('days-selected', selectedDays.join(','));
+        const newURL = window.location.pathname + '?' + params.toString();
+        window.history.replaceState({}, '', newURL);
+    } else {
+        // Remove query parameters if no days selected
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+}
+
+function exploreRentals() {
+    if (selectedDays.length === 0) {
+        showToast('Please select at least one day to explore rentals');
+        return;
+    }
+    
+    // In a real application, this would navigate to search results
+    showToast(`Searching for rentals for ${selectedDays.length} selected days...`);
+    
+    // Simulate navigation delay
+    setTimeout(() => {
+        showToast('Rental search functionality coming soon!');
+    }, 1500);
+}
+
 // Export functions for global use
 window.closeChatWidget = closeChatWidget;
 window.showToast = showToast;
@@ -714,3 +799,5 @@ window.showSignupForm = showSignupForm;
 window.togglePassword = togglePassword;
 window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
+window.toggleDay = toggleDay;
+window.exploreRentals = exploreRentals;

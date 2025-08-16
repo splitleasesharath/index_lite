@@ -187,3 +187,8 @@ All changes to the codebase are documented here in reverse chronological order (
   - Signup form with first name, last name, and email
 - Added modal animations, transitions, and password visibility toggle
 - Modal matches original site design with proper styling and interactions
+- CYCLE 1: Implemented interactive hero section day selector functionality:
+  - Added clickable day badges (S M T W T F S) with purple highlight
+  - Added check-in/check-out display that updates based on selection
+  - Added URL parameter tracking (?days-selected=1,2,3,4,5)
+  - Matches original site behavior exactly with default weeknight selection
