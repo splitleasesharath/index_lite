@@ -180,3 +180,4 @@ All changes to the codebase are documented here in reverse chronological order (
 - Updated color scheme to match original purple theme (#5B21B6)
 - Fixed header styling with purple background and white text
 - Fixed footer styling with purple background and proper text colors
+- Added floating "Free Market Research" badge with gradient background
