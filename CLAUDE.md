@@ -192,3 +192,8 @@ All changes to the codebase are documented here in reverse chronological order (
   - Added check-in/check-out display that updates based on selection
   - Added URL parameter tracking (?days-selected=1,2,3,4,5)
   - Matches original site behavior exactly with default weeknight selection
+- CYCLE 2: Implemented Explore Rentals button redirect functionality:
+  - Button now redirects to search page with proper URL parameters
+  - Passes selected days and weekly frequency to search URL
+  - Opens original Split Lease search page in new tab
+  - Matches original site redirect behavior exactly

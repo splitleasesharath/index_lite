@@ -780,13 +780,21 @@ function exploreRentals() {
         return;
     }
     
-    // In a real application, this would navigate to search results
-    showToast(`Searching for rentals for ${selectedDays.length} selected days...`);
+    // Build URL parameters exactly like the original site
+    const params = new URLSearchParams();
+    params.set('weekly-frequency', 'Every week');
+    params.set('days-selected', selectedDays.join(','));
     
-    // Simulate navigation delay
+    // In this demo, redirect to the original Split Lease search page
+    // In a real clone, this would redirect to our own search page
+    const searchUrl = `https://www.split.lease/search?${params.toString()}`;
+    
+    showToast('Redirecting to search results...');
+    
+    // Small delay to show the toast, then redirect
     setTimeout(() => {
-        showToast('Rental search functionality coming soon!');
-    }, 1500);
+        window.open(searchUrl, '_blank');
+    }, 1000);
 }
 
 // Export functions for global use
