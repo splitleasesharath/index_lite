@@ -34,13 +34,24 @@ start index.html
 npx http-server
 ```
 
-### Git Operations
+### Git Operations (MANDATORY WORKFLOW)
+**CRITICAL RULE**: ALWAYS pull before making changes, push after making changes
 ```bash
-# Commit changes (without sensitive files)
-git add index.html styles.css script.js README.md
-git commit -m "Your commit message"
+# STEP 1: Always pull first before making any changes
+git pull origin main
+
+# STEP 2: Make your changes to files
+# (edit files here)
+
+# STEP 3: Stage and commit changes (without sensitive files)
+git add index.html styles.css script.js README.md CLAUDE.md
+git commit -m "Your commit message with context"
+
+# STEP 4: Always push immediately after committing
 git push origin main
 ```
+
+**MANDATORY**: This workflow must be followed religiously for EVERY SINGLE change to prevent merge conflicts and ensure continuous deployment.
 
 ### GitHub Pages Deployment
 - Repository is configured for GitHub Pages
@@ -279,7 +290,22 @@ This ensures continuous deployment, real-time GitHub Pages updates, and complete
 
 All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
 
-### 2025-08-17
+### 2025-08-17 (Latest Session)
+- **LAYOUT OPTIMIZATION SESSION**: Addressed user priority requests for space-efficient design
+- **Removed 70px white space above header**: 
+  - Removed `scroll-padding-top: 80px` from html element that was creating unwanted space
+  - Added `margin-top: 72px` to hero section to properly account for fixed header height (72px)
+  - Hero section now starts immediately below header with no white gap
+- **Fixed showcase sections to single column layout (PRIORITY TASK)**:
+  - Converted schedule grid from 3-column desktop layout to single column for all screen sizes
+  - Reduced gap from `2rem` to `1rem` for more contracted spacing
+  - Added `max-width: 600px` and `margin: 0 auto` for centered, constrained layout
+  - Reduced schedule card padding from `2rem` to `1.5rem` for tighter, more efficient design
+  - Saves significant vertical space and improves mobile-first responsive experience
+- **Updated Git workflow documentation**: Added mandatory pull-before-changes, push-after-changes rule to CLAUDE.md
+- **Resolved merge conflicts**: Successfully merged remote changes while maintaining user-requested single column layout
+
+### 2025-08-17 (Previous Session)
 - **30 CYCLES COMPLETE**: Comprehensive feature development across 6 sprints
 - **SPRINT 1 (Cycles 1-5)**: Implemented host/stay dropdown menus, fixed footer links, added mobile hamburger menu, enhanced forms with validation, created import listing functionality
 - **SPRINT 2 (Cycles 6-10)**: Added loading states for async operations, implemented app download section, added Alexa skill section, created emergency assistance handling, added proper error handling for imports
