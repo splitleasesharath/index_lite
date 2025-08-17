@@ -693,12 +693,25 @@ body {
     color: var(--text-dark);
 }
 
+.schedule-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+/* Desktop layout - 3 columns in a row */
+@media (min-width: 1024px) {
+    .schedule-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
 .schedule-card {
     background: var(--bg-white);
     border: 2px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 2rem;
-    margin-bottom: 2rem;
     box-shadow: var(--shadow-sm);
 }
 
@@ -1569,9 +1582,10 @@ body {
     position: fixed;
     right: 20px;
     bottom: 20px;
-    z-index: 1000;
+    z-index: 9999;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: block;
 }
 
 .badge-content {
