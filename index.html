@@ -18,20 +18,9 @@
     <link rel="canonical" href="https://splitleasesharath.github.io/index_lite/">
     <meta name="robots" content="index, follow">
     <title>Split Lease - Periodic Tenancy Leader | Flexible NYC Rentals</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#5B21B6">
-    <link rel="apple-touch-icon" href="assets/icon-192x192.png">
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="styles.css" as="style">
-    <link rel="preload" href="script.js" as="script">
-    <link rel="preload" href="assets/images/hero-left.png" as="image">
-    <link rel="preload" href="assets/images/hero-right.png" as="image">
-    
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://www.split.lease">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -107,9 +96,6 @@
                 </div>
             </div>
             <div class="nav-right">
-                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-                    <span class="theme-icon">🌙</span>
-                </button>
                 <a href="#signin" class="nav-link" onclick="openAuthModal(); return false;">Sign In</a>
                 <span class="divider">|</span>
                 <a href="#signup" class="nav-link" onclick="openAuthModal(); return false;">Sign Up</a>
@@ -406,24 +392,8 @@
     <!-- Listings Preview -->
     <section class="listings-section">
         <h2>Check Out Some Listings</h2>
-        
-        <!-- Search Bar -->
-        <div class="search-container">
-            <input type="text" id="listingSearch" class="listing-search" placeholder="Search by location, type, or features..." onkeyup="filterListings()">
-            <button class="search-btn" onclick="filterListings()">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="9" cy="9" r="7"></circle>
-                    <path d="M14 14l4 4"></path>
-                </svg>
-            </button>
-        </div>
-        
         <div class="listings-grid">
-            <div class="listing-card" data-property-id="1">
-                <div class="compare-checkbox">
-                    <input type="checkbox" id="compare-1" class="compare-check" onchange="toggleCompare(1)">
-                    <label for="compare-1">Compare</label>
-                </div>
+            <div class="listing-card">
                 <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
                 <div class="listing-details">
                     <span class="listing-location">📍</span>
@@ -431,11 +401,7 @@
                     <p>Studio • 1 bed • 1 bathroom • Free Storage</p>
                 </div>
             </div>
-            <div class="listing-card" data-property-id="2">
-                <div class="compare-checkbox">
-                    <input type="checkbox" id="compare-2" class="compare-check" onchange="toggleCompare(2)">
-                    <label for="compare-2">Compare</label>
-                </div>
+            <div class="listing-card">
                 <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
                 <div class="listing-details">
                     <span class="listing-location">📍</span>
@@ -444,49 +410,7 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Compare Bar -->
-        <div id="compareBar" class="compare-bar">
-            <div class="compare-content">
-                <span class="compare-count">0 properties selected</span>
-                <button class="compare-btn" onclick="showComparison()">Compare Now</button>
-                <button class="clear-btn" onclick="clearComparison()">Clear</button>
-            </div>
-        </div>
         <button class="show-more-btn">Show me more Rentals</button>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-        <h2>What Our Customers Say</h2>
-        <div class="testimonials-carousel">
-            <div class="testimonial-card active">
-                <div class="testimonial-quote">"Split Lease made my commute so much easier. I stay Monday through Thursday and save hundreds compared to hotels!"</div>
-                <div class="testimonial-author">
-                    <span class="author-name">Sarah Johnson</span>
-                    <span class="author-title">Marketing Manager</span>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-quote">"Perfect for my consulting work. I can maintain a consistent space in NYC without the full-time rent."</div>
-                <div class="testimonial-author">
-                    <span class="author-name">Michael Chen</span>
-                    <span class="author-title">Business Consultant</span>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-quote">"As a weekend traveler, this service is a game-changer. Same room every visit, no check-in hassles."</div>
-                <div class="testimonial-author">
-                    <span class="author-name">Emily Rodriguez</span>
-                    <span class="author-title">Creative Director</span>
-                </div>
-            </div>
-        </div>
-        <div class="carousel-dots">
-            <span class="dot active" onclick="changeTestimonial(0)"></span>
-            <span class="dot" onclick="changeTestimonial(1)"></span>
-            <span class="dot" onclick="changeTestimonial(2)"></span>
-        </div>
     </section>
 
     <!-- Support Section -->
@@ -681,25 +605,6 @@
                 <p class="auth-footer">
                     Have an account? <a href="#" onclick="showLoginForm(); return false;"><strong>Log In</strong></a>
                 </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scroll to Top Button -->
-    <button id="scrollToTop" class="scroll-to-top" onclick="scrollToTop()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-    </button>
-
-    <!-- Cookie Consent Banner -->
-    <div id="cookieConsent" class="cookie-consent">
-        <div class="cookie-content">
-            <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
-            <div class="cookie-buttons">
-                <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
-                <button class="cookie-decline" onclick="declineCookies()">Decline</button>
-                <a href="https://www.split.lease/privacy" target="_blank" class="cookie-link">Learn More</a>
             </div>
         </div>
     </div>
