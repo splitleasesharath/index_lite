@@ -879,6 +879,94 @@ body {
     box-shadow: var(--shadow-md);
     transition: all 0.3s ease;
     cursor: pointer;
+    position: relative;
+}
+
+/* Compare Checkbox */
+.compare-checkbox {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.compare-checkbox input[type="checkbox"] {
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.compare-checkbox label {
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.listing-card.selected {
+    box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+/* Compare Bar */
+.compare-bar {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    padding: 1rem 2rem;
+    z-index: 999;
+    transition: bottom 0.3s ease;
+}
+
+.compare-bar.show {
+    bottom: 0;
+}
+
+.compare-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.compare-count {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.compare-btn,
+.clear-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.compare-btn {
+    background: var(--primary-color);
+    color: white;
+    margin: 0 1rem;
+}
+
+.compare-btn:hover {
+    background: var(--primary-hover);
+}
+
+.clear-btn {
+    background: #f3f4f6;
+    color: var(--text-dark);
+}
+
+.clear-btn:hover {
+    background: #e5e7eb;
 }
 
 .listing-card:hover {

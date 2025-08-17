@@ -1147,6 +1147,65 @@ function filterListings() {
     }
 }
 
+// Property Comparison
+let compareList = [];
+
+function toggleCompare(propertyId) {
+    const card = document.querySelector(`[data-property-id="${propertyId}"]`);
+    const checkbox = document.getElementById(`compare-${propertyId}`);
+    const compareBar = document.getElementById('compareBar');
+    
+    if (checkbox.checked) {
+        if (compareList.length >= 3) {
+            showToast('You can compare up to 3 properties at a time');
+            checkbox.checked = false;
+            return;
+        }
+        compareList.push(propertyId);
+        card.classList.add('selected');
+    } else {
+        compareList = compareList.filter(id => id !== propertyId);
+        card.classList.remove('selected');
+    }
+    
+    updateCompareBar();
+}
+
+function updateCompareBar() {
+    const compareBar = document.getElementById('compareBar');
+    const compareCount = document.querySelector('.compare-count');
+    
+    if (compareList.length > 0) {
+        compareBar.classList.add('show');
+        compareCount.textContent = `${compareList.length} ${compareList.length === 1 ? 'property' : 'properties'} selected`;
+    } else {
+        compareBar.classList.remove('show');
+    }
+}
+
+function showComparison() {
+    if (compareList.length < 2) {
+        showToast('Please select at least 2 properties to compare');
+        return;
+    }
+    
+    showToast(`Comparing ${compareList.length} properties...`);
+    // Here you would typically show a comparison modal or navigate to a comparison page
+}
+
+function clearComparison() {
+    compareList.forEach(id => {
+        const checkbox = document.getElementById(`compare-${id}`);
+        const card = document.querySelector(`[data-property-id="${id}"]`);
+        if (checkbox) checkbox.checked = false;
+        if (card) card.classList.remove('selected');
+    });
+    
+    compareList = [];
+    updateCompareBar();
+    showToast('Comparison cleared');
+}
+
 // Theme Toggle
 function setupThemeToggle() {
     // Check for saved theme preference or default to light
@@ -1260,3 +1319,6 @@ window.declineCookies = declineCookies;
 window.scrollToTop = scrollToTop;
 window.filterListings = filterListings;
 window.toggleTheme = toggleTheme;
+window.toggleCompare = toggleCompare;
+window.showComparison = showComparison;
+window.clearComparison = clearComparison;

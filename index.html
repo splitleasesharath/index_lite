@@ -397,7 +397,11 @@
         </div>
         
         <div class="listings-grid">
-            <div class="listing-card">
+            <div class="listing-card" data-property-id="1">
+                <div class="compare-checkbox">
+                    <input type="checkbox" id="compare-1" class="compare-check" onchange="toggleCompare(1)">
+                    <label for="compare-1">Compare</label>
+                </div>
                 <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
                 <div class="listing-details">
                     <span class="listing-location">📍</span>
@@ -405,13 +409,26 @@
                     <p>Studio • 1 bed • 1 bathroom • Free Storage</p>
                 </div>
             </div>
-            <div class="listing-card">
+            <div class="listing-card" data-property-id="2">
+                <div class="compare-checkbox">
+                    <input type="checkbox" id="compare-2" class="compare-check" onchange="toggleCompare(2)">
+                    <label for="compare-2">Compare</label>
+                </div>
                 <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
                 <div class="listing-details">
                     <span class="listing-location">📍</span>
                     <h3>Pied-à-terre , Perfect 2 BR Apartment for Commuters</h3>
                     <p>2 bedrooms • 2 bed(s) • 1 bathroom • Free Storage</p>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Compare Bar -->
+        <div id="compareBar" class="compare-bar">
+            <div class="compare-content">
+                <span class="compare-count">0 properties selected</span>
+                <button class="compare-btn" onclick="showComparison()">Compare Now</button>
+                <button class="clear-btn" onclick="clearComparison()">Clear</button>
             </div>
         </div>
         <button class="show-more-btn">Show me more Rentals</button>
