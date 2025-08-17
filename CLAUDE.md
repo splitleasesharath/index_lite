@@ -237,9 +237,14 @@ When making changes, verify:
 - [ ] Touch interactions work on mobile devices
 - [ ] Animation performance is smooth across devices
 
-## CRITICAL DEVELOPMENT RULE
+## CRITICAL DEVELOPMENT RULES
 
-**MANDATORY**: Every single code change MUST be immediately committed and pushed to GitHub. This includes:
+**MANDATORY GIT WORKFLOW**: Follow this pattern religiously for EVERY change:
+1. **PULL BEFORE CHANGES**: Always run `git pull origin main` before making any modifications
+2. **MAKE CHANGES**: Edit files as needed  
+3. **PUSH AFTER CHANGES**: Immediately commit and push every single change
+
+**MANDATORY COMMIT PATTERN**: Every single code change MUST be immediately committed and pushed to GitHub. This includes:
 - After EVERY file edit (HTML, CSS, JS, MD)
 - After EVERY new feature addition
 - After EVERY bug fix
@@ -247,7 +252,13 @@ When making changes, verify:
 - No batching of changes allowed
 - Push immediately after each atomic change
 
-This ensures continuous deployment and real-time GitHub Pages updates.
+**MANDATORY CHANGELOG UPDATES**: After every change, update the Changelog section in CLAUDE.md with:
+- Date of change
+- Specific feature/fix implemented
+- Technical details and context
+- Files modified
+
+This ensures continuous deployment, real-time GitHub Pages updates, and complete change tracking.
 
 ## Deployment Notes
 
@@ -326,3 +337,31 @@ All changes to the codebase are documented here in reverse chronological order (
   - External navigation links to original site URLs
   - Emergency assistance with safety messaging
   - Toast notifications for all footer interactions
+
+### 2025-08-17 (Continued Session)
+- **URL BEHAVIOR IMPLEMENTATION**: Implemented exact day selector URL behavior matching original site:
+  - Analyzed original site by systematically clicking each day selector 5 times
+  - Documented URL patterns with %2C%20 encoding for "days-selected" parameter  
+  - Implemented identical toggle behavior for Sunday with specific patterns:
+    - Empty → 1,2,3,4,5,6 → 2,3,4,5,6 → 1,2,3,4,5,6 cycle
+  - Added URL parameter state management and persistence
+  - Modified script.js with complete day selector rewrite
+- **HERO IMAGE POSITIONING**: Repositioned hero section images 10% lower for better visual balance:
+  - Left illustration: changed bottom from 15% to 5%  
+  - Right illustration: changed bottom from 10% to 0%
+  - Modified styles.css hero illustration positioning
+- **SCHEDULE LAYOUT OPTIMIZATION**: Implemented horizontal desktop layout for schedule sections:
+  - Added !important override to ensure 3-column grid on desktop (min-width: 1024px)
+  - Maintained existing mobile responsiveness with single column layout
+  - Schedule cards now display horizontally on desktop: Weeknight | Weekend | Month
+- **COMPACT SCHEDULE DESIGN**: Made schedule cards more compact and professional:
+  - Changed content layout from centered to top-aligned (flex-start)
+  - Reduced gap from 3rem to 2rem and padding from 2rem to 1.5rem
+  - Set fixed calendar width (280px) for consistency across cards
+  - Positioned text content to the right of calendar visuals
+  - Enhanced schedule-info with proper flex column layout
+  - Modified styles.css schedule visual and grid styling
+- **GIT WORKFLOW ENHANCEMENT**: Updated CLAUDE.md with mandatory pull-before-push workflow:
+  - Added explicit git workflow pattern: pull → change → push  
+  - Enhanced critical development rules with changelog update requirements
+  - Documented mandatory change tracking in CLAUDE.md
