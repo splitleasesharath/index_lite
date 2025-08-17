@@ -402,18 +402,8 @@ body {
     height: auto;
 }
 
-.hero-icon-center {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 80px;
-}
-
 .bridge-illustration,
-.building-illustration,
-.liberty-icon {
+.building-illustration {
     width: 100%;
     height: 100%;
 }
