@@ -697,9 +697,17 @@ body {
 .schedule-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
-    max-width: 600px;
+    gap: 2rem;
     margin: 0 auto;
+}
+
+/* Desktop layout - 3 columns horizontally */
+@media (min-width: 1024px) {
+    .schedule-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+    }
 }
 
 .schedule-card {
