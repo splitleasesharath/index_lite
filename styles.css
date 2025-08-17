@@ -357,14 +357,14 @@ body {
 .hero-illustration-left {
     left: 15%;
     bottom: 15%;
-    width: 640px;
+    width: 480px;
     height: auto;
 }
 
 .hero-illustration-right {
     right: 15%;
     bottom: 10%;
-    width: 480px;
+    width: 624px;
     height: auto;
 }
 
@@ -1923,14 +1923,14 @@ body {
     }
     
     .hero-illustration-left {
-        left: 10%;
-        width: 320px;
-        bottom: 20%;
+        display: none;
     }
     
     .hero-illustration-right {
-        right: 10%;
-        width: 240px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: 350px;
         bottom: 15%;
     }
     
