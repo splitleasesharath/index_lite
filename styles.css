@@ -22,7 +22,7 @@
 /* Global Scroll Optimizations */
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Account for fixed header */
+    scroll-padding-top: 0; /* Removed header offset */
 }
 
 * {
@@ -357,6 +357,7 @@ body {
 .hero-section {
     position: relative;
     min-height: 650px;
+    margin-top: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -696,22 +697,16 @@ body {
 .schedule-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
-}
-
-/* Desktop layout - 3 columns in a row */
-@media (min-width: 1024px) {
-    .schedule-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-    }
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .schedule-card {
     background: var(--bg-white);
     border: 2px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: 1.5rem;
     box-shadow: var(--shadow-sm);
 }
 
