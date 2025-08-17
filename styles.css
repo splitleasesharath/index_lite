@@ -702,7 +702,7 @@ body {
 /* Desktop layout - 3 columns in a row */
 @media (min-width: 1024px) {
     .schedule-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr) !important;
         gap: 2rem;
     }
 }
@@ -832,17 +832,17 @@ body {
 /* Schedule Visual Styles */
 .schedule-visual {
     display: flex;
-    align-items: center;
-    gap: 3rem;
-    margin: 2rem 0;
-    padding: 2rem;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
     background: linear-gradient(135deg, rgba(91, 33, 182, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
     border-radius: 12px;
 }
 
 .calendar-grid {
-    flex: 1;
-    max-width: 350px;
+    flex: 0 0 280px;
+    max-width: 280px;
 }
 
 .calendar-header {
@@ -895,7 +895,10 @@ body {
 
 .schedule-info {
     flex: 1;
-    padding: 1rem;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .schedule-tagline {
@@ -2040,6 +2043,11 @@ body {
         padding: 2rem 1rem;
         max-width: 100%;
         overflow-x: hidden;
+    }
+    
+    .schedule-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
     
     .schedule-card {
