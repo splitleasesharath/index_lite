@@ -17,6 +17,7 @@ function initializeApp() {
     setupAuthModal();
     setupHeroDaySelector();
     setupFooterNavigation();
+    setupDropdownMenus();
 }
 
 // Navigation Functionality
@@ -740,6 +741,90 @@ function redirectToSearch(daysSelected, preset) {
     setTimeout(() => {
         window.open(searchUrl, '_blank');
     }, 1000);
+}
+
+// Dropdown Menu Functionality
+function setupDropdownMenus() {
+    const dropdowns = document.querySelectorAll('.nav-dropdown');
+    
+    dropdowns.forEach(dropdown => {
+        const trigger = dropdown.querySelector('.dropdown-trigger');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        let isOpen = false;
+        
+        // Toggle on click
+        trigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            isOpen = !isOpen;
+            
+            if (isOpen) {
+                dropdown.classList.add('active');
+                menu.style.opacity = '1';
+                menu.style.visibility = 'visible';
+            } else {
+                dropdown.classList.remove('active');
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+            }
+        });
+        
+        // Keep open on hover
+        dropdown.addEventListener('mouseenter', function() {
+            dropdown.classList.add('hover');
+        });
+        
+        dropdown.addEventListener('mouseleave', function() {
+            dropdown.classList.remove('hover');
+            if (!isOpen) {
+                dropdown.classList.remove('active');
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+            }
+        });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-dropdown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+            });
+        }
+    });
+    
+    // Keyboard navigation
+    dropdowns.forEach(dropdown => {
+        const trigger = dropdown.querySelector('.dropdown-trigger');
+        const items = dropdown.querySelectorAll('.dropdown-item');
+        
+        trigger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                trigger.click();
+            } else if (e.key === 'ArrowDown' && dropdown.classList.contains('active')) {
+                e.preventDefault();
+                items[0]?.focus();
+            }
+        });
+        
+        items.forEach((item, index) => {
+            item.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    items[index + 1]?.focus() || items[0].focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    items[index - 1]?.focus() || trigger.focus();
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('active');
+                    trigger.focus();
+                }
+            });
+        });
+    });
 }
 
 // Footer Navigation Functionality
