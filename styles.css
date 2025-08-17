@@ -142,6 +142,15 @@ body {
     gap: 2rem;
 }
 
+/* Text visibility for mobile/desktop */
+.mobile-text {
+    display: none;
+}
+
+.desktop-text {
+    display: inline;
+}
+
 /* Dropdown Navigation */
 .nav-dropdown {
     position: relative;
@@ -1798,47 +1807,61 @@ body {
 @media (max-width: 768px) {
     .nav-container {
         position: relative;
+        padding: 0.75rem 1rem;
     }
     
     .hamburger-menu {
-        display: flex;
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
+        display: none; /* Hide hamburger - using simplified nav instead */
     }
     
-    .nav-center,
-    .nav-right {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--bg-purple);
-        flex-direction: column;
-        padding: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .nav-center.mobile-active,
-    .nav-right.mobile-active {
-        display: flex;
-    }
-    
+    /* Simplify navigation for mobile */
     .nav-center {
+        display: flex;
+        flex-direction: row;
         gap: 0.5rem;
+        position: static;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
     }
     
-    /* Mobile dropdown adjustments */
+    .nav-right {
+        display: flex;
+        position: static;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+    }
+    
+    .nav-right .divider,
+    .nav-right a:last-child {
+        display: none; /* Hide divider and Sign Up on mobile */
+    }
+    
+    /* Simplify dropdown buttons for mobile */
     .nav-dropdown {
-        width: 100%;
+        width: auto;
     }
     
     .dropdown-trigger {
-        width: 100%;
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+        width: auto;
         justify-content: center;
-        padding: 0.5rem;
+    }
+    
+    /* Hide dropdown descriptions on mobile */
+    .dropdown-trigger::after {
+        content: none;
+    }
+    
+    /* Show mobile text, hide desktop text on mobile */
+    .mobile-text {
+        display: inline;
+    }
+    
+    .desktop-text {
+        display: none;
     }
     
     .dropdown-menu {
@@ -1861,11 +1884,15 @@ body {
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        line-height: 1.15;
+        margin-bottom: 0.75rem;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
     }
     
     .hero-illustration-left {
@@ -1879,16 +1906,46 @@ body {
     }
     
     .hero-content-wrapper {
-        margin: 0 1rem;
-        padding: 2rem;
+        margin: 0;
+        padding: 2rem 1.5rem;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+        animation: none; /* Disable waterfall animation on mobile */
     }
 
     .value-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 2rem 1rem;
+    }
+    
+    .value-card {
+        padding: 1.5rem 0.75rem;
+    }
+    
+    .value-card h3 {
+        font-size: 0.85rem;
     }
 
     .day-selector {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        gap: 0.4rem;
+        margin: 0 0 1.5rem 0;
+    }
+    
+    .hero-section .day-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        border-radius: 10px;
+    }
+    
+    .hero-cta-button {
+        width: 100%;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        border-radius: 8px;
     }
 
     .listings-grid {
