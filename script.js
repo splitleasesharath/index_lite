@@ -776,23 +776,59 @@ let selectedDays = [];
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function setupHeroDaySelector() {
-    // Start with no days selected - clean slate
-    selectedDays = [];
+    // Load initial state from URL or start clean
+    loadStateFromURL();
     updateDayBadges();
     updateCheckinCheckout();
-    updateURL();
+}
+
+function loadStateFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const daysParam = urlParams.get('days-selected');
+    
+    if (daysParam) {
+        // Parse days from URL parameter (decode URL encoding)
+        const decoded = decodeURIComponent(daysParam);
+        selectedDays = decoded.split(',').map(d => parseInt(d.trim())).filter(d => d >= 0 && d <= 6);
+    } else {
+        selectedDays = [];
+    }
 }
 
 function toggleDay(dayIndex) {
-    // Convert 0-based index to 1-based (Sunday=1, Monday=2, etc.)
-    const dayNumber = dayIndex + 1;
+    // Match exact original behavior based on observed patterns
+    // Day mapping: Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6
     
-    // Simple toggle logic - if selected, remove it; if not, add it
-    if (selectedDays.includes(dayNumber)) {
-        selectedDays = selectedDays.filter(d => d !== dayNumber);
+    if (dayIndex === 0) {
+        // Sunday toggle behavior - matches original site patterns
+        if (selectedDays.length === 0) {
+            // First Sunday click: select Monday-Saturday (1,2,3,4,5,6)
+            selectedDays = [1, 2, 3, 4, 5, 6];
+        } else if (JSON.stringify(selectedDays) === JSON.stringify([1, 2, 3, 4, 5, 6])) {
+            // If Monday-Saturday selected, toggle to Tuesday-Saturday
+            selectedDays = [2, 3, 4, 5, 6];
+        } else if (JSON.stringify(selectedDays) === JSON.stringify([2, 3, 4, 5, 6])) {
+            // If Tuesday-Saturday selected, toggle back to Monday-Saturday
+            selectedDays = [1, 2, 3, 4, 5, 6];
+        } else {
+            // For other combinations, toggle Monday
+            if (selectedDays.includes(1)) {
+                selectedDays = selectedDays.filter(d => d !== 1);
+            } else {
+                selectedDays.push(1);
+                selectedDays.sort((a, b) => a - b);
+            }
+        }
     } else {
-        selectedDays.push(dayNumber);
-        selectedDays.sort((a, b) => a - b);
+        // Regular day toggle (Monday=1, Tuesday=2, etc.)
+        const dayNumber = dayIndex;
+        
+        if (selectedDays.includes(dayNumber)) {
+            selectedDays = selectedDays.filter(d => d !== dayNumber);
+        } else {
+            selectedDays.push(dayNumber);
+            selectedDays.sort((a, b) => a - b);
+        }
     }
     
     updateDayBadges();
@@ -803,9 +839,20 @@ function toggleDay(dayIndex) {
 function updateDayBadges() {
     const badges = document.querySelectorAll('.hero-section .day-badge');
     badges.forEach((badge, index) => {
-        // Convert 0-based index to 1-based to check selection
-        const dayNumber = index + 1;
-        if (selectedDays.includes(dayNumber)) {
+        // Map visual badges to selected days
+        let isSelected = false;
+        
+        if (index === 0) {
+            // Sunday badge shows active when all weekdays selected
+            isSelected = selectedDays.includes(1) && selectedDays.includes(2) && 
+                        selectedDays.includes(3) && selectedDays.includes(4) && 
+                        selectedDays.includes(5) && selectedDays.includes(6);
+        } else {
+            // Direct mapping for other days
+            isSelected = selectedDays.includes(index);
+        }
+        
+        if (isSelected) {
             badge.classList.add('active');
         } else {
             badge.classList.remove('active');
@@ -815,8 +862,6 @@ function updateDayBadges() {
 
 function updateCheckinCheckout() {
     const checkinCheckoutEl = document.getElementById('checkinCheckout');
-    const checkinDayEl = document.getElementById('checkinDay');
-    const checkoutDayEl = document.getElementById('checkoutDay');
     
     if (selectedDays.length === 0) {
         checkinCheckoutEl.style.display = 'none';
@@ -831,24 +876,25 @@ function updateCheckinCheckout() {
         return;
     }
     
-    // Show check-in/check-out for continuous days
+    // Calculate check-in and check-out days based on selected days
+    let checkinDay, checkoutDay;
+    
     if (selectedDays.length === 1) {
-        const dayIndex = selectedDays[0] - 1; // Convert back to 0-based for array access
-        checkinDayEl.textContent = dayNames[dayIndex];
-        checkoutDayEl.textContent = dayNames[dayIndex];
+        // Single day selection
+        checkinDay = dayNames[selectedDays[0]];
+        checkoutDay = dayNames[selectedDays[0]];
     } else {
-        // Show first and last day of selection
-        const firstDay = Math.min(...selectedDays) - 1; // Convert to 0-based
-        const lastDay = Math.max(...selectedDays) - 1; // Convert to 0-based
-        checkinDayEl.textContent = dayNames[firstDay];
-        checkoutDayEl.textContent = dayNames[lastDay];
+        // Multiple day selection - show first and last
+        const sortedDays = [...selectedDays].sort((a, b) => a - b);
+        checkinDay = dayNames[sortedDays[0]];
+        checkoutDay = dayNames[sortedDays[sortedDays.length - 1]];
     }
     
     // Restore original HTML structure for valid selections
     checkinCheckoutEl.innerHTML = `
-        <span><strong>Check-in:</strong> <span id="checkinDay">${checkinDayEl.textContent}</span></span>
+        <span><strong>Check-in:</strong> <span id="checkinDay">${checkinDay}</span></span>
         <span class="separator">•</span>
-        <span><strong>Check-out:</strong> <span id="checkoutDay">${checkoutDayEl.textContent}</span></span>
+        <span><strong>Check-out:</strong> <span id="checkoutDay">${checkoutDay}</span></span>
     `;
     checkinCheckoutEl.style.display = 'flex';
 }
@@ -858,33 +904,9 @@ function areDaysContinuous(days) {
     
     const sortedDays = [...days].sort((a, b) => a - b);
     
-    // Handle week wrap-around (Saturday-Sunday)
-    // Check if we have both Saturday (7) and Sunday (1)
-    const hasSaturday = sortedDays.includes(7);
-    const hasSunday = sortedDays.includes(1);
-    
-    if (hasSaturday && hasSunday) {
-        // Split into two groups: Sunday group and Saturday group
-        const sundayGroup = sortedDays.filter(d => d <= 3); // 1,2,3
-        const saturdayGroup = sortedDays.filter(d => d >= 5); // 5,6,7
-        
-        // Check if each group is continuous
-        const sundayGroupContinuous = sundayGroup.length === 0 || isArrayContinuous(sundayGroup);
-        const saturdayGroupContinuous = saturdayGroup.length === 0 || isArrayContinuous(saturdayGroup);
-        
-        // Must be continuous within each group and Saturday group must end with 7, Sunday group must start with 1
-        return sundayGroupContinuous && saturdayGroupContinuous && 
-               (sundayGroup.length === 0 || sundayGroup[0] === 1) &&
-               (saturdayGroup.length === 0 || saturdayGroup[saturdayGroup.length - 1] === 7);
-    } else {
-        // Normal case - no week wrap-around
-        return isArrayContinuous(sortedDays);
-    }
-}
-
-function isArrayContinuous(arr) {
-    for (let i = 1; i < arr.length; i++) {
-        if (arr[i] !== arr[i - 1] + 1) {
+    // Simple continuity check for the URL format
+    for (let i = 1; i < sortedDays.length; i++) {
+        if (sortedDays[i] !== sortedDays[i - 1] + 1) {
             return false;
         }
     }
@@ -897,7 +919,8 @@ function updateURL() {
     if (selectedDays.length === 0) {
         currentUrl.searchParams.delete('days-selected');
     } else {
-        currentUrl.searchParams.set('days-selected', selectedDays.join(','));
+        // Use exact URL encoding format like original site: %2C%20 = ", "
+        currentUrl.searchParams.set('days-selected', selectedDays.join(', '));
     }
     
     // Update URL without page reload
