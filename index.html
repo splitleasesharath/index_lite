@@ -21,8 +21,61 @@
                 </a>
             </div>
             <div class="nav-center">
-                <a href="#host" class="nav-link">Host with Us</a>
-                <a href="#stay" class="nav-link">Stay with Us</a>
+                <div class="nav-dropdown">
+                    <a href="#host" class="nav-link dropdown-trigger">Host with Us
+                        <svg class="dropdown-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                            <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="https://www.split.lease/host" class="dropdown-item">
+                            <span class="dropdown-title">Why List with Us</span>
+                            <span class="dropdown-desc">New to Split Lease? Learn more about hosting</span>
+                        </a>
+                        <a href="https://www.split.lease/success-stories-hosts" class="dropdown-item">
+                            <span class="dropdown-title">Success Stories</span>
+                            <span class="dropdown-desc">Explore other hosts' feedback</span>
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="openAuthModal(); return false;">
+                            <span class="dropdown-title">List Property</span>
+                        </a>
+                        <a href="https://www.split.lease/legal" class="dropdown-item">
+                            <span class="dropdown-title">Legal Information</span>
+                            <span class="dropdown-desc">Review most important policies</span>
+                        </a>
+                        <a href="https://www.split.lease/faq-hosts" class="dropdown-item">
+                            <span class="dropdown-title">FAQs</span>
+                            <span class="dropdown-desc">Frequently Asked Questions</span>
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="openAuthModal(); return false;">
+                            <span class="dropdown-title">Sign Up</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="#stay" class="nav-link dropdown-trigger">Stay with Us
+                        <svg class="dropdown-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                            <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="https://www.split.lease/search" class="dropdown-item">
+                            <span class="dropdown-title">Explore Rentals</span>
+                            <span class="dropdown-desc">See available listings!</span>
+                        </a>
+                        <a href="https://www.split.lease/success-stories" class="dropdown-item">
+                            <span class="dropdown-title">Success Stories</span>
+                            <span class="dropdown-desc">Explore other guests' feedback</span>
+                        </a>
+                        <a href="https://www.split.lease/faq" class="dropdown-item">
+                            <span class="dropdown-title">FAQs</span>
+                            <span class="dropdown-desc">Frequently Asked Questions</span>
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="openAuthModal(); return false;">
+                            <span class="dropdown-title">Sign Up</span>
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="nav-right">
                 <a href="#signin" class="nav-link" onclick="openAuthModal(); return false;">Sign In</a>
@@ -356,26 +409,26 @@
         <div class="footer-container">
             <div class="footer-column">
                 <h4>For Hosts</h4>
-                <a href="#">List Property Now</a>
-                <a href="#">How to List</a>
-                <a href="#">Legal Section</a>
-                <a href="#">Guarantees</a>
-                <a href="#">Free House Manual</a>
+                <a href="#" onclick="openAuthModal(); return false;">List Property Now</a>
+                <a href="https://www.split.lease/how-to-list" target="_blank">How to List</a>
+                <a href="https://www.split.lease/legal" target="_blank">Legal Section</a>
+                <a href="https://www.split.lease/guarantees" target="_blank">Guarantees</a>
+                <a href="https://www.split.lease/house-manual" target="_blank">Free House Manual</a>
             </div>
             <div class="footer-column">
                 <h4>For Guests</h4>
-                <a href="#">Explore Split...</a>
-                <a href="#">Success Stories</a>
-                <a href="#">Speak to an Agent</a>
-                <a href="#">View FAQ</a>
+                <a href="https://www.split.lease/search" target="_blank">Explore Split Leases</a>
+                <a href="https://www.split.lease/success-stories" target="_blank">Success Stories</a>
+                <a href="#" onclick="openAuthModal(); return false;">Speak to an Agent</a>
+                <a href="https://www.split.lease/faq" target="_blank">View FAQ</a>
             </div>
             <div class="footer-column">
                 <h4>Company</h4>
-                <a href="#">About Periodic Tenancy</a>
-                <a href="#">About the Team</a>
-                <a href="#">Careers at Split Lease</a>
-                <a href="#">View Blog</a>
-                <a href="#" class="emergency">Emergency assistance</a>
+                <a href="https://www.split.lease/about" target="_blank">About Periodic Tenancy</a>
+                <a href="https://www.split.lease/team" target="_blank">About the Team</a>
+                <a href="https://www.split.lease/careers" target="_blank">Careers at Split Lease</a>
+                <a href="https://www.split.lease/blog" target="_blank">View Blog</a>
+                <a href="#" class="emergency" onclick="showToast('For emergencies, call 911. For urgent Split Lease matters, use our chat support.'); return false;">Emergency assistance</a>
             </div>
             <div class="footer-column">
                 <h4>Refer a friend</h4>
@@ -394,7 +447,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <a href="#">Terms of Use</a>
+            <a href="https://www.split.lease/terms" target="_blank">Terms of Use</a>
             <span>© 2025 SplitLease</span>
         </div>
     </footer>
