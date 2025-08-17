@@ -1,5 +1,18 @@
 // Split Lease Clone - Interactive JavaScript
 
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('ServiceWorker registration successful:', registration.scope);
+            })
+            .catch(err => {
+                console.log('ServiceWorker registration failed:', err);
+            });
+    });
+}
+
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
@@ -18,6 +31,9 @@ function initializeApp() {
     setupHeroDaySelector();
     setupFooterNavigation();
     setupDropdownMenus();
+    setupKeyboardShortcuts();
+    setupCookieConsent();
+    setupScrollToTop();
 }
 
 // Navigation Functionality
@@ -45,15 +61,25 @@ function setupNavigation() {
         lastScroll = currentScroll;
     });
 
-    // Smooth scroll for anchor links
+    // Smooth scroll for anchor links with offset for fixed header
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
+            // Skip if it's an auth link
+            if (this.getAttribute('href') === '#signin' || this.getAttribute('href') === '#signup') {
+                return;
+            }
+            
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const targetId = this.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                const headerHeight = header.offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
                 });
             }
         });
@@ -191,6 +217,21 @@ function setupListings() {
     });
 }
 
+// Create skeleton card
+function createSkeletonCard() {
+    const card = document.createElement('div');
+    card.className = 'listing-card skeleton-card fade-in';
+    card.innerHTML = `
+        <div class="listing-image-placeholder"></div>
+        <div class="listing-details">
+            <span class="listing-location">📍</span>
+            <h3>Loading...</h3>
+            <p>Loading property details...</p>
+        </div>
+    `;
+    return card;
+}
+
 // Load more listings dynamically
 function loadMoreListings() {
     const listingsGrid = document.querySelector('.listings-grid');
@@ -200,8 +241,18 @@ function loadMoreListings() {
     showMoreBtn.textContent = 'Loading...';
     showMoreBtn.disabled = true;
     
+    // Add skeleton cards
+    const skeletonCards = [];
+    for (let i = 0; i < 2; i++) {
+        const skeleton = createSkeletonCard();
+        skeletonCards.push(skeleton);
+        listingsGrid.appendChild(skeleton);
+    }
+    
     // Simulate API call
     setTimeout(() => {
+        // Remove skeleton cards
+        skeletonCards.forEach(card => card.remove());
         // Sample new listings data
         const newListings = [
             {
@@ -591,12 +642,27 @@ function setupAuthModal() {
     });
 }
 
+// Track the element that opened the modal for focus restoration
+let modalTrigger = null;
+
 // Open auth modal
 function openAuthModal() {
     const modal = document.getElementById('authModal');
+    modalTrigger = document.activeElement;
     modal.classList.add('active');
     showWelcomeScreen();
     document.body.style.overflow = 'hidden';
+    
+    // Focus trap setup
+    setTimeout(() => {
+        const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) {
+            firstFocusable.focus();
+        }
+    }, 100);
+    
+    // Add focus trap
+    modal.addEventListener('keydown', trapFocus);
 }
 
 // Close auth modal
@@ -609,6 +675,37 @@ function closeAuthModal() {
     document.querySelectorAll('.auth-form').forEach(form => {
         form.reset();
     });
+    
+    // Remove focus trap
+    modal.removeEventListener('keydown', trapFocus);
+    
+    // Restore focus to trigger element
+    if (modalTrigger) {
+        modalTrigger.focus();
+        modalTrigger = null;
+    }
+}
+
+// Trap focus within modal
+function trapFocus(e) {
+    if (e.key !== 'Tab') return;
+    
+    const modal = document.getElementById('authModal');
+    const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+    
+    if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable.focus();
+        }
+    } else {
+        if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable.focus();
+        }
+    }
 }
 
 // Show welcome screen
@@ -918,6 +1015,53 @@ function setupFooterNavigation() {
     }
 }
 
+// Keyboard Shortcuts
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // Don't trigger shortcuts when typing in inputs
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+        
+        // Ctrl/Cmd + K: Open search/explore rentals
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            exploreRentals();
+        }
+        
+        // Ctrl/Cmd + L: Open login modal
+        if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+            e.preventDefault();
+            openAuthModal();
+            showLoginForm();
+        }
+        
+        // Ctrl/Cmd + /: Show keyboard shortcuts help
+        if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+            e.preventDefault();
+            showToast('Keyboard shortcuts: Ctrl+K (Explore), Ctrl+L (Login), Ctrl+/ (Help)');
+        }
+        
+        // Alt + H: Host with Us dropdown
+        if (e.altKey && e.key === 'h') {
+            e.preventDefault();
+            const hostDropdown = document.querySelector('.nav-dropdown .dropdown-trigger');
+            if (hostDropdown) {
+                hostDropdown.click();
+            }
+        }
+        
+        // Alt + S: Stay with Us dropdown
+        if (e.altKey && e.key === 's') {
+            e.preventDefault();
+            const stayDropdown = document.querySelectorAll('.nav-dropdown .dropdown-trigger')[1];
+            if (stayDropdown) {
+                stayDropdown.click();
+            }
+        }
+    });
+}
+
 // Mobile Menu Toggle
 function toggleMobileMenu() {
     const hamburger = document.querySelector('.hamburger-menu');
@@ -968,6 +1112,108 @@ function handleImportListing() {
     }, 2000);
 }
 
+// Search Functionality
+function filterListings() {
+    const searchInput = document.getElementById('listingSearch');
+    const searchTerm = searchInput.value.toLowerCase();
+    const listingCards = document.querySelectorAll('.listing-card');
+    let hasResults = false;
+    
+    listingCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            card.classList.remove('hidden');
+            hasResults = true;
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+    
+    // Show no results message
+    const existingNoResults = document.querySelector('.no-results');
+    if (existingNoResults) {
+        existingNoResults.remove();
+    }
+    
+    if (!hasResults && searchTerm !== '') {
+        const listingsGrid = document.querySelector('.listings-grid');
+        const noResultsDiv = document.createElement('div');
+        noResultsDiv.className = 'no-results';
+        noResultsDiv.textContent = `No listings found for "${searchTerm}". Try a different search term.`;
+        listingsGrid.appendChild(noResultsDiv);
+    }
+}
+
+// Scroll to Top Button
+function setupScrollToTop() {
+    const scrollBtn = document.getElementById('scrollToTop');
+    
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('show');
+        } else {
+            scrollBtn.classList.remove('show');
+        }
+    });
+}
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Cookie Consent Functions
+function setupCookieConsent() {
+    // Check if cookies have been accepted/declined
+    const cookieStatus = localStorage.getItem('cookieConsent');
+    
+    if (!cookieStatus) {
+        // Show cookie banner after a short delay
+        setTimeout(() => {
+            const banner = document.getElementById('cookieConsent');
+            if (banner) {
+                banner.classList.add('show');
+            }
+        }, 2000);
+    }
+}
+
+function acceptCookies() {
+    localStorage.setItem('cookieConsent', 'accepted');
+    hideCookieBanner();
+    showToast('Cookies accepted. Thank you!');
+    
+    // Initialize analytics or other cookie-dependent features
+    initializeAnalytics();
+}
+
+function declineCookies() {
+    localStorage.setItem('cookieConsent', 'declined');
+    hideCookieBanner();
+    showToast('Cookies declined. You can change this anytime.');
+}
+
+function hideCookieBanner() {
+    const banner = document.getElementById('cookieConsent');
+    if (banner) {
+        banner.classList.remove('show');
+        setTimeout(() => {
+            banner.style.display = 'none';
+        }, 300);
+    }
+}
+
+function initializeAnalytics() {
+    // Placeholder for analytics initialization
+    console.log('Analytics initialized');
+    // Add Google Analytics, Mixpanel, etc. here
+}
+
 // Export functions for global use
 window.closeChatWidget = closeChatWidget;
 window.showToast = showToast;
@@ -982,3 +1228,7 @@ window.toggleDay = toggleDay;
 window.exploreRentals = exploreRentals;
 window.toggleMobileMenu = toggleMobileMenu;
 window.handleImportListing = handleImportListing;
+window.acceptCookies = acceptCookies;
+window.declineCookies = declineCookies;
+window.scrollToTop = scrollToTop;
+window.filterListings = filterListings;

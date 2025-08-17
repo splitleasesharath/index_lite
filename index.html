@@ -3,8 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Split Lease - Ongoing Rentals for Repeat Stays. Pay only for the nights you need.">
-    <title>Split Lease - Periodic Tenancy Leader</title>
+    <meta name="description" content="Split Lease - Ongoing Rentals for Repeat Stays. Pay only for the nights you need. Find flexible periodic tenancy solutions in NYC.">
+    <meta name="keywords" content="split lease, periodic tenancy, flexible rentals, NYC apartments, weeknight rentals, weekend stays, monthly rentals, furnished apartments">
+    <meta name="author" content="Split Lease">
+    <meta property="og:title" content="Split Lease - Periodic Tenancy Leader">
+    <meta property="og:description" content="Ongoing rentals for repeat stays. Pay only for the nights you need with flexible scheduling options.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://splitleasesharath.github.io/index_lite/">
+    <meta property="og:image" content="https://splitleasesharath.github.io/index_lite/assets/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Split Lease - Periodic Tenancy Leader">
+    <meta name="twitter:description" content="Ongoing rentals for repeat stays. Pay only for the nights you need.">
+    <meta name="twitter:image" content="https://splitleasesharath.github.io/index_lite/assets/twitter-card.jpg">
+    <link rel="canonical" href="https://splitleasesharath.github.io/index_lite/">
+    <meta name="robots" content="index, follow">
+    <title>Split Lease - Periodic Tenancy Leader | Flexible NYC Rentals</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#5B21B6">
+    <link rel="apple-touch-icon" href="assets/icon-192x192.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,6 +99,9 @@
                 </div>
             </div>
             <div class="nav-right">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
                 <a href="#signin" class="nav-link" onclick="openAuthModal(); return false;">Sign In</a>
                 <span class="divider">|</span>
                 <a href="#signup" class="nav-link" onclick="openAuthModal(); return false;">Sign Up</a>
@@ -379,6 +398,18 @@
     <!-- Listings Preview -->
     <section class="listings-section">
         <h2>Check Out Some Listings</h2>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="listingSearch" class="listing-search" placeholder="Search by location, type, or features..." onkeyup="filterListings()">
+            <button class="search-btn" onclick="filterListings()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="9" r="7"></circle>
+                    <path d="M14 14l4 4"></path>
+                </svg>
+            </button>
+        </div>
+        
         <div class="listings-grid">
             <div class="listing-card">
                 <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
@@ -481,7 +512,7 @@
                         <span>Download at the App Store</span>
                     </a>
                 </div>
-                <img src="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' font-size='40' fill='%23999'%3E📱%3C/text%3E%3C/svg%3E" alt="App Screenshot" class="app-image">
+                <img src="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' font-size='40' fill='%23999'%3E📱%3C/text%3E%3C/svg%3E" alt="App Screenshot" class="app-image" loading="lazy">
             </div>
             
             <div class="alexa-card">
@@ -496,7 +527,7 @@
                         <span>"Alexa, enable Split Lease"</span>
                     </a>
                 </div>
-                <img src="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' font-size='40' fill='%23999'%3E🔊%3C/text%3E%3C/svg%3E" alt="Alexa Device" class="alexa-image">
+                <img src="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' font-size='40' fill='%23999'%3E🔊%3C/text%3E%3C/svg%3E" alt="Alexa Device" class="alexa-image" loading="lazy">
             </div>
         </div>
         
@@ -592,6 +623,25 @@
                 <p class="auth-footer">
                     Have an account? <a href="#" onclick="showLoginForm(); return false;"><strong>Log In</strong></a>
                 </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsent" class="cookie-consent">
+        <div class="cookie-content">
+            <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+            <div class="cookie-buttons">
+                <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
+                <button class="cookie-decline" onclick="declineCookies()">Decline</button>
+                <a href="https://www.split.lease/privacy" target="_blank" class="cookie-link">Learn More</a>
             </div>
         </div>
     </div>
