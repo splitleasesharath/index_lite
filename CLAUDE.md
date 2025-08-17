@@ -300,6 +300,15 @@ This ensures continuous deployment, real-time GitHub Pages updates, and complete
 All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
 
 ### 2025-08-17 (Current Session)
+- **REMOVED STATUE OF LIBERTY ICON**: Removed unnecessary Liberty icon from hero section
+  - Icon was added during hero section redesign (commit f8830c5) attempting to match original design
+  - User identified it as not belonging to original Split Lease website
+  - Removed SVG liberty icon HTML element (hero-icon-center div)
+  - Removed associated CSS styles (.hero-icon-center and .liberty-icon)
+  - Hero section now only contains Brooklyn Bridge and Empire State Building illustrations
+  - Simplifies layout to better match original site design
+
+### 2025-08-17 (Previous Updates)
 - **RESPONSIVE CALENDAR LAYOUT FIX**: Fixed emoji bleeding and restored proper desktop/mobile behavior
   - **Issue Identified**: User reported emoji bleeding on mobile with request for responsive design
   - **Root Cause**: Mobile calendar CSS rules were affecting desktop, causing size conflicts
