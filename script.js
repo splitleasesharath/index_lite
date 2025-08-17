@@ -18,6 +18,7 @@ function initializeApp() {
     setupHeroDaySelector();
     setupFooterNavigation();
     setupDropdownMenus();
+    setupFloatingBadge();
 }
 
 // Navigation Functionality
@@ -1133,6 +1134,33 @@ function handleImportListing() {
     }, 2000);
 }
 
+
+// Floating Badge Setup
+function setupFloatingBadge() {
+    const badge = document.querySelector('.floating-badge');
+    if (!badge) return;
+    
+    // Show badge by default (unless user is logged in)
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    if (isLoggedIn) {
+        badge.style.display = 'none';
+    } else {
+        badge.style.display = 'block';
+    }
+    
+    // Hide badge when user logs in
+    window.addEventListener('userLoggedIn', function() {
+        badge.style.display = 'none';
+        localStorage.setItem('isLoggedIn', 'true');
+    });
+    
+    // Show badge when user logs out
+    window.addEventListener('userLoggedOut', function() {
+        badge.style.display = 'block';
+        localStorage.setItem('isLoggedIn', 'false');
+    });
+}
 
 // Export functions for global use
 window.closeChatWidget = closeChatWidget;

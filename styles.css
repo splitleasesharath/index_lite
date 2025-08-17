@@ -1569,10 +1569,11 @@ body {
 .floating-badge {
     position: fixed;
     right: 20px;
-    bottom: 20px;
-    z-index: 1000;
+    bottom: 80px;
+    z-index: 9999;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: block;
 }
 
 .badge-content {
