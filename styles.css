@@ -825,7 +825,7 @@ body {
 /* Schedule Visual Styles */
 .schedule-visual {
     display: flex;
-    flex-direction: column;
+    flex-direction: column !important;
     align-items: center;
     gap: 1.5rem;
     margin: 1.5rem 0;
@@ -837,6 +837,7 @@ body {
 .calendar-grid {
     width: 100%;
     max-width: 280px;
+    margin: 0 auto;
 }
 
 .calendar-header {
@@ -890,9 +891,7 @@ body {
 .schedule-info {
     width: 100%;
     padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block;
     text-align: center;
 }
 
