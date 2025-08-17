@@ -35,6 +35,7 @@ function initializeApp() {
     setupCookieConsent();
     setupScrollToTop();
     setupThemeToggle();
+    setupTestimonialsCarousel();
 }
 
 // Navigation Functionality
@@ -1206,6 +1207,46 @@ function clearComparison() {
     showToast('Comparison cleared');
 }
 
+// Testimonials Carousel
+let currentTestimonial = 0;
+let testimonialInterval;
+
+function setupTestimonialsCarousel() {
+    // Auto-rotate testimonials every 5 seconds
+    testimonialInterval = setInterval(() => {
+        currentTestimonial = (currentTestimonial + 1) % 3;
+        showTestimonial(currentTestimonial);
+    }, 5000);
+}
+
+function changeTestimonial(index) {
+    // Clear auto-rotation when user manually selects
+    clearInterval(testimonialInterval);
+    currentTestimonial = index;
+    showTestimonial(index);
+    
+    // Restart auto-rotation after 10 seconds
+    setTimeout(() => {
+        testimonialInterval = setInterval(() => {
+            currentTestimonial = (currentTestimonial + 1) % 3;
+            showTestimonial(currentTestimonial);
+        }, 5000);
+    }, 10000);
+}
+
+function showTestimonial(index) {
+    const cards = document.querySelectorAll('.testimonial-card');
+    const dots = document.querySelectorAll('.dot');
+    
+    cards.forEach((card, i) => {
+        card.classList.toggle('active', i === index);
+    });
+    
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
+
 // Theme Toggle
 function setupThemeToggle() {
     // Check for saved theme preference or default to light
@@ -1322,3 +1363,4 @@ window.toggleTheme = toggleTheme;
 window.toggleCompare = toggleCompare;
 window.showComparison = showComparison;
 window.clearComparison = clearComparison;
+window.changeTestimonial = changeTestimonial;
