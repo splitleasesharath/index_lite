@@ -217,6 +217,21 @@ function setupListings() {
     });
 }
 
+// Create skeleton card
+function createSkeletonCard() {
+    const card = document.createElement('div');
+    card.className = 'listing-card skeleton-card fade-in';
+    card.innerHTML = `
+        <div class="listing-image-placeholder"></div>
+        <div class="listing-details">
+            <span class="listing-location">📍</span>
+            <h3>Loading...</h3>
+            <p>Loading property details...</p>
+        </div>
+    `;
+    return card;
+}
+
 // Load more listings dynamically
 function loadMoreListings() {
     const listingsGrid = document.querySelector('.listings-grid');
@@ -226,8 +241,18 @@ function loadMoreListings() {
     showMoreBtn.textContent = 'Loading...';
     showMoreBtn.disabled = true;
     
+    // Add skeleton cards
+    const skeletonCards = [];
+    for (let i = 0; i < 2; i++) {
+        const skeleton = createSkeletonCard();
+        skeletonCards.push(skeleton);
+        listingsGrid.appendChild(skeleton);
+    }
+    
     // Simulate API call
     setTimeout(() => {
+        // Remove skeleton cards
+        skeletonCards.forEach(card => card.remove());
         // Sample new listings data
         const newListings = [
             {
