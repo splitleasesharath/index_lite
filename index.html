@@ -93,31 +93,45 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-background">
-            <div class="hero-image-placeholder"></div>
+            <img src="assets/images/hero-left.png" alt="Brooklyn Bridge illustration" class="hero-illustration hero-illustration-left">
+            <img src="assets/images/hero-right.png" alt="Empire State Building illustration" class="hero-illustration hero-illustration-right">
+            <!-- Statue of Liberty icon at top center -->
+            <div class="hero-icon-center">
+                <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" class="liberty-icon">
+                    <path d="M30 70 L30 30" stroke="#8B7AA8" stroke-width="2"/>
+                    <circle cx="30" cy="25" r="5" stroke="#8B7AA8" stroke-width="1.5" fill="none"/>
+                    <path d="M25 25 L20 15" stroke="#8B7AA8" stroke-width="1.5"/>
+                    <path d="M35 25 L40 10" stroke="#8B7AA8" stroke-width="1.5"/>
+                    <path d="M40 10 L42 8 L38 8 Z" fill="#8B7AA8"/>
+                    <rect x="25" y="70" width="10" height="5" stroke="#8B7AA8" stroke-width="1.5" fill="none"/>
+                </svg>
+            </div>
         </div>
-        <div class="hero-content">
-            <h1 class="hero-title">Ongoing Rentals for<br>Repeat Stays</h1>
-            <p class="hero-subtitle">Select which days you'd like to stay in NYC and only pay for the nights you need.</p>
-            
-            <!-- Day Selector -->
-            <div class="day-selector">
-                <div class="day-badge" data-day="0" onclick="toggleDay(0)">S</div>
-                <div class="day-badge" data-day="1" onclick="toggleDay(1)">M</div>
-                <div class="day-badge" data-day="2" onclick="toggleDay(2)">T</div>
-                <div class="day-badge" data-day="3" onclick="toggleDay(3)">W</div>
-                <div class="day-badge" data-day="4" onclick="toggleDay(4)">T</div>
-                <div class="day-badge" data-day="5" onclick="toggleDay(5)">F</div>
-                <div class="day-badge" data-day="6" onclick="toggleDay(6)">S</div>
+        <div class="hero-content-wrapper">
+            <div class="hero-content">
+                <h1 class="hero-title">Ongoing Rentals<br>for Repeat Stays</h1>
+                <p class="hero-subtitle">Select which days you'd like to<br>stay in NYC and only pay for the<br>nights you need.</p>
+                
+                <!-- Day Selector -->
+                <div class="day-selector">
+                    <div class="day-badge" data-day="0" onclick="toggleDay(0)">S</div>
+                    <div class="day-badge active" data-day="1" onclick="toggleDay(1)">M</div>
+                    <div class="day-badge active" data-day="2" onclick="toggleDay(2)">T</div>
+                    <div class="day-badge active" data-day="3" onclick="toggleDay(3)">W</div>
+                    <div class="day-badge active" data-day="4" onclick="toggleDay(4)">T</div>
+                    <div class="day-badge active" data-day="5" onclick="toggleDay(5)">F</div>
+                    <div class="day-badge" data-day="6" onclick="toggleDay(6)">S</div>
+                </div>
+                
+                <!-- Check-in/Check-out Display -->
+                <div class="checkin-checkout" id="checkinCheckout" style="display: none;">
+                    <span><strong>Check-in:</strong> <span id="checkinDay"></span></span>
+                    <span class="separator">•</span>
+                    <span><strong>Check-out:</strong> <span id="checkoutDay"></span></span>
+                </div>
+                
+                <button class="hero-cta-button" onclick="exploreRentals()">Explore Rentals</button>
             </div>
-            
-            <!-- Check-in/Check-out Display -->
-            <div class="checkin-checkout" id="checkinCheckout" style="display: none;">
-                <span><strong>Check-in:</strong> <span id="checkinDay"></span></span>
-                <span class="separator">•</span>
-                <span><strong>Check-out:</strong> <span id="checkoutDay"></span></span>
-            </div>
-            
-            <button class="cta-button" onclick="exploreRentals()">Explore Rentals</button>
         </div>
     </section>
 
