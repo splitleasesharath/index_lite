@@ -389,14 +389,14 @@ body {
 
 .hero-illustration-left {
     left: 15%;
-    bottom: 15%;
+    bottom: 5%;
     width: 480px;
     height: auto;
 }
 
 .hero-illustration-right {
     right: 15%;
-    bottom: 10%;
+    bottom: 0%;
     width: 624px;
     height: auto;
 }
@@ -1979,7 +1979,7 @@ body {
         right: auto;
         transform: translateX(-50%);
         width: 350px;
-        bottom: 15%;
+        bottom: 5%;
     }
     
     .hero-content-wrapper {
