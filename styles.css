@@ -2014,36 +2014,79 @@ body {
     /* Mobile referral section */
     .referral-options {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         margin: 1rem 0;
     }
     
     .referral-options label {
         flex: 1;
-        padding: 0.6rem;
+        padding: 0.75rem;
         text-align: center;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.75rem;
         cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+    
+    .referral-options label:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .referral-options input[type="radio"] {
+        display: none;
     }
     
     .referral-options input[type="radio"]:checked + label {
         background: var(--bg-purple);
+        border-color: var(--bg-purple);
+        color: white;
     }
     
     .referral-input,
     .import-input {
         width: 100%;
-        padding: 0.75rem;
-        font-size: 0.95rem;
+        padding: 0.85rem 1rem;
+        font-size: 1rem;
         margin-bottom: 0.75rem;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        -webkit-appearance: none;
+    }
+    
+    .referral-input:focus,
+    .import-input:focus {
+        outline: none;
+        border-color: var(--bg-purple);
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .referral-input::placeholder,
+    .import-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
     }
     
     .share-btn,
     .import-btn {
         width: 100%;
-        padding: 0.75rem;
-        font-size: 0.95rem;
+        padding: 0.85rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 0.75rem;
+        background: var(--bg-purple);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .share-btn:active,
+    .import-btn:active {
+        transform: scale(0.98);
     }
     
     /* App download section on mobile */
@@ -2118,6 +2161,71 @@ body {
     .badge-expanded {
         font-size: 0.75rem;
         padding: 0.4rem 0.8rem;
+    }
+    
+    /* Mobile modal adjustments */
+    .modal-overlay {
+        position: fixed;
+        background: rgba(0, 0, 0, 0.7);
+    }
+    
+    .modal-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vw;
+        max-width: 400px;
+        max-height: 80vh;
+        overflow-y: auto;
+        border-radius: 1rem;
+    }
+    
+    /* Mobile form fields */
+    .form-group input,
+    .auth-form input {
+        padding: 0.85rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.75rem;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    .form-group input:focus,
+    .auth-form input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--bg-purple);
+    }
+    
+    .auth-btn {
+        padding: 0.85rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 0.75rem;
+        min-height: 48px; /* Better touch target */
+    }
+    
+    .auth-btn:active {
+        transform: scale(0.98);
+    }
+    
+    /* Touch-friendly navigation buttons */
+    .nav-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+    }
+    
+    .dropdown-trigger {
+        min-height: 44px;
+        border-radius: 0.5rem;
+    }
+    
+    .support-card {
+        min-height: 80px;
+        padding: 1rem;
     }
 }
 
