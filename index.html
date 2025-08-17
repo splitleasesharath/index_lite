@@ -20,6 +20,11 @@
                     <span class="logo-text">Split<br>Lease</span>
                 </a>
             </div>
+            <button class="hamburger-menu" aria-label="Toggle navigation menu" onclick="toggleMobileMenu()">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
             <div class="nav-center">
                 <div class="nav-dropdown">
                     <a href="#host" class="nav-link dropdown-trigger" role="button" aria-expanded="false" aria-haspopup="true">Host with Us
@@ -28,26 +33,26 @@
                         </svg>
                     </a>
                     <div class="dropdown-menu" role="menu" aria-label="Host with Us menu">
-                        <a href="https://www.split.lease/host" class="dropdown-item">
+                        <a href="https://www.split.lease/host" class="dropdown-item" role="menuitem">
                             <span class="dropdown-title">Why List with Us</span>
                             <span class="dropdown-desc">New to Split Lease? Learn more about hosting</span>
                         </a>
-                        <a href="https://www.split.lease/success-stories-hosts" class="dropdown-item">
+                        <a href="https://www.split.lease/success-stories-hosts" class="dropdown-item" role="menuitem">
                             <span class="dropdown-title">Success Stories</span>
                             <span class="dropdown-desc">Explore other hosts' feedback</span>
                         </a>
-                        <a href="#" class="dropdown-item" onclick="openAuthModal(); return false;">
+                        <a href="#" class="dropdown-item" role="menuitem" onclick="openAuthModal(); return false;">
                             <span class="dropdown-title">List Property</span>
                         </a>
-                        <a href="https://www.split.lease/legal" class="dropdown-item">
+                        <a href="https://www.split.lease/legal" class="dropdown-item" role="menuitem">
                             <span class="dropdown-title">Legal Information</span>
                             <span class="dropdown-desc">Review most important policies</span>
                         </a>
-                        <a href="https://www.split.lease/faq-hosts" class="dropdown-item">
+                        <a href="https://www.split.lease/faq-hosts" class="dropdown-item" role="menuitem">
                             <span class="dropdown-title">FAQs</span>
                             <span class="dropdown-desc">Frequently Asked Questions</span>
                         </a>
-                        <a href="#" class="dropdown-item" onclick="openAuthModal(); return false;">
+                        <a href="#" class="dropdown-item" role="menuitem" onclick="openAuthModal(); return false;">
                             <span class="dropdown-title">Sign Up</span>
                         </a>
                     </div>
@@ -59,19 +64,19 @@
                         </svg>
                     </a>
                     <div class="dropdown-menu" role="menu" aria-label="Stay with Us menu">
-                        <a href="https://www.split.lease/search" class="dropdown-item">
+                        <a href="https://www.split.lease/search" class="dropdown-item" role="menuitem">
                             <span class="dropdown-title">Explore Rentals</span>
                             <span class="dropdown-desc">See available listings!</span>
                         </a>
-                        <a href="https://www.split.lease/success-stories" class="dropdown-item">
+                        <a href="https://www.split.lease/success-stories" class="dropdown-item" role="menuitem">
                             <span class="dropdown-title">Success Stories</span>
                             <span class="dropdown-desc">Explore other guests' feedback</span>
                         </a>
-                        <a href="https://www.split.lease/faq" class="dropdown-item">
+                        <a href="https://www.split.lease/faq" class="dropdown-item" role="menuitem">
                             <span class="dropdown-title">FAQs</span>
                             <span class="dropdown-desc">Frequently Asked Questions</span>
                         </a>
-                        <a href="#" class="dropdown-item" onclick="openAuthModal(); return false;">
+                        <a href="#" class="dropdown-item" role="menuitem" onclick="openAuthModal(); return false;">
                             <span class="dropdown-title">Sign Up</span>
                         </a>
                     </div>
@@ -442,7 +447,9 @@
                 
                 <div class="import-section">
                     <h4>Import your listing from another site</h4>
-                    <input type="text" placeholder="https:\\your-listing-link" class="import-input">
+                    <input type="text" placeholder="https://your-listing-link" class="import-input" id="importUrl">
+                    <input type="email" placeholder="your-email@example.com" class="import-input" id="importEmail">
+                    <button class="import-btn" onclick="handleImportListing()">Import Listing</button>
                 </div>
             </div>
         </div>

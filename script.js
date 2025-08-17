@@ -366,21 +366,50 @@ function setupReferral() {
 
 // Process referral submission
 function processReferral(method, contact) {
+    // Enhanced validation
+    if (method === 'email') {
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(contact)) {
+            showToast('Please enter a valid email address');
+            return;
+        }
+    } else if (method === 'text') {
+        // Phone validation - basic check for 10+ digits
+        const phoneDigits = contact.replace(/\D/g, '');
+        if (phoneDigits.length < 10) {
+            showToast('Please enter a valid phone number (at least 10 digits)');
+            return;
+        }
+    }
+    
     // Show loading state
     const shareBtn = document.querySelector('.share-btn');
+    const originalText = shareBtn.textContent;
     shareBtn.textContent = 'Sending...';
     shareBtn.disabled = true;
     
+    // Add spinner
+    shareBtn.classList.add('loading');
+    
     // Simulate API call
     setTimeout(() => {
-        shareBtn.textContent = 'Share now';
+        shareBtn.textContent = originalText;
         shareBtn.disabled = false;
+        shareBtn.classList.remove('loading');
         
-        showToast(`Referral sent via ${method} to ${contact}!`);
+        if (method === 'email') {
+            showToast(`Referral email sent to ${contact}! They'll receive $50 off their first booking.`);
+        } else {
+            showToast(`Referral text sent to ${contact}! They'll receive $50 off their first booking.`);
+        }
         
-        // Clear input
+        // Clear input and reset radio
         document.querySelector('.referral-input').value = '';
-    }, 1500);
+        document.querySelectorAll('input[name="referral"]').forEach(radio => {
+            radio.checked = false;
+        });
+    }, 2000);
 }
 
 // Animations and Effects
@@ -889,6 +918,56 @@ function setupFooterNavigation() {
     }
 }
 
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navCenter = document.querySelector('.nav-center');
+    const navRight = document.querySelector('.nav-right');
+    
+    hamburger.classList.toggle('active');
+    navCenter.classList.toggle('mobile-active');
+    navRight.classList.toggle('mobile-active');
+}
+
+// Handle Import Listing
+function handleImportListing() {
+    const url = document.getElementById('importUrl').value;
+    const email = document.getElementById('importEmail').value;
+    
+    if (!url || !email) {
+        showToast('Please fill in both URL and email fields');
+        return;
+    }
+    
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        showToast('Please enter a valid URL starting with http:// or https://');
+        return;
+    }
+    
+    if (!email.includes('@') || !email.includes('.')) {
+        showToast('Please enter a valid email address');
+        return;
+    }
+    
+    // Show loading state
+    const btn = document.querySelector('.import-btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Importing...';
+    btn.disabled = true;
+    
+    // Simulate API call
+    setTimeout(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+        
+        showToast('Listing imported successfully! We\'ll review and contact you soon.');
+        
+        // Clear inputs
+        document.getElementById('importUrl').value = '';
+        document.getElementById('importEmail').value = '';
+    }, 2000);
+}
+
 // Export functions for global use
 window.closeChatWidget = closeChatWidget;
 window.showToast = showToast;
@@ -901,3 +980,5 @@ window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
 window.toggleDay = toggleDay;
 window.exploreRentals = exploreRentals;
+window.toggleMobileMenu = toggleMobileMenu;
+window.handleImportListing = handleImportListing;
