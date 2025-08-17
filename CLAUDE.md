@@ -309,6 +309,13 @@ All changes to the codebase are documented here in reverse chronological order (
   - Eliminates overlapping issue where text was bleeding into calendar space
   - Maintains clean vertical stacking: Calendar → Text → Button
   - Modified styles.css schedule-visual, calendar-grid, and schedule-info classes
+- **DESKTOP HORIZONTAL LAYOUT RESTORED**: Fixed schedule cards to display horizontally on desktop
+  - Added media query for desktop screens (min-width: 1024px)
+  - Desktop: 3 cards display horizontally (Weeknight | Weekend | Month) 
+  - Mobile: Single column vertical layout maintained as requested
+  - Set max-width: 1200px on desktop to prevent over-stretching
+  - Each card's internal content remains vertically stacked (calendar above, text below)
+  - Responsive grid: 3-columns on desktop, 1-column on mobile
 
 ### 2025-08-17 (Git Workflow Demonstrations)
 - **FINAL CYCLE 5/5 COMPLETE**: Successfully demonstrated comprehensive multi-machine Git synchronization
