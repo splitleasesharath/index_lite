@@ -18,6 +18,7 @@ function initializeApp() {
     setupHeroDaySelector();
     setupFooterNavigation();
     setupDropdownMenus();
+    setupKeyboardShortcuts();
 }
 
 // Navigation Functionality
@@ -45,15 +46,25 @@ function setupNavigation() {
         lastScroll = currentScroll;
     });
 
-    // Smooth scroll for anchor links
+    // Smooth scroll for anchor links with offset for fixed header
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
+            // Skip if it's an auth link
+            if (this.getAttribute('href') === '#signin' || this.getAttribute('href') === '#signup') {
+                return;
+            }
+            
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const targetId = this.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                const headerHeight = header.offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
                 });
             }
         });
@@ -591,12 +602,27 @@ function setupAuthModal() {
     });
 }
 
+// Track the element that opened the modal for focus restoration
+let modalTrigger = null;
+
 // Open auth modal
 function openAuthModal() {
     const modal = document.getElementById('authModal');
+    modalTrigger = document.activeElement;
     modal.classList.add('active');
     showWelcomeScreen();
     document.body.style.overflow = 'hidden';
+    
+    // Focus trap setup
+    setTimeout(() => {
+        const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) {
+            firstFocusable.focus();
+        }
+    }, 100);
+    
+    // Add focus trap
+    modal.addEventListener('keydown', trapFocus);
 }
 
 // Close auth modal
@@ -609,6 +635,37 @@ function closeAuthModal() {
     document.querySelectorAll('.auth-form').forEach(form => {
         form.reset();
     });
+    
+    // Remove focus trap
+    modal.removeEventListener('keydown', trapFocus);
+    
+    // Restore focus to trigger element
+    if (modalTrigger) {
+        modalTrigger.focus();
+        modalTrigger = null;
+    }
+}
+
+// Trap focus within modal
+function trapFocus(e) {
+    if (e.key !== 'Tab') return;
+    
+    const modal = document.getElementById('authModal');
+    const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+    
+    if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable.focus();
+        }
+    } else {
+        if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable.focus();
+        }
+    }
 }
 
 // Show welcome screen
@@ -916,6 +973,53 @@ function setupFooterNavigation() {
             showToast('For emergencies, call 911. For urgent Split Lease matters, use our chat support.');
         });
     }
+}
+
+// Keyboard Shortcuts
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // Don't trigger shortcuts when typing in inputs
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+        
+        // Ctrl/Cmd + K: Open search/explore rentals
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            exploreRentals();
+        }
+        
+        // Ctrl/Cmd + L: Open login modal
+        if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+            e.preventDefault();
+            openAuthModal();
+            showLoginForm();
+        }
+        
+        // Ctrl/Cmd + /: Show keyboard shortcuts help
+        if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+            e.preventDefault();
+            showToast('Keyboard shortcuts: Ctrl+K (Explore), Ctrl+L (Login), Ctrl+/ (Help)');
+        }
+        
+        // Alt + H: Host with Us dropdown
+        if (e.altKey && e.key === 'h') {
+            e.preventDefault();
+            const hostDropdown = document.querySelector('.nav-dropdown .dropdown-trigger');
+            if (hostDropdown) {
+                hostDropdown.click();
+            }
+        }
+        
+        // Alt + S: Stay with Us dropdown
+        if (e.altKey && e.key === 's') {
+            e.preventDefault();
+            const stayDropdown = document.querySelectorAll('.nav-dropdown .dropdown-trigger')[1];
+            if (stayDropdown) {
+                stayDropdown.click();
+            }
+        }
+    });
 }
 
 // Mobile Menu Toggle
