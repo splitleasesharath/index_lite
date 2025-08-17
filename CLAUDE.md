@@ -239,13 +239,28 @@ When making changes, verify:
 
 ## CRITICAL DEVELOPMENT RULE
 
-**MANDATORY**: Every single code change MUST be immediately committed and pushed to GitHub. This includes:
+**MANDATORY**: Every single code change MUST follow this exact Git workflow:
+
+### Git Workflow (REQUIRED FOR EVERY CHANGE):
+1. **PULL FIRST**: `git pull origin main` before making any changes
+2. **MAKE CHANGES**: Edit files as needed
+3. **STAGE**: `git add [files]`
+4. **COMMIT**: `git commit -m "descriptive message"`
+5. **PUSH**: `git push origin main`
+
+**This workflow applies to**:
 - After EVERY file edit (HTML, CSS, JS, MD)
 - After EVERY new feature addition
 - After EVERY bug fix
 - After EVERY refactoring
 - No batching of changes allowed
-- Push immediately after each atomic change
+- No exceptions - follow the workflow religiously
+
+### Changelog Management:
+- **MANDATORY**: Append detailed context to CLAUDE.md changelog after every change
+- Include specific technical details, files modified, and reasoning
+- Use reverse chronological order (newest first)
+- Never skip changelog updates
 
 This ensures continuous deployment and real-time GitHub Pages updates.
 
@@ -267,6 +282,20 @@ This ensures continuous deployment and real-time GitHub Pages updates.
 All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
 
 ### 2025-08-17
+- **MOBILE OVERFLOW FIX**: Complete resolution of schedule cards bleeding outside viewport on mobile
+  - Reduced calendar grid max-width from 260px to 240px for better mobile fit
+  - Reduced schedule card padding from 1.5rem to 1rem to create more space
+  - Optimized calendar header with smaller font size (0.7rem) and reduced padding (0.2rem)
+  - Improved calendar day cells with smaller font size (0.8rem) and proper width constraints
+  - Enhanced schedule info section to use full width (100%) with proper padding (0.5rem)
+  - Fixed explore buttons to use full width without overflow, added text-overflow ellipsis
+  - Applied box-sizing: border-box throughout for proper mobile containment
+  - All schedule sections (Weeknight, Weekend, Month) now properly contain within mobile viewports
+  - Fixed both horizontal bleeding and layout inconsistencies across all mobile screen sizes
+- **CRITICAL DEVELOPMENT WORKFLOW**: Enhanced Git workflow documentation in CLAUDE.md
+  - Added mandatory 5-step Git workflow: pull → changes → stage → commit → push
+  - Added changelog management requirements with detailed context documentation
+  - Enforced religious adherence to workflow for every single change
 - **30 CYCLES COMPLETE**: Comprehensive feature development across 6 sprints
 - **SPRINT 1 (Cycles 1-5)**: Implemented host/stay dropdown menus, fixed footer links, added mobile hamburger menu, enhanced forms with validation, created import listing functionality
 - **SPRINT 2 (Cycles 6-10)**: Added loading states for async operations, implemented app download section, added Alexa skill section, created emergency assistance handling, added proper error handling for imports
