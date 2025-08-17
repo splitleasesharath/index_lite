@@ -339,14 +339,14 @@ body {
 }
 
 .hero-illustration-left {
-    left: 8%;
+    left: 15%;
     bottom: 25%;
     width: 320px;
     height: auto;
 }
 
 .hero-illustration-right {
-    right: 8%;
+    right: 15%;
     bottom: 20%;
     width: 240px;
     height: auto;
@@ -377,6 +377,39 @@ body {
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     padding: 3rem;
+    /* Waterfall/cascade effect */
+    animation: waterfall 1.2s ease-out, float 6s ease-in-out infinite 1.2s;
+    transform-origin: top center;
+}
+
+/* Waterfall animation */
+@keyframes waterfall {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(10px) scale(0.98);
+    }
+    70% {
+        opacity: 0.9;
+        transform: translateY(-5px) scale(0.99);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Subtle floating animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-10px) scale(1.01);
+    }
 }
 
 .hero-content {
@@ -1833,6 +1866,21 @@ body {
 
     .hero-subtitle {
         font-size: 1rem;
+    }
+    
+    .hero-illustration-left {
+        left: 5%;
+        width: 250px;
+    }
+    
+    .hero-illustration-right {
+        right: 5%;
+        width: 200px;
+    }
+    
+    .hero-content-wrapper {
+        margin: 0 1rem;
+        padding: 2rem;
     }
 
     .value-container {
