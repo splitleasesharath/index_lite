@@ -299,7 +299,18 @@ This ensures continuous deployment, real-time GitHub Pages updates, and complete
 
 All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
 
-### 2025-08-17 (Current Session - Git Workflow Demonstrations)
+### 2025-08-17 (Current Session)
+- **SCHEDULE CARD LAYOUT FIX**: Fixed text overlapping with calendar visuals in schedule cards
+  - Changed schedule-visual from horizontal flex to vertical flex-direction: column
+  - Moved text content (Perfect for commuters, Weekend getaways, Full-time living) below calendars
+  - Centered all content within each card for better visual alignment
+  - Calendar grid now takes full width (max 280px) centered in card
+  - Schedule info text now appears below calendar with center text alignment
+  - Eliminates overlapping issue where text was bleeding into calendar space
+  - Maintains clean vertical stacking: Calendar → Text → Button
+  - Modified styles.css schedule-visual, calendar-grid, and schedule-info classes
+
+### 2025-08-17 (Git Workflow Demonstrations)
 - **FINAL CYCLE 5/5 COMPLETE**: Successfully demonstrated comprehensive multi-machine Git synchronization
   - Cycle 1: Resolved initial merge conflicts and established sync baseline
   - Cycle 2: Handled multiple merge conflicts, demonstrated conflict resolution mastery  
