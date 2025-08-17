@@ -770,7 +770,7 @@ function handleSignup(event) {
     closeAuthModal();
 }
 
-// Hero Day Selector Functions - Simplified
+// Hero Day Selector Functions - Exact Split Lease Replication
 let selectedDays = [];
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -779,25 +779,32 @@ function setupHeroDaySelector() {
     selectedDays = [];
     updateDayBadges();
     updateCheckinCheckout();
+    updateURL();
 }
 
 function toggleDay(dayIndex) {
+    // Convert 0-based index to 1-based (Sunday=1, Monday=2, etc.)
+    const dayNumber = dayIndex + 1;
+    
     // Simple toggle logic - if selected, remove it; if not, add it
-    if (selectedDays.includes(dayIndex)) {
-        selectedDays = selectedDays.filter(d => d !== dayIndex);
+    if (selectedDays.includes(dayNumber)) {
+        selectedDays = selectedDays.filter(d => d !== dayNumber);
     } else {
-        selectedDays.push(dayIndex);
+        selectedDays.push(dayNumber);
         selectedDays.sort((a, b) => a - b);
     }
     
     updateDayBadges();
     updateCheckinCheckout();
+    updateURL();
 }
 
 function updateDayBadges() {
     const badges = document.querySelectorAll('.hero-section .day-badge');
     badges.forEach((badge, index) => {
-        if (selectedDays.includes(index)) {
+        // Convert 0-based index to 1-based to check selection
+        const dayNumber = index + 1;
+        if (selectedDays.includes(dayNumber)) {
             badge.classList.add('active');
         } else {
             badge.classList.remove('active');
@@ -815,18 +822,85 @@ function updateCheckinCheckout() {
         return;
     }
     
-    // Show selected days as a simple list
+    // Check if days are continuous
+    if (!areDaysContinuous(selectedDays)) {
+        // Show error message for non-continuous days
+        checkinCheckoutEl.innerHTML = 'Please select a continuous set of days';
+        checkinCheckoutEl.style.display = 'block';
+        return;
+    }
+    
+    // Show check-in/check-out for continuous days
     if (selectedDays.length === 1) {
-        checkinDayEl.textContent = dayNames[selectedDays[0]];
-        checkoutDayEl.textContent = dayNames[selectedDays[0]];
+        const dayIndex = selectedDays[0] - 1; // Convert back to 0-based for array access
+        checkinDayEl.textContent = dayNames[dayIndex];
+        checkoutDayEl.textContent = dayNames[dayIndex];
     } else {
         // Show first and last day of selection
-        const firstDay = Math.min(...selectedDays);
-        const lastDay = Math.max(...selectedDays);
+        const firstDay = Math.min(...selectedDays) - 1; // Convert to 0-based
+        const lastDay = Math.max(...selectedDays) - 1; // Convert to 0-based
         checkinDayEl.textContent = dayNames[firstDay];
         checkoutDayEl.textContent = dayNames[lastDay];
     }
+    
+    // Restore original HTML structure for valid selections
+    checkinCheckoutEl.innerHTML = `
+        <span><strong>Check-in:</strong> <span id="checkinDay">${checkinDayEl.textContent}</span></span>
+        <span class="separator">•</span>
+        <span><strong>Check-out:</strong> <span id="checkoutDay">${checkoutDayEl.textContent}</span></span>
+    `;
     checkinCheckoutEl.style.display = 'flex';
+}
+
+function areDaysContinuous(days) {
+    if (days.length <= 1) return true;
+    
+    const sortedDays = [...days].sort((a, b) => a - b);
+    
+    // Handle week wrap-around (Saturday-Sunday)
+    // Check if we have both Saturday (7) and Sunday (1)
+    const hasSaturday = sortedDays.includes(7);
+    const hasSunday = sortedDays.includes(1);
+    
+    if (hasSaturday && hasSunday) {
+        // Split into two groups: Sunday group and Saturday group
+        const sundayGroup = sortedDays.filter(d => d <= 3); // 1,2,3
+        const saturdayGroup = sortedDays.filter(d => d >= 5); // 5,6,7
+        
+        // Check if each group is continuous
+        const sundayGroupContinuous = sundayGroup.length === 0 || isArrayContinuous(sundayGroup);
+        const saturdayGroupContinuous = saturdayGroup.length === 0 || isArrayContinuous(saturdayGroup);
+        
+        // Must be continuous within each group and Saturday group must end with 7, Sunday group must start with 1
+        return sundayGroupContinuous && saturdayGroupContinuous && 
+               (sundayGroup.length === 0 || sundayGroup[0] === 1) &&
+               (saturdayGroup.length === 0 || saturdayGroup[saturdayGroup.length - 1] === 7);
+    } else {
+        // Normal case - no week wrap-around
+        return isArrayContinuous(sortedDays);
+    }
+}
+
+function isArrayContinuous(arr) {
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[i - 1] + 1) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function updateURL() {
+    const currentUrl = new URL(window.location);
+    
+    if (selectedDays.length === 0) {
+        currentUrl.searchParams.delete('days-selected');
+    } else {
+        currentUrl.searchParams.set('days-selected', selectedDays.join(','));
+    }
+    
+    // Update URL without page reload
+    window.history.replaceState({}, '', currentUrl);
 }
 
 function exploreRentals() {
@@ -835,7 +909,13 @@ function exploreRentals() {
         return;
     }
     
-    // Simple redirect with selected days
+    // Check if days are continuous before allowing exploration
+    if (!areDaysContinuous(selectedDays)) {
+        showToast('Please select a continuous set of days');
+        return;
+    }
+    
+    // Redirect with selected days using exact format
     const searchUrl = `https://www.split.lease/search?days-selected=${selectedDays.join(',')}`;
     
     showToast('Redirecting to search results...');
