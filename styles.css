@@ -117,6 +117,13 @@ body {
     height: 40px;
 }
 
+.logo-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .logo-placeholder {
     width: 40px;
     height: 40px;
@@ -135,6 +142,14 @@ body {
     font-weight: 600;
     color: white;
     line-height: 1.2;
+    white-space: nowrap;
+}
+
+/* Hide logo text on mobile */
+@media (max-width: 768px) {
+    .logo-text {
+        display: none;
+    }
 }
 
 .nav-center {
