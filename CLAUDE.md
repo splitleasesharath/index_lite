@@ -300,6 +300,17 @@ This ensures continuous deployment, real-time GitHub Pages updates, and complete
 All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
 
 ### 2025-08-17 (Current Session)
+- **RESPONSIVE CALENDAR LAYOUT FIX**: Fixed emoji bleeding and restored proper desktop/mobile behavior
+  - **Issue Identified**: User reported emoji bleeding on mobile with request for responsive design
+  - **Root Cause**: Mobile calendar CSS rules were affecting desktop, causing size conflicts
+  - **Solution**: Properly contained mobile-only rules within media query (max-width: 768px)
+  - **Desktop Preserved**: Maintains original font-size: 1.25rem for full emoji visibility
+  - **Mobile Optimized**: Uses font-size: 0.6rem with transform: scale(0.75) for containment
+  - **Overflow Prevention**: Added max-width/height: 25px constraints only on mobile devices
+  - **Eliminated Conflicts**: Removed duplicate CSS rules causing desktop/mobile interference
+  - **Responsive Design**: Now properly adapts emoji sizing based on screen size
+  - **Complete Fix**: Addresses user screenshot showing house emoji (🏠) bleeding from calendar cells
+  - **Files Modified**: styles.css calendar-week .day rules reorganized for proper media query containment
 - **SCHEDULE CARD LAYOUT FIX**: Fixed text overlapping with calendar visuals in schedule cards
   - Changed schedule-visual from horizontal flex to vertical flex-direction: column
   - Moved text content (Perfect for commuters, Weekend getaways, Full-time living) below calendars
