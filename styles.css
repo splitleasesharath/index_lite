@@ -1589,7 +1589,7 @@ body {
 }
 
 .badge-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #31135D;
     color: white;
     padding: 15px;
     border-radius: 15px;
