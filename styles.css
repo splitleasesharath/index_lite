@@ -2038,18 +2038,29 @@ body {
     /* Schedule Section Mobile Fixes */
     .schedule-section {
         padding: 2rem 1rem;
-        max-width: 100%;
+        max-width: 100vw;
         overflow-x: hidden;
+        box-sizing: border-box;
+    }
+    
+    .schedule-grid {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
     }
     
     .schedule-card {
-        margin: 0 0 2rem 0;
-        padding: 1.5rem 1rem;
+        margin: 0;
+        padding: 1rem;
         border-radius: 1rem;
         background: white;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         max-width: 100%;
+        width: 100%;
         overflow: hidden;
+        box-sizing: border-box;
     }
     
     .schedule-card h3 {
@@ -2063,35 +2074,52 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .calendar-grid {
         width: 100%;
-        max-width: 280px;
-        padding: 0.5rem;
+        max-width: 240px;
+        padding: 0;
+        margin: 0 auto;
+        box-sizing: border-box;
     }
     
     .calendar-header {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 0.25rem;
+        gap: 0.125rem;
         margin-bottom: 0.5rem;
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 600;
         color: #666;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .calendar-header span {
+        padding: 0.2rem 0;
+        font-size: 0.7rem;
+        min-width: 0;
     }
     
     .calendar-body {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0.125rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .calendar-week {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 0.25rem;
+        gap: 0.125rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .calendar-week .day {
@@ -2099,9 +2127,15 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.2rem;
+        font-size: 0.8rem;
         border-radius: 0.25rem;
         background: #f8f9fa;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+        height: auto;
+        width: 100%;
     }
     
     .calendar-week .day.active {
@@ -2111,7 +2145,10 @@ body {
     
     .schedule-info {
         text-align: center;
-        max-width: 200px;
+        max-width: 100%;
+        width: 100%;
+        padding: 0 0.5rem;
+        box-sizing: border-box;
     }
     
     .schedule-tagline {
@@ -2129,10 +2166,14 @@ body {
     
     .explore-btn {
         width: 100%;
-        max-width: 280px;
+        max-width: 100%;
         padding: 0.75rem 1rem;
-        margin: 0 auto;
+        margin: 0;
         display: block;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .footer-container {
