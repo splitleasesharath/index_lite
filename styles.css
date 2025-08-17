@@ -355,14 +355,14 @@ body {
 }
 
 .hero-illustration-left {
-    left: 5%;
+    left: 15%;
     bottom: 15%;
     width: 640px;
     height: auto;
 }
 
 .hero-illustration-right {
-    right: 5%;
+    right: 15%;
     bottom: 10%;
     width: 480px;
     height: auto;
@@ -1923,13 +1923,13 @@ body {
     }
     
     .hero-illustration-left {
-        left: 2%;
+        left: 10%;
         width: 320px;
         bottom: 20%;
     }
     
     .hero-illustration-right {
-        right: 2%;
+        right: 10%;
         width: 240px;
         bottom: 15%;
     }
@@ -1987,11 +1987,137 @@ body {
 
     .footer-container {
         grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem 1rem;
+    }
+    
+    .footer-column {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 1.5rem;
+    }
+    
+    .footer-column:last-child {
+        border-bottom: none;
+    }
+    
+    .footer-column h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .footer-column a {
+        display: block;
+        padding: 0.5rem 0;
+        font-size: 0.95rem;
+    }
+    
+    /* Mobile referral section */
+    .referral-options {
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .referral-options label {
+        flex: 1;
+        padding: 0.6rem;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+    
+    .referral-options input[type="radio"]:checked + label {
+        background: var(--bg-purple);
+    }
+    
+    .referral-input,
+    .import-input {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .share-btn,
+    .import-btn {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    /* App download section on mobile */
+    .app-download-section {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 2rem 1rem;
+    }
+    
+    .app-card,
+    .alexa-card {
+        flex-direction: column;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .app-card .app-content,
+    .alexa-card .alexa-content {
+        order: 2;
+        margin-top: 1rem;
+    }
+    
+    .app-card img,
+    .alexa-card img {
+        order: 1;
+        width: 80px;
+        height: 80px;
+        margin: 0 auto;
+    }
+    
+    .app-tagline,
+    .alexa-tagline {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .app-store-btn,
+    .alexa-btn {
+        display: inline-flex;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
     }
 
     .footer-bottom {
         flex-direction: column;
         gap: 1rem;
+        text-align: center;
+        padding: 1.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Floating badge adjustment for mobile */
+    .floating-badge {
+        bottom: 10px;
+        right: 10px;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .badge-text-top {
+        font-size: 0.5rem;
+    }
+    
+    .badge-icon {
+        font-size: 1.2rem;
+    }
+    
+    .badge-text-bottom span {
+        font-size: 0.45rem;
+    }
+    
+    .badge-expanded {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
     }
 }
 
