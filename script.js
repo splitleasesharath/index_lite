@@ -34,6 +34,7 @@ function initializeApp() {
     setupKeyboardShortcuts();
     setupCookieConsent();
     setupScrollToTop();
+    setupThemeToggle();
 }
 
 // Navigation Functionality
@@ -1146,6 +1147,32 @@ function filterListings() {
     }
 }
 
+// Theme Toggle
+function setupThemeToggle() {
+    // Check for saved theme preference or default to light
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateThemeIcon(currentTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+    
+    showToast(`${newTheme === 'dark' ? '🌙 Dark' : '☀️ Light'} mode activated`);
+}
+
+function updateThemeIcon(theme) {
+    const themeIcon = document.querySelector('.theme-icon');
+    if (themeIcon) {
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+}
+
 // Scroll to Top Button
 function setupScrollToTop() {
     const scrollBtn = document.getElementById('scrollToTop');
@@ -1232,3 +1259,4 @@ window.acceptCookies = acceptCookies;
 window.declineCookies = declineCookies;
 window.scrollToTop = scrollToTop;
 window.filterListings = filterListings;
+window.toggleTheme = toggleTheme;
