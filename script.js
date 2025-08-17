@@ -8,9 +8,31 @@ if ('serviceWorker' in navigator) {
                 console.log('ServiceWorker registration successful:', registration.scope);
             })
             .catch(err => {
-                console.log('ServiceWorker registration failed:', err);
+                console.warn('ServiceWorker registration failed:', err);
             });
     });
+}
+
+// Error boundary
+window.addEventListener('error', (e) => {
+    console.error('Global error:', e.error);
+    showToast('Something went wrong. Please refresh the page.');
+});
+
+// Performance monitoring
+if ('PerformanceObserver' in window) {
+    try {
+        const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+                if (entry.entryType === 'largest-contentful-paint') {
+                    console.log('LCP:', entry.startTime);
+                }
+            }
+        });
+        observer.observe({ entryTypes: ['largest-contentful-paint'] });
+    } catch (e) {
+        // Silent fail for unsupported browsers
+    }
 }
 
 // DOM Content Loaded

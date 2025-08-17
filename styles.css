@@ -1926,6 +1926,20 @@ button.loading {
 
 .fade-in {
     animation: fadeIn 0.6s ease forwards;
+    will-change: opacity, transform;
+}
+
+/* Performance optimizations */
+.listing-card,
+.schedule-card,
+.support-card {
+    will-change: transform;
+}
+
+.listing-card:hover,
+.schedule-card:hover,
+.support-card:hover {
+    will-change: auto;
 }
 
 /* Utility Classes */
