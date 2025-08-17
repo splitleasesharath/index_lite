@@ -1,5 +1,18 @@
 // Split Lease Clone - Interactive JavaScript
 
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('ServiceWorker registration successful:', registration.scope);
+            })
+            .catch(err => {
+                console.log('ServiceWorker registration failed:', err);
+            });
+    });
+}
+
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
@@ -19,6 +32,8 @@ function initializeApp() {
     setupFooterNavigation();
     setupDropdownMenus();
     setupKeyboardShortcuts();
+    setupCookieConsent();
+    setupScrollToTop();
 }
 
 // Navigation Functionality
@@ -1072,6 +1087,108 @@ function handleImportListing() {
     }, 2000);
 }
 
+// Search Functionality
+function filterListings() {
+    const searchInput = document.getElementById('listingSearch');
+    const searchTerm = searchInput.value.toLowerCase();
+    const listingCards = document.querySelectorAll('.listing-card');
+    let hasResults = false;
+    
+    listingCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            card.classList.remove('hidden');
+            hasResults = true;
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+    
+    // Show no results message
+    const existingNoResults = document.querySelector('.no-results');
+    if (existingNoResults) {
+        existingNoResults.remove();
+    }
+    
+    if (!hasResults && searchTerm !== '') {
+        const listingsGrid = document.querySelector('.listings-grid');
+        const noResultsDiv = document.createElement('div');
+        noResultsDiv.className = 'no-results';
+        noResultsDiv.textContent = `No listings found for "${searchTerm}". Try a different search term.`;
+        listingsGrid.appendChild(noResultsDiv);
+    }
+}
+
+// Scroll to Top Button
+function setupScrollToTop() {
+    const scrollBtn = document.getElementById('scrollToTop');
+    
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('show');
+        } else {
+            scrollBtn.classList.remove('show');
+        }
+    });
+}
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Cookie Consent Functions
+function setupCookieConsent() {
+    // Check if cookies have been accepted/declined
+    const cookieStatus = localStorage.getItem('cookieConsent');
+    
+    if (!cookieStatus) {
+        // Show cookie banner after a short delay
+        setTimeout(() => {
+            const banner = document.getElementById('cookieConsent');
+            if (banner) {
+                banner.classList.add('show');
+            }
+        }, 2000);
+    }
+}
+
+function acceptCookies() {
+    localStorage.setItem('cookieConsent', 'accepted');
+    hideCookieBanner();
+    showToast('Cookies accepted. Thank you!');
+    
+    // Initialize analytics or other cookie-dependent features
+    initializeAnalytics();
+}
+
+function declineCookies() {
+    localStorage.setItem('cookieConsent', 'declined');
+    hideCookieBanner();
+    showToast('Cookies declined. You can change this anytime.');
+}
+
+function hideCookieBanner() {
+    const banner = document.getElementById('cookieConsent');
+    if (banner) {
+        banner.classList.remove('show');
+        setTimeout(() => {
+            banner.style.display = 'none';
+        }, 300);
+    }
+}
+
+function initializeAnalytics() {
+    // Placeholder for analytics initialization
+    console.log('Analytics initialized');
+    // Add Google Analytics, Mixpanel, etc. here
+}
+
 // Export functions for global use
 window.closeChatWidget = closeChatWidget;
 window.showToast = showToast;
@@ -1086,3 +1203,7 @@ window.toggleDay = toggleDay;
 window.exploreRentals = exploreRentals;
 window.toggleMobileMenu = toggleMobileMenu;
 window.handleImportListing = handleImportListing;
+window.acceptCookies = acceptCookies;
+window.declineCookies = declineCookies;
+window.scrollToTop = scrollToTop;
+window.filterListings = filterListings;
