@@ -128,15 +128,18 @@ function setupListings() {
         button.addEventListener('click', function() {
             const buttonText = this.textContent.toLowerCase();
             
-            if (buttonText.includes('weekend') || buttonText.includes('weeks of the month')) {
-                // Weekend/weeks schedule: Fri-Sun + Mon-Tue (days 6,0,1,2)
+            if (buttonText.includes('weekend')) {
+                // Weekend schedule: Fri-Sun + Mon (days 6,7,1,2)
                 redirectToSearch('6,7,1,2', 'weekends');
+            } else if (buttonText.includes('weeks of the month')) {
+                // Weeks of the month: All days (1,2,3,4,5,6,7)
+                redirectToSearch('1,2,3,4,5,6,7', 'weeks');
             } else if (buttonText.includes('weeknight')) {
                 // Weeknight schedule: Mon-Fri (days 2,3,4,5,6)  
                 redirectToSearch('2,3,4,5,6', 'weeknights');
             } else {
-                // Default explore action
-                redirectToSearch('1,2,3,4,5', 'default');
+                // Default explore action (monthly)
+                redirectToSearch('1,2,3,4,5,6,7', 'monthly');
             }
         });
     });
