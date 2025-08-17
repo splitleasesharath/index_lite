@@ -279,6 +279,7 @@ This ensures continuous deployment, real-time GitHub Pages updates, and complete
 <!-- DEMO 1: Git workflow synchronization test -->
 <!-- DEMO 2: Continuous synchronization across machines -->
 <!-- DEMO 3: Multi-machine workflow validation -->
+<!-- DEMO 4: Testing merge conflict resolution -->
 
 ## Deployment Notes
 
