@@ -1,13 +1,13 @@
 /* Global Reset and Variables */
 :root {
-    --primary-color: #5B21B6;
-    --primary-hover: #4C1D95;
+    --primary-color: #31135D;
+    --primary-hover: #251047;
     --text-dark: #1a1a1a;
     --text-gray: #6b7280;
     --bg-light: #f9fafb;
     --bg-white: #ffffff;
-    --bg-purple: #5B21B6;
-    --bg-purple-dark: #4C1D95;
+    --bg-purple: #31135D;
+    --bg-purple-dark: #251047;
     --border-color: #e5e7eb;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -85,7 +85,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: var(--bg-purple);
+    background: #31135D;
     box-shadow: var(--shadow-sm);
     z-index: 1000;
     transition: all 0.3s ease;
@@ -441,7 +441,7 @@ body {
 
 .hero-cta-button {
     background: white;
-    color: #5B5FCF;
+    color: #31135D;
     border: 2px solid #5B5FCF;
     padding: 0.875rem 2.5rem;
     font-size: 1.05rem;
@@ -453,7 +453,7 @@ body {
 }
 
 .hero-cta-button:hover {
-    background: #5B5FCF;
+    background: #31135D;
     color: white;
     transform: translateY(-1px);
     box-shadow: 0 4px 16px rgba(91, 95, 207, 0.3);
@@ -489,7 +489,7 @@ body {
 .day-badge {
     width: 48px;
     height: 48px;
-    border-radius: 12px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -508,9 +508,9 @@ body {
 }
 
 .day-badge.active {
-    background: #5B5FCF;
+    background: #31135D;
     color: white;
-    border-color: #5B5FCF;
+    border-color: #31135D;
     box-shadow: 0 2px 8px rgba(91, 95, 207, 0.25);
 }
 
@@ -650,7 +650,7 @@ body {
 .day-badge {
     width: 45px;
     height: 45px;
-    border-radius: 50%;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -661,7 +661,7 @@ body {
 }
 
 .day-badge.active {
-    background: var(--primary-color);
+    background: #31135D;
     color: white;
 }
 
@@ -672,7 +672,7 @@ body {
 
 .day-badge:hover {
     transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+    box-shadow: 0 4px 12px rgba(49, 19, 93, 0.3);
 }
 
 /* Schedule card specific hover effects to indicate group selection */
@@ -1268,7 +1268,7 @@ body {
 
 /* Footer */
 .main-footer {
-    background: var(--bg-purple);
+    background: #31135D;
     color: rgba(255, 255, 255, 0.9);
     padding: 3rem 2rem 1rem;
 }
