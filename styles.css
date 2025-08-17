@@ -389,14 +389,14 @@ body {
 
 .hero-illustration-left {
     left: 15%;
-    bottom: 15%;
+    bottom: 5%;
     width: 480px;
     height: auto;
 }
 
 .hero-illustration-right {
     right: 15%;
-    bottom: 10%;
+    bottom: 0%;
     width: 624px;
     height: auto;
 }
@@ -702,7 +702,7 @@ body {
 /* Desktop layout - 3 columns in a row */
 @media (min-width: 1024px) {
     .schedule-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr) !important;
         gap: 2rem;
     }
 }
@@ -832,17 +832,17 @@ body {
 /* Schedule Visual Styles */
 .schedule-visual {
     display: flex;
-    align-items: center;
-    gap: 3rem;
-    margin: 2rem 0;
-    padding: 2rem;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
     background: linear-gradient(135deg, rgba(91, 33, 182, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
     border-radius: 12px;
 }
 
 .calendar-grid {
-    flex: 1;
-    max-width: 350px;
+    flex: 0 0 280px;
+    max-width: 280px;
 }
 
 .calendar-header {
@@ -895,7 +895,10 @@ body {
 
 .schedule-info {
     flex: 1;
-    padding: 1rem;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .schedule-tagline {
@@ -1581,7 +1584,7 @@ body {
 .floating-badge {
     position: fixed;
     right: 20px;
-    bottom: 80px;
+    bottom: 20px;
     z-index: 9999;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1589,7 +1592,7 @@ body {
 }
 
 .badge-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #31135D;
     color: white;
     padding: 15px;
     border-radius: 15px;
@@ -1979,7 +1982,7 @@ body {
         right: auto;
         transform: translateX(-50%);
         width: 350px;
-        bottom: 15%;
+        bottom: 5%;
     }
     
     .hero-content-wrapper {
@@ -2049,6 +2052,11 @@ body {
         margin: 0;
         padding: 0;
         overflow: hidden;
+    }
+    
+    .schedule-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
     
     .schedule-card {
