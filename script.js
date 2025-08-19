@@ -789,7 +789,9 @@ function loadStateFromURL() {
     if (daysParam) {
         // Parse days from URL parameter (decode URL encoding)
         const decoded = decodeURIComponent(daysParam);
-        selectedDays = decoded.split(',').map(d => parseInt(d.trim())).filter(d => d >= 0 && d <= 6);
+        // Convert from 1-based (Bubble) to 0-based (JavaScript) by subtracting 1
+        const bubbleDays = decoded.split(',').map(d => parseInt(d.trim()));
+        selectedDays = bubbleDays.map(day => day - 1).filter(d => d >= 0 && d <= 6);
     } else {
         selectedDays = [];
     }
@@ -919,8 +921,10 @@ function updateURL() {
     if (selectedDays.length === 0) {
         currentUrl.searchParams.delete('days-selected');
     } else {
+        // Convert to 1-based indexing for Bubble (add 1 to each day)
+        const bubbleDays = selectedDays.map(day => day + 1);
         // Use exact URL encoding format like original site: %2C%20 = ", "
-        currentUrl.searchParams.set('days-selected', selectedDays.join(', '));
+        currentUrl.searchParams.set('days-selected', bubbleDays.join(', '));
     }
     
     // Update URL without page reload
@@ -939,8 +943,11 @@ function exploreRentals() {
         return;
     }
     
+    // Convert to 1-based indexing for Bubble (add 1 to each day)
+    const bubbleDays = selectedDays.map(day => day + 1);
+    
     // Redirect with selected days using exact format
-    const searchUrl = `https://www.split.lease/search?days-selected=${selectedDays.join(',')}`;
+    const searchUrl = `https://www.split.lease/search?days-selected=${bubbleDays.join(',')}`;
     
     showToast('Redirecting to search results...');
     
@@ -950,7 +957,8 @@ function exploreRentals() {
 }
 
 function redirectToSearch(daysSelected, preset) {
-    // Simple redirect with just the days
+    // Note: daysSelected here is already a string like "2,3,4,5,6" for weeknight
+    // These are already 1-based from the schedule section, so no conversion needed
     const searchUrl = `https://www.split.lease/search?days-selected=${daysSelected}`;
     
     showToast(`Redirecting to ${preset || 'rental'} listings...`);
