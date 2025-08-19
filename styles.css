@@ -924,6 +924,28 @@ body {
     }
 }
 
+/* Force vertical layout for all screens above 770px */
+@media (min-width: 770px) {
+    .schedule-visual {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1.5rem !important;
+    }
+    
+    .schedule-visual .calendar-grid {
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+    }
+    
+    .schedule-visual .schedule-info {
+        width: 100% !important;
+        text-align: center !important;
+        margin-top: 1rem !important;
+    }
+}
+
 /* Benefits Section */
 .benefits-section {
     padding: 4rem 2rem;
