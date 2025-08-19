@@ -840,6 +840,15 @@ body {
     margin: 0 auto;
 }
 
+.lottie-container {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .calendar-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
