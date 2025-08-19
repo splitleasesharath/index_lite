@@ -129,4 +129,4 @@ This project is for educational purposes.
 ## Acknowledgments
 
 - Original design inspiration from Split Lease (split.lease)
-- Built as a technical demonstration of modern web development practices
+- Built as a technical demonstration of modern web development practices# Force GitHub Pages rebuild - Tue, Aug 19, 2025  9:40:56 AM
