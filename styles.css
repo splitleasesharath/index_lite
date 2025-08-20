@@ -833,7 +833,7 @@ body {
 
 .calendar-grid {
     width: 100%;
-    max-width: 280px;
+    max-width: 560px; /* Increased by 100% from 280px */
     margin: 0 auto;
 }
 
@@ -874,13 +874,13 @@ body {
 }
 
 .calendar-week .day {
-    width: 40px;
-    height: 40px;
+    width: 80px; /* Increased by 100% from 40px */
+    height: 80px; /* Increased by 100% from 40px */
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    font-size: 1.25rem;
+    font-size: 2.5rem; /* Increased by 100% from 1.25rem */
     transition: all 0.3s ease;
 }
 
@@ -941,7 +941,7 @@ body {
     
     .schedule-visual .calendar-grid {
         width: 100% !important;
-        max-width: 280px !important;
+        max-width: 560px !important; /* Increased by 100% from 280px */
         margin: 0 auto !important;
     }
     
@@ -1606,7 +1606,8 @@ body {
 .floating-badge {
     position: fixed;
     right: 20px;
-    bottom: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 9999;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1627,7 +1628,7 @@ body {
 }
 
 .badge-text-top {
-    font-size: 0.75rem;
+    font-size: 0.56rem; /* Reduced by 25% from 0.75rem */
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1641,7 +1642,7 @@ body {
 .badge-text-bottom {
     display: flex;
     flex-direction: column;
-    font-size: 0.75rem;
+    font-size: 0.56rem; /* Reduced by 25% from 0.75rem */
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1669,7 +1670,7 @@ body {
 }
 
 .floating-badge:hover {
-    transform: scale(1.05);
+    transform: translateY(-50%) scale(1.05);
 }
 
 /* Auth Modal Styles */
@@ -2267,7 +2268,7 @@ body {
     
     .calendar-grid {
         width: 100%;
-        max-width: 240px;
+        max-width: 480px; /* Increased by 100% from 240px for mobile */
         padding: 0;
         margin: 0 auto;
         box-sizing: border-box;
@@ -2526,14 +2527,13 @@ body {
     
     /* Floating badge adjustment for mobile */
     .floating-badge {
-        bottom: 10px;
         right: 10px;
         width: 60px;
         height: 60px;
     }
     
     .badge-text-top {
-        font-size: 0.5rem;
+        font-size: 0.375rem; /* Reduced by 25% from 0.5rem for mobile */
     }
     
     .badge-icon {
@@ -2541,7 +2541,7 @@ body {
     }
     
     .badge-text-bottom span {
-        font-size: 0.45rem;
+        font-size: 0.338rem; /* Reduced by 25% from 0.45rem for mobile */
     }
     
     .badge-expanded {
@@ -2613,6 +2613,40 @@ body {
         min-height: 80px;
         padding: 1rem;
     }
+    
+    /* Performance optimizations for mobile */
+    /* Reduce box-shadow complexity on mobile for better performance */
+    .listing-card,
+    .schedule-card,
+    .referral-card,
+    .support-card,
+    .hero-section,
+    .floating-badge {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; /* Reduced from 10px blur to 4px */
+    }
+    
+    .listing-card:hover,
+    .schedule-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important; /* Lighter hover shadow */
+    }
+    
+    /* Reduce animation shadow complexity */
+    .day-badge.active,
+    .explore-btn:hover,
+    .cta-button:hover {
+        box-shadow: 0 2px 6px rgba(91, 33, 182, 0.2) !important;
+    }
+}
+
+/* Performance optimizations - CSS Containment */
+/* Isolate repaints for better performance */
+.listing-card,
+.schedule-card,
+.referral-card,
+.support-card,
+.modal-content,
+.floating-badge {
+    contain: layout style paint;
 }
 
 /* Loading States */
