@@ -9,9 +9,9 @@ if %errorlevel% neq 0 (
     npm install -g wrangler
 )
 
-REM Deploy to Cloudflare Pages
+REM Deploy to Cloudflare Pages (specify current directory as assets)
 echo Deploying your site...
-wrangler pages deploy . --project-name=split-lease-clone
+npx wrangler pages deploy . --project-name=split-lease-clone --compatibility-date=2025-08-20
 
 echo.
 echo Deployment complete!

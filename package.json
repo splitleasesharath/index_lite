@@ -1,0 +1,11 @@
+{
+  "name": "split-lease-clone",
+  "version": "1.0.0",
+  "description": "Split Lease website clone",
+  "scripts": {
+    "build": "echo 'No build needed for static site'",
+    "deploy": "wrangler pages deploy . --project-name=split-lease-clone"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
