@@ -85,10 +85,7 @@ function updateScheduleDisplay(scheduleCard) {
         }
     });
     
-    // Show toast notification with selected days
-    if (selectedDays.length > 0) {
-        showToast(`Selected days: ${selectedDays.join(', ')}`);
-    }
+    // Days have been selected
 }
 
 // Schedule Controls (removed - no longer using animations)
@@ -148,7 +145,6 @@ function setupListings() {
             
             const searchUrl = `https://app.splitlease.app/search?days-selected=${daysParam}`;
             
-            showToast('Loading more rentals...');
             window.open(searchUrl, '_blank');
         });
     }
@@ -174,7 +170,6 @@ function setupListings() {
             
             const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
             
-            showToast(`Opening ${title}...`);
             window.open(propertyUrl, '_blank');
         });
     });
@@ -240,7 +235,7 @@ function loadMoreListings() {
         showMoreBtn.textContent = 'Show me more Rentals';
         showMoreBtn.disabled = false;
         
-        showToast('New listings loaded!');
+        // Listings loaded
     }, 1000);
 }
 
@@ -266,7 +261,6 @@ function createListingCard(listing) {
         
         const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
         
-        showToast(`Opening ${listing.title}...`);
         window.open(propertyUrl, '_blank');
     });
     
@@ -295,10 +289,10 @@ function handleSupportAction(type) {
             window.location.href = 'mailto:support@splitlease.com';
             break;
         case 'call':
-            showToast('Call us at: 1-800-SPLIT-LEASE');
+            window.location.href = 'tel:1-800-SPLIT-LEASE';
             break;
         case 'faq':
-            showToast('Opening FAQ section...');
+            window.open('https://app.splitlease.app/faq', '_blank');
             break;
     }
 }
@@ -348,13 +342,7 @@ function setupReferral() {
             const selectedMethod = document.querySelector('input[name="referral"]:checked');
             const contact = referralInput.value;
             
-            if (!selectedMethod) {
-                showToast('Please select a referral method');
-                return;
-            }
-            
-            if (!contact) {
-                showToast('Please enter contact information');
+            if (!selectedMethod || !contact) {
                 return;
             }
             
@@ -382,14 +370,12 @@ function processReferral(method, contact) {
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(contact)) {
-            showToast('Please enter a valid email address');
             return;
         }
     } else if (method === 'text') {
         // Phone validation - basic check for 10+ digits
         const phoneDigits = contact.replace(/\D/g, '');
         if (phoneDigits.length < 10) {
-            showToast('Please enter a valid phone number (at least 10 digits)');
             return;
         }
     }
@@ -409,11 +395,7 @@ function processReferral(method, contact) {
         shareBtn.disabled = false;
         shareBtn.classList.remove('loading');
         
-        if (method === 'email') {
-            showToast(`Referral email sent to ${contact}! They'll receive $50 off their first booking.`);
-        } else {
-            showToast(`Referral text sent to ${contact}! They'll receive $50 off their first booking.`);
-        }
+        // Referral processed successfully
         
         // Clear input and reset radio
         document.querySelector('.referral-input').value = '';
@@ -455,57 +437,11 @@ function setupAnimations() {
     });
 }
 
-// Toast Notification System
-function showToast(message, duration = 3000) {
-    // Remove any existing toast
-    const existingToast = document.querySelector('.toast');
-    if (existingToast) {
-        existingToast.remove();
-    }
-    
-    // Create new toast
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    
-    // Trigger animation
-    setTimeout(() => {
-        toast.classList.add('show');
-    }, 10);
-    
-    // Remove after duration
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => {
-            toast.remove();
-        }, 300);
-    }, duration);
-}
+// Toast Notification System - Removed for faster navigation
+// All navigation now happens immediately without notifications
 
-// Add toast styles dynamically
-const toastStyles = `
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #333;
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transform: translateY(100px);
-        opacity: 0;
-        transition: all 0.3s ease;
-        z-index: 10000;
-        max-width: 300px;
-    }
-    
-    .toast.show {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    
+// Add chat widget styles dynamically
+const chatStyles = `
     .scroll-down {
         transform: translateY(-100%);
     }
@@ -589,7 +525,7 @@ const toastStyles = `
 
 // Inject toast styles
 const styleSheet = document.createElement('style');
-styleSheet.textContent = toastStyles;
+styleSheet.textContent = chatStyles;
 document.head.appendChild(styleSheet);
 
 // Auth Modal Functions - Simplified for redirect
@@ -836,13 +772,11 @@ function updateURL() {
 
 function exploreRentals() {
     if (selectedDays.length === 0) {
-        showToast('Please select at least one day to explore rentals');
         return;
     }
     
     // Check if days are continuous before allowing exploration
     if (!areDaysContinuous(selectedDays)) {
-        showToast('Please select a continuous set of days');
         return;
     }
     
@@ -852,7 +786,6 @@ function exploreRentals() {
     // Redirect with selected days using exact format
     const searchUrl = `https://app.splitlease.app/search?days-selected=${bubbleDays.join(',')}`;
     
-    showToast('Redirecting to search results...');
     window.open(searchUrl, '_blank');
 }
 
@@ -861,7 +794,6 @@ function redirectToSearch(daysSelected, preset) {
     // These are already 1-based from the schedule section, so no conversion needed
     const searchUrl = `https://app.splitlease.app/search?days-selected=${daysSelected}`;
     
-    showToast(`Redirecting to ${preset || 'rental'} listings...`);
     window.open(searchUrl, '_blank');
 }
 
@@ -951,58 +883,13 @@ function setupDropdownMenus() {
 
 // Footer Navigation Functionality
 function setupFooterNavigation() {
-    // Footer links that require authentication (open modal)
-    const authRequiredLinks = [
-        'List Property Now',
-        'How to List', 
-        'Speak to an Agent'
-    ];
-    
-    // Footer links that navigate to external pages
-    const externalLinks = {
-        'Terms of Use': 'https://app.splitlease.app/policies/terms-of-use',
-        'About Periodic Tenancy': 'https://app.splitlease.app/about',
-        'About the Team': 'https://app.splitlease.app/team',
-        'Careers at Split Lease': 'https://app.splitlease.app/careers',
-        'View Blog': 'https://app.splitlease.app/blog',
-        'Explore Split Leases': 'https://app.splitlease.app/search',
-        'Success Stories': 'https://app.splitlease.app/success-stories',
-        'View FAQ': 'https://app.splitlease.app/faq',
-        'Legal Section': 'https://app.splitlease.app/legal',
-        'Guarantees': 'https://app.splitlease.app/guarantees',
-        'Free House Manual': 'https://app.splitlease.app/house-manual'
-    };
-    
-    // Add click handlers to all footer links
-    const footerLinks = document.querySelectorAll('.footer-column a');
-    
-    footerLinks.forEach(link => {
-        const linkText = link.textContent.trim();
-        
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            if (authRequiredLinks.includes(linkText)) {
-                // Open login modal for auth-required links
-                showToast(`${linkText} requires authentication`);
-                openAuthModal();
-            } else if (externalLinks[linkText]) {
-                // Navigate to external page
-                showToast(`Opening ${linkText}...`);
-                window.open(externalLinks[linkText], '_blank');
-            } else {
-                // Default action for other links
-                showToast(`${linkText} functionality coming soon!`);
-            }
-        });
-    });
-    
-    // Handle Emergency assistance button
+    // Only handle the emergency assistance link
     const emergencyBtn = document.querySelector('.footer-column a.emergency');
     if (emergencyBtn) {
         emergencyBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            showToast('For emergencies, call 911. For urgent Split Lease matters, use our chat support.');
+            // Direct call to 911
+            window.location.href = 'tel:911';
         });
     }
 }
@@ -1025,17 +912,14 @@ function handleImportListing() {
     const email = document.getElementById('importEmail').value;
     
     if (!url || !email) {
-        showToast('Please fill in both URL and email fields');
         return;
     }
     
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        showToast('Please enter a valid URL starting with http:// or https://');
         return;
     }
     
     if (!email.includes('@') || !email.includes('.')) {
-        showToast('Please enter a valid email address');
         return;
     }
     
@@ -1050,7 +934,7 @@ function handleImportListing() {
         btn.textContent = originalText;
         btn.disabled = false;
         
-        showToast('Listing imported successfully! We\'ll review and contact you soon.');
+        // Import completed successfully
         
         // Clear inputs
         document.getElementById('importUrl').value = '';
@@ -1088,7 +972,6 @@ function setupFloatingBadge() {
 
 // Export functions for global use
 window.closeChatWidget = closeChatWidget;
-window.showToast = showToast;
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
 window.showLoginForm = showLoginForm;
