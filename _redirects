@@ -1,6 +1,9 @@
 # Redirects for Cloudflare Pages
-# Redirect www to non-www (if using custom domain)
+# Redirect www to non-www (uncomment and update when you have your domain)
 # https://www.yourdomain.com/* https://yourdomain.com/:splat 301
+
+# Force HTTPS (uncomment when domain is active)
+# http://yourdomain.com/* https://yourdomain.com/:splat 301
 
 # Catch-all for SPA (not needed for static site, but here if you need it)
 # /* /index.html 200
