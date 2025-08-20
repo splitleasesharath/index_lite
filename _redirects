@@ -1,0 +1,6 @@
+# Redirects for Cloudflare Pages
+# Redirect www to non-www (if using custom domain)
+# https://www.yourdomain.com/* https://yourdomain.com/:splat 301
+
+# Catch-all for SPA (not needed for static site, but here if you need it)
+# /* /index.html 200
