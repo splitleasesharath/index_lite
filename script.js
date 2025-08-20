@@ -24,27 +24,8 @@ function initializeApp() {
 // Navigation Functionality
 function setupNavigation() {
     const header = document.querySelector('.main-header');
-    let lastScroll = 0;
-
-    // Hide/Show header on scroll
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll <= 0) {
-            header.classList.remove('scroll-up');
-            return;
-        }
-        
-        if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
-            header.classList.remove('scroll-up');
-            header.classList.add('scroll-down');
-        } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
-            header.classList.remove('scroll-down');
-            header.classList.add('scroll-up');
-        }
-        
-        lastScroll = currentScroll;
-    });
+    
+    // Header stays fixed at all times - no hide/show on scroll
 
     // Smooth scroll for anchor links with offset for fixed header
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -168,10 +149,7 @@ function setupListings() {
             const searchUrl = `https://www.split.lease/search?days-selected=${daysParam}`;
             
             showToast('Loading more rentals...');
-            
-            setTimeout(() => {
-                window.open(searchUrl, '_blank');
-            }, 1000);
+            window.open(searchUrl, '_blank');
         });
     }
     
@@ -197,10 +175,7 @@ function setupListings() {
             const propertyUrl = `https://www.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
             
             showToast(`Opening ${title}...`);
-            
-            setTimeout(() => {
-                window.open(propertyUrl, '_blank');
-            }, 1000);
+            window.open(propertyUrl, '_blank');
         });
     });
 }
@@ -292,10 +267,7 @@ function createListingCard(listing) {
         const propertyUrl = `https://www.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
         
         showToast(`Opening ${listing.title}...`);
-        
-        setTimeout(() => {
-            window.open(propertyUrl, '_blank');
-        }, 1000);
+        window.open(propertyUrl, '_blank');
     });
     
     return card;
@@ -793,7 +765,8 @@ function loadStateFromURL() {
         const bubbleDays = decoded.split(',').map(d => parseInt(d.trim()));
         selectedDays = bubbleDays.map(day => day - 1).filter(d => d >= 0 && d <= 6);
     } else {
-        selectedDays = [];
+        // Default to Monday-Friday (indices 1-5 in JavaScript, days 2-6 in URL)
+        selectedDays = [1, 2, 3, 4, 5];
     }
 }
 
@@ -950,10 +923,7 @@ function exploreRentals() {
     const searchUrl = `https://www.split.lease/search?days-selected=${bubbleDays.join(',')}`;
     
     showToast('Redirecting to search results...');
-    
-    setTimeout(() => {
-        window.open(searchUrl, '_blank');
-    }, 1000);
+    window.open(searchUrl, '_blank');
 }
 
 function redirectToSearch(daysSelected, preset) {
@@ -962,10 +932,7 @@ function redirectToSearch(daysSelected, preset) {
     const searchUrl = `https://www.split.lease/search?days-selected=${daysSelected}`;
     
     showToast(`Redirecting to ${preset || 'rental'} listings...`);
-    
-    setTimeout(() => {
-        window.open(searchUrl, '_blank');
-    }, 1000);
+    window.open(searchUrl, '_blank');
 }
 
 // Dropdown Menu Functionality
@@ -1088,15 +1055,11 @@ function setupFooterNavigation() {
             if (authRequiredLinks.includes(linkText)) {
                 // Open login modal for auth-required links
                 showToast(`${linkText} requires authentication`);
-                setTimeout(() => {
-                    openAuthModal();
-                }, 1000);
+                openAuthModal();
             } else if (externalLinks[linkText]) {
                 // Navigate to external page
                 showToast(`Opening ${linkText}...`);
-                setTimeout(() => {
-                    window.open(externalLinks[linkText], '_blank');
-                }, 1000);
+                window.open(externalLinks[linkText], '_blank');
             } else {
                 // Default action for other links
                 showToast(`${linkText} functionality coming soon!`);

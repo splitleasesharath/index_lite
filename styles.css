@@ -25,11 +25,7 @@ html {
     scroll-padding-top: 0; /* Removed header offset */
 }
 
-* {
-    /* Enable hardware acceleration for better scroll performance */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-}
+/* Removed global transform to fix position:fixed header issue */
 
 body {
     /* iOS momentum scrolling */
@@ -100,14 +96,15 @@ body {
 
 /* Header Navigation */
 .main-header {
-    position: fixed;
-    top: 0;
+    position: fixed !important;
+    top: 0 !important;
     left: 0;
     right: 0;
     background: #31135D;
     box-shadow: var(--shadow-sm);
-    z-index: 1000;
+    z-index: 9999;
     transition: all 0.3s ease;
+    transform: none !important;
 }
 
 .nav-container {
@@ -357,7 +354,7 @@ body {
 .hero-section {
     position: relative;
     min-height: 650px;
-    margin-top: 72px;
+    padding-top: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
