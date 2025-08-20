@@ -285,6 +285,24 @@ body {
     gap: 1rem;
 }
 
+.explore-rentals-btn {
+    background: white;
+    color: var(--primary-color);
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+}
+
+.explore-rentals-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .divider {
     color: rgba(255, 255, 255, 0.5);
 }
@@ -2097,6 +2115,12 @@ body {
     .nav-right .divider,
     .nav-right a:last-child {
         display: none; /* Hide divider and Sign Up on mobile */
+    }
+    
+    .explore-rentals-btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 1rem;
+        margin-right: 0.5rem;
     }
     
     /* Simplify dropdown buttons for mobile */
