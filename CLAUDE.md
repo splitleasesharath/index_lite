@@ -327,7 +327,7 @@ All changes to the codebase are documented here in reverse chronological order (
 - **REMOVED SIGN-IN/SIGNUP DELAYS**: Eliminated all delays for immediate redirect
   - Removed 500ms setTimeout from openAuthModal() function
   - Removed "Redirecting to Split Lease login..." toast message
-  - Sign-in/signup clicks now immediately redirect to https://app.splitlease.app/signup-login-embedded
+  - Sign-in/signup clicks now immediately redirect to https://app.splitlease.app/signup-login
   - Improved user experience with instant navigation
   - Applied to all auth links: header sign-in/signup, dropdown menus, footer links
   - Modified script.js lines 601-603 for direct window.location.href assignment

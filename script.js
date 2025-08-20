@@ -600,7 +600,7 @@ function setupAuthModal() {
 // Open auth modal - now redirects to Bubble app
 function openAuthModal() {
     // Immediate redirect to your Bubble app login page (no delay, no toast)
-    window.location.href = 'https://app.splitlease.app/signup-login-embedded';
+    window.location.href = 'https://app.splitlease.app/signup-login';
 }
 
 // Removed modal-related functions - no longer needed with direct redirect
