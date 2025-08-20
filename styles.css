@@ -1676,12 +1676,13 @@ body {
     right: 0;
     background: var(--bg-purple);
     color: white;
-    padding: 10px 15px;
-    border-radius: 8px;
+    padding: 20px 30px;
+    border-radius: 16px;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transform: translateY(10px);
+    font-size: 1.2rem;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
@@ -2563,25 +2564,30 @@ body {
     /* Floating badge adjustment for mobile */
     .floating-badge {
         right: 10px;
+        width: 120px;
+        height: 120px;
+    }
+    
+    .badge-text-top {
+        font-size: 0.75rem; /* Doubled from 0.375rem for mobile */
+    }
+    
+    .badge-icon {
         width: 60px;
         height: 60px;
     }
     
-    .badge-text-top {
-        font-size: 0.375rem; /* Reduced by 25% from 0.5rem for mobile */
-    }
-    
-    .badge-icon {
-        font-size: 1.2rem;
+    .badge-text-bottom {
+        font-size: 0.9rem; /* Doubled for mobile */
     }
     
     .badge-text-bottom span {
-        font-size: 0.338rem; /* Reduced by 25% from 0.45rem for mobile */
+        font-size: 0.676rem; /* Doubled from 0.338rem for mobile */
     }
     
     .badge-expanded {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.8rem;
+        font-size: 1.5rem;
+        padding: 0.8rem 1.6rem;
     }
     
     /* Mobile modal adjustments */
