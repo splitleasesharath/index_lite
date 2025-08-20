@@ -592,156 +592,31 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = toastStyles;
 document.head.appendChild(styleSheet);
 
-// Auth Modal Functions
+// Auth Modal Functions - Simplified for redirect
 function setupAuthModal() {
-    // Close modal on ESC key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeAuthModal();
-        }
-    });
+    // Modal functionality removed - now redirects directly to Split Lease
 }
 
-// Track the element that opened the modal for focus restoration
-let modalTrigger = null;
-
-// Open auth modal
+// Open auth modal - now redirects directly to Split Lease
 function openAuthModal() {
-    const modal = document.getElementById('authModal');
-    modalTrigger = document.activeElement;
-    modal.classList.add('active');
-    showWelcomeScreen();
-    document.body.style.overflow = 'hidden';
-    
-    // Focus trap setup
-    setTimeout(() => {
-        const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (firstFocusable) {
-            firstFocusable.focus();
-        }
-    }, 100);
-    
-    // Add focus trap
-    modal.addEventListener('keydown', trapFocus);
+    // Immediate redirect to Split Lease login page (no delay, no toast)
+    window.location.href = 'https://www.split.lease/version-test/signup-login-embedded';
 }
 
-// Close auth modal
-function closeAuthModal() {
-    const modal = document.getElementById('authModal');
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-    
-    // Reset forms
-    document.querySelectorAll('.auth-form').forEach(form => {
-        form.reset();
-    });
-    
-    // Remove focus trap
-    modal.removeEventListener('keydown', trapFocus);
-    
-    // Restore focus to trigger element
-    if (modalTrigger) {
-        modalTrigger.focus();
-        modalTrigger = null;
-    }
-}
-
-// Trap focus within modal
-function trapFocus(e) {
-    if (e.key !== 'Tab') return;
-    
-    const modal = document.getElementById('authModal');
-    const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-    const firstFocusable = focusableElements[0];
-    const lastFocusable = focusableElements[focusableElements.length - 1];
-    
-    if (e.shiftKey) {
-        if (document.activeElement === firstFocusable) {
-            e.preventDefault();
-            lastFocusable.focus();
-        }
-    } else {
-        if (document.activeElement === lastFocusable) {
-            e.preventDefault();
-            firstFocusable.focus();
-        }
-    }
-}
-
-// Show welcome screen
-function showWelcomeScreen() {
-    hideAllScreens();
-    document.getElementById('welcomeScreen').classList.add('active');
-}
-
-// Show login form
-function showLoginForm() {
-    hideAllScreens();
-    document.getElementById('loginScreen').classList.add('active');
-}
-
-// Show signup form
-function showSignupForm() {
-    hideAllScreens();
-    document.getElementById('signupScreen').classList.add('active');
-}
-
-// Hide all auth screens
-function hideAllScreens() {
-    document.querySelectorAll('.auth-screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-}
-
-// Toggle password visibility
-function togglePassword(inputId) {
-    const input = document.getElementById(inputId);
-    const toggle = input.parentElement.querySelector('.password-toggle');
-    const eyeIcon = toggle.querySelector('.eye-icon');
-    
-    if (input.type === 'password') {
-        input.type = 'text';
-        eyeIcon.textContent = '🙈';
-    } else {
-        input.type = 'password';
-        eyeIcon.textContent = '👁';
-    }
-}
-
-// Handle login form submission
-function handleLogin(event) {
-    event.preventDefault();
-    
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    if (!email || !password) {
-        showToast('Please fill in all fields');
-        return;
-    }
-    
-    // Simulate login process
-    showToast('Login functionality coming soon!');
-    closeAuthModal();
-}
-
-// Handle signup form submission
-function handleSignup(event) {
-    event.preventDefault();
-    
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const email = document.getElementById('signupEmail').value;
-    
-    if (!firstName || !lastName || !email) {
-        showToast('Please fill in all fields');
-        return;
-    }
-    
-    // Simulate signup process
-    showToast('Registration functionality coming soon!');
-    closeAuthModal();
-}
+// Removed modal-related functions - no longer needed with direct redirect
+// Legacy functions kept empty for compatibility
+function closeAuthModal() {}
+function showWelcomeScreen() {}
+function showLoginForm() {}
+function showSignupForm() {}
+function hideAllScreens() {}
+function switchToLogin() {}
+function switchToSignup() {}
+function togglePasswordVisibility() {}
+function handleAuthSubmit() {}
+function togglePassword() {}
+function handleLogin() {}
+function handleSignup() {}
 
 // Hero Day Selector Functions - Exact Split Lease Replication
 let selectedDays = [];
@@ -771,39 +646,18 @@ function loadStateFromURL() {
 }
 
 function toggleDay(dayIndex) {
-    // Match exact original behavior based on observed patterns
     // Day mapping: Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6
     
-    if (dayIndex === 0) {
-        // Sunday toggle behavior - matches original site patterns
-        if (selectedDays.length === 0) {
-            // First Sunday click: select Monday-Saturday (1,2,3,4,5,6)
-            selectedDays = [1, 2, 3, 4, 5, 6];
-        } else if (JSON.stringify(selectedDays) === JSON.stringify([1, 2, 3, 4, 5, 6])) {
-            // If Monday-Saturday selected, toggle to Tuesday-Saturday
-            selectedDays = [2, 3, 4, 5, 6];
-        } else if (JSON.stringify(selectedDays) === JSON.stringify([2, 3, 4, 5, 6])) {
-            // If Tuesday-Saturday selected, toggle back to Monday-Saturday
-            selectedDays = [1, 2, 3, 4, 5, 6];
-        } else {
-            // For other combinations, toggle Monday
-            if (selectedDays.includes(1)) {
-                selectedDays = selectedDays.filter(d => d !== 1);
-            } else {
-                selectedDays.push(1);
-                selectedDays.sort((a, b) => a - b);
-            }
-        }
+    // Treat Sunday like any other day - simple toggle on/off
+    const dayNumber = dayIndex;
+    
+    if (selectedDays.includes(dayNumber)) {
+        // Remove the day if it's already selected
+        selectedDays = selectedDays.filter(d => d !== dayNumber);
     } else {
-        // Regular day toggle (Monday=1, Tuesday=2, etc.)
-        const dayNumber = dayIndex;
-        
-        if (selectedDays.includes(dayNumber)) {
-            selectedDays = selectedDays.filter(d => d !== dayNumber);
-        } else {
-            selectedDays.push(dayNumber);
-            selectedDays.sort((a, b) => a - b);
-        }
+        // Add the day if it's not selected
+        selectedDays.push(dayNumber);
+        selectedDays.sort((a, b) => a - b);
     }
     
     updateDayBadges();
@@ -814,18 +668,8 @@ function toggleDay(dayIndex) {
 function updateDayBadges() {
     const badges = document.querySelectorAll('.hero-section .day-badge');
     badges.forEach((badge, index) => {
-        // Map visual badges to selected days
-        let isSelected = false;
-        
-        if (index === 0) {
-            // Sunday badge shows active when all weekdays selected
-            isSelected = selectedDays.includes(1) && selectedDays.includes(2) && 
-                        selectedDays.includes(3) && selectedDays.includes(4) && 
-                        selectedDays.includes(5) && selectedDays.includes(6);
-        } else {
-            // Direct mapping for other days
-            isSelected = selectedDays.includes(index);
-        }
+        // Direct mapping for all days: Sunday=0, Monday=1, etc.
+        const isSelected = selectedDays.includes(index);
         
         if (isSelected) {
             badge.classList.add('active');
@@ -877,15 +721,99 @@ function updateCheckinCheckout() {
 function areDaysContinuous(days) {
     if (days.length <= 1) return true;
     
+    // If 6 or more days are selected, they're always continuous
+    if (days.length >= 6) return true;
+    
     const sortedDays = [...days].sort((a, b) => a - b);
     
-    // Simple continuity check for the URL format
-    for (let i = 1; i < sortedDays.length; i++) {
-        if (sortedDays[i] !== sortedDays[i - 1] + 1) {
-            return false;
+    const hasSunday = sortedDays.includes(0);  // Sunday
+    const hasSaturday = sortedDays.includes(6); // Saturday
+    
+    // Implement the Bubble logic:
+    // Case when both Sunday and Saturday are selected (weekSun == 0 && weekSat == 6)
+    if (hasSunday && hasSaturday) {
+        // This is the wrap-around case (Case 2 in Bubble)
+        // Example: Fri-Sat-Sun-Mon should be considered continuous
+        // The days wrap around from Saturday to Sunday
+        
+        // For wrap-around to be continuous, we need to check if removing the gap
+        // between Sunday and Saturday would make all days continuous
+        
+        // Find the first day after Sunday and the last day before Saturday
+        let firstAfterSunday = -1;
+        let lastBeforeSaturday = -1;
+        
+        for (let i = 0; i < sortedDays.length; i++) {
+            const day = sortedDays[i];
+            if (day > 0 && day < 6) {
+                if (firstAfterSunday === -1) {
+                    firstAfterSunday = day;
+                }
+                lastBeforeSaturday = day;
+            }
         }
+        
+        // Check two groups for continuity:
+        // Group 1: From Sunday (0) to the last day before the gap
+        // Group 2: From the first day after the gap to Saturday (6)
+        
+        // Find where the gap is
+        let hasGap = false;
+        let gapStart = -1;
+        let gapEnd = -1;
+        
+        for (let i = 0; i < sortedDays.length - 1; i++) {
+            if (sortedDays[i + 1] - sortedDays[i] > 1) {
+                // Found a gap
+                if (hasGap) {
+                    // More than one gap means not continuous even with wrap
+                    return false;
+                }
+                hasGap = true;
+                gapStart = sortedDays[i];
+                gapEnd = sortedDays[i + 1];
+            }
+        }
+        
+        if (!hasGap) {
+            // No gap found, all days are already continuous
+            return true;
+        }
+        
+        // For wrap-around to work, the gap must be in the middle of the week
+        // and the days at the start and end of the week must connect
+        
+        // The gap should not include Sunday or Saturday
+        if (gapStart === 0 || gapEnd === 6) {
+            // The gap is at the week boundary, check regular continuity
+            const minDay = Math.min(...sortedDays);
+            const maxDay = Math.max(...sortedDays);
+            const expectedDays = [];
+            for (let i = minDay; i <= maxDay; i++) {
+                expectedDays.push(i);
+            }
+            return expectedDays.length === sortedDays.length &&
+                expectedDays.every(day => sortedDays.includes(day));
+        }
+        
+        // If we have a gap in the middle and both Sunday and Saturday,
+        // this represents a wrap-around selection that is continuous
+        return true;
+    } else {
+        // Case 1 in Bubble: Regular continuity check (no wrap-around)
+        // Create the expected continuous range from min to max
+        const minDay = Math.min(...sortedDays);
+        const maxDay = Math.max(...sortedDays);
+        
+        const expectedDays = [];
+        for (let i = minDay; i <= maxDay; i++) {
+            expectedDays.push(i);
+        }
+        
+        // Check if selected days match the expected continuous range
+        return expectedDays.length === sortedDays.length &&
+            expectedDays.every(day => sortedDays.includes(day));
     }
-    return true;
 }
 
 function updateURL() {

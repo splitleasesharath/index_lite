@@ -259,6 +259,30 @@ When making changes, verify:
 4. **COMMIT**: `git commit -m "descriptive message"`
 5. **PUSH**: `git push origin main`
 
+### ATOMIC STEPS AND VERIFICATION CYCLES (MANDATORY):
+**CRITICAL**: For EVERY task, follow these atomic steps with iterative verification:
+
+1. **MINIMUM 3 CYCLES, PREFERABLY 5**: Each task MUST undergo at least 3 verification cycles
+2. **ATOMIC STEPS**: Break every task into smallest possible atomic steps
+3. **ITERATIVE VERIFICATION**: After each change, verify it works before proceeding
+4. **BUILD AND TEST**: Run build/test commands after each atomic step
+5. **FIX AND RECHECK**: If issues found, fix and verify again (counts as new cycle)
+
+**Verification Cycle Pattern**:
+- **Cycle 1**: Initial implementation → Test → Document issues
+- **Cycle 2**: Fix identified issues → Retest → Verify fixes work
+- **Cycle 3**: Final validation → Confirm all requirements met
+- **Cycle 4**: (Preferred) Edge case testing → Handle corner cases
+- **Cycle 5**: (Preferred) Complete integration test → Final confirmation
+
+**Example Workflow**:
+```
+Task: Fix sign-in redirect
+Cycle 1: Remove delay → Test clicking → Works but has flash
+Cycle 2: Remove toast message → Test again → No flash
+Cycle 3: Test in multiple browsers → All working → Task complete
+```
+
 **This workflow applies to**:
 - After EVERY file edit (HTML, CSS, JS, MD)
 - After EVERY new feature addition
