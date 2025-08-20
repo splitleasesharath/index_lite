@@ -25,3 +25,6 @@ nul
 .playground/
 .playwright-mcp/
 node_modules/
+
+# Build output
+dist/
