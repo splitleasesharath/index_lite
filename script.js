@@ -592,20 +592,50 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = toastStyles;
 document.head.appendChild(styleSheet);
 
-// Auth Modal Functions - Simplified for redirect
+// Auth Modal Functions - Now using iframe embedding
 function setupAuthModal() {
-    // Modal functionality removed - now redirects directly to Split Lease
+    // Add ESC key handler to close modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAuthModal();
+        }
+    });
 }
 
-// Open auth modal - now redirects directly to Split Lease
+// Open auth modal with embedded iframe
 function openAuthModal() {
-    // Immediate redirect to Split Lease login page (no delay, no toast)
-    window.location.href = 'https://www.split.lease/version-test/signup-login-embedded';
+    const modal = document.getElementById('authModal');
+    const iframe = document.getElementById('authIframe');
+    
+    // Set iframe source if not already set
+    if (!iframe.src) {
+        iframe.src = 'https://www.split.lease/version-test/signup-login-embedded';
+    }
+    
+    // Show modal
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    
+    // Add active class after a frame for animation
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
 }
 
-// Removed modal-related functions - no longer needed with direct redirect
+// Close auth modal
+function closeAuthModal() {
+    const modal = document.getElementById('authModal');
+    
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // Restore scrolling
+    
+    // Hide modal after animation
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+}
+
 // Legacy functions kept empty for compatibility
-function closeAuthModal() {}
 function showWelcomeScreen() {}
 function showLoginForm() {}
 function showSignupForm() {}

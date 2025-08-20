@@ -466,6 +466,22 @@
 
     <!-- Auth Modal removed - now redirects directly to Split Lease -->
 
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-overlay" onclick="closeAuthModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            <div class="modal-body">
+                <iframe 
+                    id="authIframe"
+                    src=""
+                    style="width: 100%; height: 600px; border: none; border-radius: 8px;"
+                    title="Split Lease Login">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="script.js"></script>
 </body>
