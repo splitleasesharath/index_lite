@@ -146,7 +146,7 @@ function setupListings() {
                 ? selectedDays.join(',') 
                 : '1,2,3,4,5,6';
             
-            const searchUrl = `https://www.split.lease/search?days-selected=${daysParam}`;
+            const searchUrl = `https://app.splitlease.app/search?days-selected=${daysParam}`;
             
             showToast('Loading more rentals...');
             window.open(searchUrl, '_blank');
@@ -172,7 +172,7 @@ function setupListings() {
                 ? selectedDays.join(',') 
                 : '1,2,3,4,5';
             
-            const propertyUrl = `https://www.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
+            const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
             
             showToast(`Opening ${title}...`);
             window.open(propertyUrl, '_blank');
@@ -264,7 +264,7 @@ function createListingCard(listing) {
             ? selectedDays.join(',') 
             : '1,2,3,4,5';
         
-        const propertyUrl = `https://www.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
+        const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
         
         showToast(`Opening ${listing.title}...`);
         window.open(propertyUrl, '_blank');
@@ -600,7 +600,7 @@ function setupAuthModal() {
 // Open auth modal - now redirects to Bubble app
 function openAuthModal() {
     // Immediate redirect to your Bubble app login page (no delay, no toast)
-    window.location.href = 'https://app.splitlease.app/version-test/signup-login-embedded';
+    window.location.href = 'https://app.splitlease.app/signup-login-embedded';
 }
 
 // Removed modal-related functions - no longer needed with direct redirect
@@ -850,7 +850,7 @@ function exploreRentals() {
     const bubbleDays = selectedDays.map(day => day + 1);
     
     // Redirect with selected days using exact format
-    const searchUrl = `https://www.split.lease/search?days-selected=${bubbleDays.join(',')}`;
+    const searchUrl = `https://app.splitlease.app/search?days-selected=${bubbleDays.join(',')}`;
     
     showToast('Redirecting to search results...');
     window.open(searchUrl, '_blank');
@@ -859,7 +859,7 @@ function exploreRentals() {
 function redirectToSearch(daysSelected, preset) {
     // Note: daysSelected here is already a string like "2,3,4,5,6" for weeknight
     // These are already 1-based from the schedule section, so no conversion needed
-    const searchUrl = `https://www.split.lease/search?days-selected=${daysSelected}`;
+    const searchUrl = `https://app.splitlease.app/search?days-selected=${daysSelected}`;
     
     showToast(`Redirecting to ${preset || 'rental'} listings...`);
     window.open(searchUrl, '_blank');
@@ -960,17 +960,17 @@ function setupFooterNavigation() {
     
     // Footer links that navigate to external pages
     const externalLinks = {
-        'Terms of Use': 'https://www.split.lease/policies/terms-of-use',
-        'About Periodic Tenancy': 'https://www.split.lease/about',
-        'About the Team': 'https://www.split.lease/team',
-        'Careers at Split Lease': 'https://www.split.lease/careers',
-        'View Blog': 'https://www.split.lease/blog',
-        'Explore Split Leases': 'https://www.split.lease/search',
-        'Success Stories': 'https://www.split.lease/success-stories',
-        'View FAQ': 'https://www.split.lease/faq',
-        'Legal Section': 'https://www.split.lease/legal',
-        'Guarantees': 'https://www.split.lease/guarantees',
-        'Free House Manual': 'https://www.split.lease/house-manual'
+        'Terms of Use': 'https://app.splitlease.app/policies/terms-of-use',
+        'About Periodic Tenancy': 'https://app.splitlease.app/about',
+        'About the Team': 'https://app.splitlease.app/team',
+        'Careers at Split Lease': 'https://app.splitlease.app/careers',
+        'View Blog': 'https://app.splitlease.app/blog',
+        'Explore Split Leases': 'https://app.splitlease.app/search',
+        'Success Stories': 'https://app.splitlease.app/success-stories',
+        'View FAQ': 'https://app.splitlease.app/faq',
+        'Legal Section': 'https://app.splitlease.app/legal',
+        'Guarantees': 'https://app.splitlease.app/guarantees',
+        'Free House Manual': 'https://app.splitlease.app/house-manual'
     };
     
     // Add click handlers to all footer links

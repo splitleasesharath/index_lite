@@ -9,7 +9,6 @@ async function handleRequest(request) {
   // Define your Bubble app paths
   const bubbleAppPaths = [
     '/app',
-    '/version-test', 
     '/login',
     '/signup',
     '/dashboard',
