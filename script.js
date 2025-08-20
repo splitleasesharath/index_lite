@@ -607,10 +607,39 @@ function openAuthModal() {
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');
     
-    // Set iframe source if not already set
-    if (!iframe.src) {
-        iframe.src = 'https://www.split.lease/version-test/signup-login-embedded';
-    }
+    // Show loading state
+    const modalBody = document.querySelector('.modal-body');
+    
+    // Set iframe source and reload it
+    const iframeUrl = 'https://www.split.lease/version-test/signup-login-embedded';
+    
+    // Alternative URLs to try if the first one doesn't work
+    const alternativeUrls = [
+        'https://split.lease/version-test/signup-login-embedded',
+        'https://www.split.lease/login',
+        'https://split.lease/login'
+    ];
+    
+    let urlIndex = 0;
+    
+    // Force reload the iframe each time
+    iframe.src = '';
+    setTimeout(() => {
+        iframe.src = iframeUrl;
+        console.log('Loading iframe:', iframeUrl);
+    }, 100);
+    
+    // Add load event listener
+    iframe.onload = function() {
+        console.log('Iframe loaded successfully');
+        modalBody.style.background = 'transparent';
+    };
+    
+    // Add error event listener
+    iframe.onerror = function(e) {
+        console.error('Iframe failed to load:', e);
+        modalBody.innerHTML = '<div style="padding: 2rem; text-align: center; color: #666;">Unable to load login page. <a href="' + iframeUrl + '" target="_blank" style="color: var(--primary-color);">Click here to open in new tab</a></div>';
+    };
     
     // Show modal
     modal.style.display = 'block';

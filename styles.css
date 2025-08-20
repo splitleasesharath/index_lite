@@ -1757,6 +1757,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: white;
+    position: relative;
+}
+
+.modal-body::before {
+    content: 'Loading...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #999;
+    font-size: 1rem;
+    z-index: -1;
 }
 
 /* Custom Auth Form Styles */
