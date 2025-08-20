@@ -597,10 +597,10 @@ function setupAuthModal() {
     // Modal functionality removed - now redirects directly to Split Lease
 }
 
-// Open auth modal - now redirects directly to Split Lease
+// Open auth modal - now redirects to Bubble app
 function openAuthModal() {
-    // Immediate redirect to Split Lease login page (no delay, no toast)
-    window.location.href = 'https://www.split.lease/version-test/signup-login-embedded';
+    // Immediate redirect to your Bubble app login page (no delay, no toast)
+    window.location.href = 'https://app.splitlease.app/version-test/signup-login-embedded';
 }
 
 // Removed modal-related functions - no longer needed with direct redirect

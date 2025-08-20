@@ -23,7 +23,7 @@ async function handleRequest(request) {
   
   if (shouldRouteToBubble) {
     // Route to your Bubble app
-    const bubbleUrl = `https://your-bubble-app.bubbleapps.io${url.pathname}${url.search}`
+    const bubbleUrl = `https://app.splitlease.app${url.pathname}${url.search}`
     
     // Fetch from Bubble and return the response
     const response = await fetch(bubbleUrl, {

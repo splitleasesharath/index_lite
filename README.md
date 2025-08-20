@@ -1,6 +1,9 @@
-# Split Lease Clone - index_lite
+# Split Lease Clone
 
 A modern, responsive clone of the Split Lease website built with vanilla HTML, CSS, and JavaScript.
+
+🔗 **Live Site**: [https://splitlease.app](https://splitlease.app)  
+🔗 **Bubble App**: [https://app.splitlease.app](https://app.splitlease.app)
 
 ## Features
 

@@ -6,13 +6,5 @@ https://www.splitlease.app/* https://splitlease.app/:splat 301
 # Force HTTPS
 http://splitlease.app/* https://splitlease.app/:splat 301
 
-# Bubble App Routes (proxy to Bubble)
-# These paths will be proxied to your Bubble app
-/app/* https://your-bubble-app.bubbleapps.io/app/:splat 200
-/version-test/* https://your-bubble-app.bubbleapps.io/version-test/:splat 200
-/login https://your-bubble-app.bubbleapps.io/login 200
-/signup https://your-bubble-app.bubbleapps.io/signup 200
-/api/* https://your-bubble-app.bubbleapps.io/api/:splat 200
-
-# Catch-all for static site
-/* /index.html 200
+# Note: Bubble app is now on subdomain app.splitlease.app
+# No proxy needed - it's handled via DNS A records
