@@ -323,6 +323,27 @@ This ensures continuous deployment, real-time GitHub Pages updates, and complete
 
 All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
 
+### 2025-08-20 (Current Session)
+- **REMOVED SIGN-IN/SIGNUP DELAYS**: Eliminated all delays for immediate redirect
+  - Removed 500ms setTimeout from openAuthModal() function
+  - Removed "Redirecting to Split Lease login..." toast message
+  - Sign-in/signup clicks now immediately redirect to https://www.split.lease/version-test/signup-login-embedded
+  - Improved user experience with instant navigation
+  - Applied to all auth links: header sign-in/signup, dropdown menus, footer links
+  - Modified script.js lines 601-603 for direct window.location.href assignment
+- **FIXED DAY CONTINUITY VALIDATION**: Properly handles wrap-around selections
+  - Fixed areDaysContinuous() function to recognize wrap-around as continuous
+  - Examples: Sun-Mon-Fri-Sat, Fri-Sat-Sun-Mon now correctly identified as continuous
+  - Implemented gap detection logic for wrap-around cases
+  - Only allows single gap in middle of week when both Sunday and Saturday selected
+  - Modified script.js lines 726-821 with new continuity algorithm
+- **ENHANCED DEVELOPMENT PROCESS**: Added mandatory atomic steps and verification cycles
+  - Updated CLAUDE.md with requirement for minimum 3 cycles, preferably 5
+  - Each task must be broken into atomic steps with iterative verification
+  - Added verification cycle pattern: implement → test → fix → retest → validate
+  - Documented in CLAUDE.md lines 262-284 with detailed examples
+  - Established continuous Git workflow: pull → change → commit → push
+
 ### 2025-08-17 (Current Session)
 - **REMOVED STATUE OF LIBERTY ICON**: Removed unnecessary Liberty icon from hero section
   - Icon was added during hero section redesign (commit f8830c5) attempting to match original design
