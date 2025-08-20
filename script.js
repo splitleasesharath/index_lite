@@ -145,7 +145,7 @@ function setupListings() {
             
             const searchUrl = `https://app.splitlease.app/search?days-selected=${daysParam}`;
             
-            window.open(searchUrl, '_blank');
+            window.location.href = searchUrl;
         });
     }
     
@@ -170,7 +170,7 @@ function setupListings() {
             
             const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
             
-            window.open(propertyUrl, '_blank');
+            window.location.href = propertyUrl;
         });
     });
 }
@@ -261,7 +261,7 @@ function createListingCard(listing) {
         
         const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
         
-        window.open(propertyUrl, '_blank');
+        window.location.href = propertyUrl;
     });
     
     return card;
@@ -292,7 +292,7 @@ function handleSupportAction(type) {
             window.location.href = 'tel:1-800-SPLIT-LEASE';
             break;
         case 'faq':
-            window.open('https://app.splitlease.app/faq', '_blank');
+            window.location.href = 'https://app.splitlease.app/faq';
             break;
     }
 }
@@ -786,7 +786,7 @@ function exploreRentals() {
     // Redirect with selected days using exact format
     const searchUrl = `https://app.splitlease.app/search?days-selected=${bubbleDays.join(',')}`;
     
-    window.open(searchUrl, '_blank');
+    window.location.href = searchUrl;
 }
 
 function redirectToSearch(daysSelected, preset) {
@@ -794,7 +794,7 @@ function redirectToSearch(daysSelected, preset) {
     // These are already 1-based from the schedule section, so no conversion needed
     const searchUrl = `https://app.splitlease.app/search?days-selected=${daysSelected}`;
     
-    window.open(searchUrl, '_blank');
+    window.location.href = searchUrl;
 }
 
 // Dropdown Menu Functionality
