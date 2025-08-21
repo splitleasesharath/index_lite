@@ -750,87 +750,58 @@ function openAuthModal() {
         return;
     }
     
-    console.log('Opening auth modal with lazy loading...');
+    // OPTION 1: Direct redirect (fastest - uncomment to use)
+    // window.location.href = 'https://app.splitlease.app/signup-login';
+    // return;
+    
+    // OPTION 2: Keep iframe but show what's loading
+    console.log('Loading iframe URL: https://app.splitlease.app/signup-login');
+    console.log('This is the FULL Bubble.io app (2-3MB) - consider creating a lightweight embed version');
+    
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');
     const loader = document.querySelector('.iframe-loader');
-    const debugDiv = document.getElementById('iframeDebug');
     
     // Check if iframe is already loaded
     const isLoaded = IframeLoader.isLoaded('auth');
-    console.log('Auth iframe status:', IframeLoader.states.auth);
     
     if (isLoaded) {
-        console.log('Auth iframe already loaded - showing instantly');
-        
-        // Hide loader immediately since it's loaded
+        // Already loaded - hide loader immediately
         if (loader) {
             loader.classList.add('hidden');
         }
-        
-        // Update debug status
-        if (debugDiv) {
-            debugDiv.innerHTML = 'Iframe ready - already loaded';
-        }
     } else {
-        console.log('Loading auth iframe on demand...');
-        
-        // Show enhanced loader with progress bar
+        // Show simple loading spinner with URL info
         if (loader) {
-            loader.classList.remove('hidden', 'preloading');
-            loader.classList.add('loading');
+            loader.classList.remove('hidden');
             loader.innerHTML = `
                 <div class="spinner"></div>
-                <p>Loading Split Lease login...</p>
-                <div class="loading-progress">
-                    <div class="loading-progress-bar"></div>
-                </div>
+                <p>Loading Bubble.io app...</p>
+                <p style="font-size: 10px; color: #999; margin-top: 10px;">URL: app.splitlease.app/signup-login</p>
             `;
         }
         
         // Load iframe on demand
         IframeLoader.loadAuthIframe();
         
-        // Update debug status
-        if (debugDiv) {
-            debugDiv.innerHTML = 'Status: Loading on demand...';
+        // Monitor loading with timeout fallback
+        let checkCount = 0;
+        const statusInterval = setInterval(function() {
+            checkCount++;
+            const status = IframeLoader.states.auth;
             
-            // Monitor loading progress
-            let checkCount = 0;
-            const statusInterval = setInterval(function() {
-                checkCount++;
-                const status = IframeLoader.states.auth;
-                
-                if (status === 'LOADED') {
-                    clearInterval(statusInterval);
-                    debugDiv.innerHTML = 'Status: Loaded successfully';
-                    if (loader) {
-                        // Smooth fade out with success message
-                        loader.classList.remove('loading');
-                        loader.innerHTML = '<p style="color: green; font-size: 1.2rem;">✓ Ready!</p>';
-                        setTimeout(() => {
-                            loader.classList.add('hidden');
-                        }, 500);
-                    }
-                } else if (status === 'ERROR') {
-                    clearInterval(statusInterval);
-                    debugDiv.innerHTML = 'Status: Failed to load - falling back to redirect';
-                    if (loader) {
-                        loader.classList.remove('loading');
-                        loader.classList.add('error');
-                        loader.innerHTML = '<p style="color: #d32f2f;">⚠ Loading failed. Redirecting...</p>';
-                    }
-                    // Fallback to direct navigation
-                    setTimeout(() => {
-                        window.location.href = 'https://app.splitlease.app/signup-login';
-                    }, 1500);
-                } else if (checkCount >= 30) {
-                    clearInterval(statusInterval);
-                    debugDiv.innerHTML = 'Status: Timeout - redirecting...';
-                    window.location.href = 'https://app.splitlease.app/signup-login';
+            if (status === 'LOADED') {
+                clearInterval(statusInterval);
+                // Hide loader when loaded
+                if (loader) {
+                    loader.classList.add('hidden');
                 }
-            }, 1000);
-        }
+            } else if (status === 'ERROR' || checkCount >= 15) {
+                clearInterval(statusInterval);
+                // Fallback to direct navigation on error or timeout
+                window.location.href = 'https://app.splitlease.app/signup-login';
+            }
+        }, 1000);
     }
     
     // Force a reflow before adding the class to ensure smooth animation
@@ -843,7 +814,7 @@ function openAuthModal() {
         document.body.style.overflow = 'hidden';
     });
     
-    console.log('🔵 MODAL IS NOW ACTIVE');
+    // Modal is now active
 }
 
 // Close auth modal
