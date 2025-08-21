@@ -1,8 +1,96 @@
 // Split Lease Clone - Interactive JavaScript
 
+// Auth state management
+let isUserLoggedIn = false;
+let authCheckAttempts = 0;
+const MAX_AUTH_CHECK_ATTEMPTS = 3;
+
+// Check authentication status via iframe
+function checkAuthStatus() {
+    console.log('Checking authentication status...');
+    
+    // Try to communicate with the hidden iframe
+    const authCheckIframe = document.getElementById('authCheckIframe');
+    if (authCheckIframe) {
+        // Post message to iframe to check auth
+        try {
+            authCheckIframe.contentWindow.postMessage(
+                { type: 'check-auth-status' },
+                'https://app.splitlease.app'
+            );
+        } catch (e) {
+            console.log('Could not post message to iframe:', e);
+        }
+    }
+    
+    // Timeout fallback - if no response in 3 seconds, assume not logged in
+    setTimeout(() => {
+        if (!isUserLoggedIn && authCheckAttempts < MAX_AUTH_CHECK_ATTEMPTS) {
+            authCheckAttempts++;
+            console.log(`Auth check attempt ${authCheckAttempts} of ${MAX_AUTH_CHECK_ATTEMPTS}`);
+        }
+    }, 3000);
+}
+
+// Handle logged-in state
+function handleLoggedInUser() {
+    console.log('User is logged in! Redirecting...');
+    isUserLoggedIn = true;
+    
+    // Disable sign in and sign up buttons
+    const signInBtns = document.querySelectorAll('.sign-in');
+    const signUpBtns = document.querySelectorAll('.sign-up');
+    
+    signInBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+        btn.textContent = 'Already logged in';
+    });
+    
+    signUpBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+    });
+    
+    // Show logging in popup
+    const loggingPopup = document.getElementById('loggingInPopup');
+    if (loggingPopup) {
+        loggingPopup.classList.add('active');
+    }
+    
+    // Redirect after 1.5 seconds
+    setTimeout(() => {
+        window.location.href = 'https://app.splitlease.app';
+    }, 1500);
+}
+
+// Listen for messages from iframes
+window.addEventListener('message', function(event) {
+    // Only accept messages from the Split Lease domain
+    if (event.origin !== 'https://app.splitlease.app') {
+        return;
+    }
+    
+    console.log('Received message from iframe:', event.data);
+    
+    // Check if user is logged in
+    if (event.data.type === 'auth-status' && event.data.isLoggedIn === true) {
+        handleLoggedInUser();
+    }
+    
+    // Alternative message format
+    if (event.data.authenticated === true || event.data.loggedIn === true) {
+        handleLoggedInUser();
+    }
+});
+
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
+    // Check auth status after a short delay to let iframe load
+    setTimeout(checkAuthStatus, 1000);
 });
 
 // Initialize Application
@@ -641,6 +729,13 @@ function preloadAuthIframe() {
 
 // Open auth modal with embedded iframe
 function openAuthModal() {
+    // Check if user is already logged in
+    if (isUserLoggedIn) {
+        console.log('User already logged in, redirecting...');
+        handleLoggedInUser();
+        return;
+    }
+    
     console.log('🔵 OPENING AUTH MODAL...');
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');

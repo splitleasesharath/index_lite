@@ -467,6 +467,20 @@
         </div>
     </div>
 
+    <!-- Hidden iframe for checking auth status -->
+    <iframe id="authCheckIframe" 
+            src="https://app.splitlease.app" 
+            style="display: none; position: absolute; width: 0; height: 0; border: 0;">
+    </iframe>
+
+    <!-- Logging in popup (non-dismissible) -->
+    <div id="loggingInPopup" class="logging-popup">
+        <div class="logging-popup-content">
+            <div class="spinner"></div>
+            <p>Logging you in...</p>
+        </div>
+    </div>
+
     <!-- Auth Modal with embedded iframe -->
     <div id="authModal" class="auth-modal">
         <div class="auth-modal-content">
