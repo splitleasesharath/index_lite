@@ -594,13 +594,34 @@ function setupModalEvents() {
 // Preload the iframe in background
 function preloadAuthIframe() {
     const iframe = document.getElementById('authIframe');
-    if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
-        console.log('📥 PRELOADING IFRAME IN BACKGROUND...');
-        console.log('📥 Setting iframe src to:', 'https://app.splitlease.app/signup-login');
-        iframe.src = 'https://app.splitlease.app/signup-login';
-        // Don't mark as preloaded here - wait for the load event
+    console.log('🔍 Checking iframe for preload...');
+    console.log('  - iframe exists:', !!iframe);
+    if (iframe) {
+        console.log('  - iframe.src:', iframe.src);
+        console.log('  - iframe.src empty check:', iframe.src === '');
+        console.log('  - window.location.href:', window.location.href);
+    }
+    
+    if (iframe) {
+        // Check if iframe doesn't have a valid source yet
+        // Note: empty src="" becomes the current page URL, so we need to check for that
+        const currentPageUrl = window.location.href;
+        const hasValidSource = iframe.src && 
+                               iframe.src !== '' && 
+                               iframe.src !== currentPageUrl && 
+                               iframe.src !== 'about:blank' &&
+                               !iframe.src.includes('index.html');
+        
+        if (!hasValidSource) {
+            console.log('📥 PRELOADING IFRAME IN BACKGROUND...');
+            console.log('📥 Setting iframe src to:', 'https://app.splitlease.app/signup-login');
+            iframe.src = 'https://app.splitlease.app/signup-login';
+            // Don't mark as preloaded here - wait for the load event
+        } else {
+            console.log('⚠️ IFRAME ALREADY HAS VALID SOURCE:', iframe.src);
+        }
     } else {
-        console.log('⚠️ IFRAME ALREADY HAS SOURCE OR NOT FOUND');
+        console.log('❌ IFRAME NOT FOUND!');
     }
 }
 
@@ -641,7 +662,14 @@ function openAuthModal() {
         }
         
         // Set iframe source if not already set
-        if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
+        const currentPageUrl = window.location.href;
+        const needsSource = !iframe.src || 
+                           iframe.src === '' || 
+                           iframe.src === currentPageUrl || 
+                           iframe.src === 'about:blank' ||
+                           iframe.src.includes('index.html');
+        
+        if (iframe && needsSource) {
             console.log('🔵 SETTING IFRAME SOURCE TO:', 'https://app.splitlease.app/signup-login');
             iframe.src = 'https://app.splitlease.app/signup-login';
             
