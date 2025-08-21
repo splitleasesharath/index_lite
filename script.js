@@ -1339,6 +1339,8 @@ function setupFloatingBadge() {
 window.closeChatWidget = closeChatWidget;
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
+window.openMarketResearchModal = openMarketResearchModal;
+window.closeMarketResearchModal = closeMarketResearchModal;
 window.hideIframeLoader = hideIframeLoader;
 window.showLoginForm = showLoginForm;
 window.showSignupForm = showSignupForm;
