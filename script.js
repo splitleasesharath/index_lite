@@ -713,11 +713,15 @@ function openAuthModal() {
         }
     }
     
-    // Show the modal
-    modal.classList.add('active');
+    // Force a reflow before adding the class to ensure smooth animation
+    modal.offsetHeight;
     
-    // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
+    // Show the modal with smooth animation
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+        // Prevent body scroll when modal is open
+        document.body.style.overflow = 'hidden';
+    });
     
     console.log('🔵 MODAL IS NOW ACTIVE');
 }
