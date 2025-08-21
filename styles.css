@@ -2443,11 +2443,7 @@ body {
     }
     
     .explore-rentals-btn {
-        font-size: 14px;
-        padding: 0.5rem 1rem;
-        margin-right: 0.5rem;
-        min-width: 150px;
-        max-width: 150px;
+        display: none; /* Hide on mobile */
     }
     
     /* Simplify dropdown buttons for mobile */
@@ -2874,25 +2870,30 @@ body {
     
     /* Floating badge adjustment for mobile */
     .floating-badge {
-        bottom: 10px;
-        right: 10px;
+        bottom: 20px; /* Increased from 10px to prevent cutoff */
+        right: 15px; /* Slightly adjusted for better mobile spacing */
         width: 102px; /* Reduced by 50% from 204px */
-        height: 153px; /* Reduced by 25% from 204px */
+        height: auto; /* Changed from fixed height to auto */
+        max-height: 140px; /* Ensure it doesn't get too tall */
     }
     
     .badge-text-top {
         font-size: 0.68rem; /* Reduced by 15% */
     }
     
+    .badge-content {
+        padding: 15px 12px; /* Further reduced for mobile */
+    }
+    
     .badge-icon {
-        font-size: 5.1rem; /* Reduced by 15% from 6rem */
+        font-size: 4rem; /* Further reduced for mobile to prevent cutoff */
         width: auto;
         height: auto;
     }
     
     .badge-icon lottie-player {
-        width: 85px !important; /* Reduced by 15% from 100px */
-        height: 85px !important;
+        width: 70px !important; /* Further reduced for mobile */
+        height: 70px !important;
     }
     
     .badge-text-bottom {
