@@ -1,81 +1,55 @@
 PROPERTY LISTING DETAILS
 ========================
 
-Please fill in the actual details for each property below:
+Actual property details from Split Lease:
 
-LISTING 1
----------
-Title: [e.g., "Luxury Studio in Manhattan"]
-Location: [e.g., "Upper East Side, NYC"]
-Price: [e.g., "$89/night"]
-Bedrooms: [e.g., "Studio" or "1 Bedroom"]
-Bathrooms: [e.g., "1 Bath"]
-Size: [e.g., "450 sq ft"]
-Available Days: [e.g., "Mon-Fri" or "Weekends"]
-Image URL: [URL to property image]
-Property ID: [From Split Lease system]
-Description: [Brief 2-3 sentence description]
-Amenities: [e.g., "WiFi, Kitchen, Laundry, Gym"]
-Special Features: [e.g., "City Views, Balcony, Doorman"]
+LISTING 1 - Central Harlem
+---------------------------
+Title: Central Harlem
+Location: Central Harlem, NYC
+Bedrooms: 2 bedrooms
+Beds: 2 beds
+Bathrooms: 1.5 bathrooms
+Special Features: Free Storage
+Image URL: https://50bf0464e4735aabad1cc8848a0e8b8a.cdn.bubble.io/cdn-cgi/image/w=384,h=349,f=auto,dpr=1,fit=contain,q=75/f1586474661049x471661546147493760/252469_1_6682835-650-570.jpg
+Property ID: 1
 
-LISTING 2
----------
-Title: [e.g., "Cozy 1BR in Brooklyn"]
-Location: [e.g., "Park Slope, Brooklyn"]
-Price: [e.g., "$75/night"]
-Bedrooms: [e.g., "1 Bedroom"]
-Bathrooms: [e.g., "1 Bath"]
-Size: [e.g., "650 sq ft"]
-Available Days: [e.g., "Flexible"]
-Image URL: [URL to property image]
-Property ID: [From Split Lease system]
-Description: [Brief 2-3 sentence description]
-Amenities: [e.g., "WiFi, Kitchen, Laundry"]
-Special Features: [e.g., "Garden Access, Pet Friendly"]
+LISTING 2 - Lenox Hill
+----------------------
+Title: Lenox Hill
+Location: Lenox Hill, NYC
+Bedrooms: 1 bedroom
+Beds: 1 bed
+Bathrooms: 1 bathroom
+Special Features: Free Storage
+Image URL: https://50bf0464e4735aabad1cc8848a0e8b8a.cdn.bubble.io/cdn-cgi/image/w=384,h=349,f=auto,dpr=1,fit=contain,q=75/f1586476046514x804953277638487000/251700_1_6659874-650-570.jpg
+Property ID: 2
 
-LISTING 3
----------
-Title: [e.g., "Modern 2BR in Williamsburg"]
-Location: [e.g., "Williamsburg, Brooklyn"]
-Price: [e.g., "$125/night"]
-Bedrooms: [e.g., "2 Bedrooms"]
-Bathrooms: [e.g., "2 Bath"]
-Size: [e.g., "900 sq ft"]
-Available Days: [e.g., "Weekends Only"]
-Image URL: [URL to property image]
-Property ID: [From Split Lease system]
-Description: [Brief 2-3 sentence description]
-Amenities: [e.g., "WiFi, Full Kitchen, In-unit Laundry"]
-Special Features: [e.g., "Rooftop Access, Modern Renovation"]
+LISTING 3 - Lenox Hill
+----------------------
+Title: Lenox Hill
+Location: Lenox Hill, NYC
+Bedrooms: 1 bedroom
+Beds: 1 bed
+Bathrooms: 1 bathroom
+Special Features: Free Storage
+Image URL: https://50bf0464e4735aabad1cc8848a0e8b8a.cdn.bubble.io/cdn-cgi/image/w=384,h=349,f=auto,dpr=1,fit=contain,q=75/f1586477704981x354683280829307200/228051_1_6211938-650-570.jpg
+Property ID: 3
 
-LISTING 4
----------
-Title: [e.g., "Spacious 3BR Family Home"]
-Location: [e.g., "Astoria, Queens"]
-Price: [e.g., "$150/night"]
-Bedrooms: [e.g., "3 Bedrooms"]
-Bathrooms: [e.g., "2 Bath"]
-Size: [e.g., "1200 sq ft"]
-Available Days: [e.g., "Monthly Rental"]
-Image URL: [URL to property image]
-Property ID: [From Split Lease system]
-Description: [Brief 2-3 sentence description]
-Amenities: [e.g., "WiFi, Full Kitchen, Washer/Dryer, Parking"]
-Special Features: [e.g., "Backyard, Near Subway, Family Friendly"]
+LISTING 4 - Lincoln Square
+--------------------------
+Title: Lincoln Square
+Location: Lincoln Square, NYC
+Bedrooms: 1 bedroom
+Beds: 1 bed
+Bathrooms: 1 bathroom
+Special Features: Free Storage
+Image URL: https://50bf0464e4735aabad1cc8848a0e8b8a.cdn.bubble.io/cdn-cgi/image/w=384,h=349,f=auto,dpr=1,fit=contain,q=75/f1586478474541x338784916509176300/255127_1_6769619-650-570.jpg
+Property ID: 4
 
-NOTES FOR IMPLEMENTATION
-========================
-- Property IDs should match actual Split Lease listings for proper redirect functionality
-- Images should be high quality, 16:9 aspect ratio preferred
-- Prices should reflect periodic tenancy rates (nightly for the selected schedule type)
-- Locations should be specific neighborhoods to help with search/filtering
-- Amenities should highlight features important to short-term renters
-- Available Days should match the periodic tenancy options (Weeknight/Weekend/Monthly)
-
-COLOR/STYLE SUGGESTIONS
-=======================
-- Use gradient placeholders if images aren't available: 
-  - Listing 1: Blue gradient (#4F46E5 to #7C3AED)
-  - Listing 2: Purple gradient (#7C3AED to #DB2777)  
-  - Listing 3: Pink gradient (#DB2777 to #F59E0B)
-  - Listing 4: Orange gradient (#F59E0B to #10B981)
+IMPLEMENTATION STATUS
+=====================
+✅ All 4 listings have been updated in index.html
+✅ Images are loaded from Split Lease CDN
+✅ Property details match provided specifications
+✅ Responsive design maintained for mobile/desktop viewing

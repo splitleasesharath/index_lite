@@ -1228,16 +1228,18 @@ body {
 
 .listing-image {
     width: 100%;
-    height: 250px;
+    aspect-ratio: 4 / 3;
     object-fit: cover;
+    border-radius: 12px 12px 0 0;
 }
 
 .listing-image-placeholder {
     width: 100%;
-    height: 250px;
+    aspect-ratio: 4 / 3;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 12px 12px 0 0;
 }
 
 .listing-details {
@@ -1760,6 +1762,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 
 .auth-modal.active {
@@ -1772,15 +1775,19 @@ body {
     position: relative;
     background: white;
     border-radius: 16px;
-    width: 90%;
-    max-width: 500px;
-    height: 85vh;
-    max-height: 750px;
-    overflow: hidden;
+    width: auto;
+    min-width: 320px;
+    max-width: calc(100vw - 40px);
+    height: auto;
+    min-height: 400px;
+    max-height: 75vh;
+    overflow: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     transform: scale(0.95);
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .auth-modal.active .auth-modal-content {
@@ -1790,13 +1797,15 @@ body {
 
 .iframe-container {
     width: 100%;
-    height: 100%;
+    flex: 1;
     position: relative;
+    min-height: 400px;
 }
 
 .iframe-container iframe {
     width: 100%;
     height: 100%;
+    min-height: 400px;
     border: none;
     border-radius: 16px;
     background: white;
@@ -1885,9 +1894,8 @@ body {
 /* Mobile responsiveness for auth modal */
 @media (max-width: 768px) {
     .auth-modal-content {
-        width: 95%;
-        height: 90vh;
-        max-height: none;
+        width: calc(100vw - 40px);
+        max-height: calc(100vh - 40px);
         border-radius: 12px;
     }
     
@@ -1919,6 +1927,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 
 .market-research-modal.active {
@@ -1931,15 +1940,19 @@ body {
     position: relative;
     background: white;
     border-radius: 16px;
-    width: 90%;
-    max-width: 900px;
-    height: 85vh;
-    max-height: 750px;
-    overflow: hidden;
+    width: auto;
+    min-width: 320px;
+    max-width: calc(100vw - 40px);
+    height: auto;
+    min-height: 400px;
+    max-height: 75vh;
+    overflow: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     transform: scale(0.95);
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .market-research-modal.active .market-research-modal-content {
@@ -1949,13 +1962,15 @@ body {
 
 .market-research-iframe-container {
     width: 100%;
-    height: 100%;
+    flex: 1;
     position: relative;
+    min-height: 400px;
 }
 
 .market-research-iframe-container iframe {
     width: 100%;
     height: 100%;
+    min-height: 400px;
     border: none;
     border-radius: 16px;
     background: white;
@@ -2009,9 +2024,8 @@ body {
 /* Mobile responsiveness for market research modal */
 @media (max-width: 768px) {
     .market-research-modal-content {
-        width: 95%;
-        height: 90vh;
-        max-height: none;
+        width: calc(100vw - 40px);
+        max-height: calc(100vh - 40px);
         border-radius: 12px;
     }
     
