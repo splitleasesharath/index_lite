@@ -588,6 +588,20 @@ function setupModalEvents() {
             console.log('🚀 STARTING IFRAME PRELOAD...');
             preloadAuthIframe();
         }, 2000);
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const authModal = document.getElementById('authModal');
+            const marketResearchModal = document.getElementById('marketResearchModal');
+            
+            if (event.target === authModal) {
+                closeAuthModal();
+            }
+            
+            if (event.target === marketResearchModal) {
+                closeMarketResearchModal();
+            }
+        };
     }
 }
 
@@ -713,6 +727,53 @@ function closeAuthModal() {
     console.log('Closing auth modal...');
     const modal = document.getElementById('authModal');
     modal.classList.remove('active');
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+}
+
+// Market Research Modal Functions
+function openMarketResearchModal() {
+    const modal = document.getElementById('marketResearchModal');
+    const iframe = document.getElementById('marketResearchIframe');
+    const loader = document.querySelector('.market-research-loader');
+    
+    if (modal && iframe) {
+        // Show modal
+        modal.classList.add('active');
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Set iframe source if not already set
+        if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href) {
+            iframe.src = 'https://www.split.lease/embed-ai-drawer';
+            
+            // Show loader
+            if (loader) {
+                loader.classList.remove('hidden');
+            }
+            
+            // Hide loader when iframe loads
+            iframe.onload = function() {
+                if (loader) {
+                    loader.classList.add('hidden');
+                }
+            };
+        } else {
+            // If already loaded, hide loader immediately
+            if (loader) {
+                loader.classList.add('hidden');
+            }
+        }
+    }
+}
+
+function closeMarketResearchModal() {
+    const modal = document.getElementById('marketResearchModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
     
     // Restore body scroll
     document.body.style.overflow = '';

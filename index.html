@@ -432,7 +432,7 @@
     </footer>
 
     <!-- Floating Free Market Research Badge -->
-    <div class="floating-badge">
+    <div class="floating-badge" onclick="openMarketResearchModal()">
         <div class="badge-content">
             <span class="badge-text-top">Free</span>
             <div class="badge-icon">
@@ -451,6 +451,20 @@
             </div>
         </div>
         <div class="badge-expanded">Free Market Research</div>
+    </div>
+
+    <!-- Market Research Modal -->
+    <div id="marketResearchModal" class="market-research-modal">
+        <div class="market-research-modal-content">
+            <button class="market-research-modal-close" onclick="closeMarketResearchModal()">&times;</button>
+            <div class="market-research-iframe-container">
+                <div class="market-research-loader">
+                    <div class="spinner"></div>
+                    <p>Loading Market Research...</p>
+                </div>
+                <iframe id="marketResearchIframe" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
 
     <!-- Auth Modal with embedded iframe -->
