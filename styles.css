@@ -414,18 +414,20 @@ body {
 }
 
 .hero-illustration-left {
-    left: 10%;
+    left: 7%;
     bottom: 5%;
     transform: rotate(-2deg);
-    height: 360px;
+    height: 440px;
+    width: 380px;
 }
 
 .hero-illustration-right {
-    right: 10%;
-    top: -30px;
-    bottom: auto;
+    right: 7%;
+    bottom: 5%;
+    top: auto;
     transform: none;
     height: 440px;
+    width: 400px;
 }
 
 .bridge-illustration,
@@ -497,7 +499,7 @@ body {
     text-align: center;
     background: #f7f8f9;
     border-radius: 0 0 20px 20px;
-    padding: 2.5rem 3rem 2rem;
+    padding: 4rem 3rem 2rem;
     margin-top: 0;
     position: relative;
     z-index: 2;
@@ -578,36 +580,52 @@ body {
     display: flex;
     gap: 0.4rem;
     justify-content: center;
+    align-items: center;
     margin: 0 0 0.75rem 0;
     width: 100%;
 }
 
-.day-badge {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
+.calendar-icon {
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 0.5rem;
+}
+
+.day-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 12px;
+    line-height: 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    background: #E5E7EB;
-    color: #9CA3AF;
-    border: 2px solid transparent;
+    transition: background 0.2s ease-in-out;
+    background-color: #E5E7EB !important;
+    color: #9CA3AF !important;
+    border: none;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .day-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(91, 95, 207, 0.15);
+    background-color: #E5E7EB !important;
+    color: #9CA3AF !important;
 }
 
 .day-badge.active {
-    background: #31135D;
-    color: white;
-    border-color: #31135D;
-    box-shadow: 0 2px 8px rgba(91, 95, 207, 0.25);
+    background-color: #4B47CE !important;
+    color: #ffffff !important;
+}
+
+.day-badge.active:hover {
+    background-color: #4B47CE !important;
+    color: #ffffff !important;
 }
 
 /* Check-in/Check-out Display */
@@ -782,10 +800,7 @@ body {
     color: #9ca3af;
 }
 
-.day-badge:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(49, 19, 93, 0.3);
-}
+/* Removed hover effect to maintain consistent appearance */
 
 /* Schedule card specific hover effects to indicate group selection */
 .schedule-card .day-badge {
