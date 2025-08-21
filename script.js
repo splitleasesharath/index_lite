@@ -533,15 +533,51 @@ function setupAuthModal() {
     // Modal functionality removed - now redirects directly to Split Lease
 }
 
-// Open auth modal - now redirects to Bubble app
+// Open auth modal with embedded iframe
 function openAuthModal() {
-    // Immediate redirect to your Bubble app login page (no delay, no toast)
-    window.location.href = 'https://app.splitlease.app/signup-login';
+    console.log('Opening auth modal with iframe...');
+    const modal = document.getElementById('authModal');
+    const iframe = document.getElementById('authIframe');
+    const loader = document.querySelector('.iframe-loader');
+    
+    // Show loader each time modal opens
+    if (loader) {
+        loader.classList.remove('hidden');
+    }
+    
+    // Set the iframe source if not already set
+    if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank') {
+        console.log('Setting iframe source to Split Lease login...');
+        iframe.src = 'https://app.splitlease.app/signup-login';
+    }
+    
+    // Show the modal
+    modal.classList.add('active');
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    
+    console.log('Modal opened, iframe loading...');
 }
 
-// Removed modal-related functions - no longer needed with direct redirect
-// Legacy functions kept empty for compatibility
-function closeAuthModal() {}
+// Close auth modal
+function closeAuthModal() {
+    console.log('Closing auth modal...');
+    const modal = document.getElementById('authModal');
+    modal.classList.remove('active');
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+}
+
+// Hide iframe loader when content loads
+function hideIframeLoader() {
+    console.log('Iframe loaded, hiding loader...');
+    const loader = document.querySelector('.iframe-loader');
+    if (loader) {
+        loader.classList.add('hidden');
+    }
+}
 
 // Legacy functions kept empty for compatibility
 function showWelcomeScreen() {}
@@ -974,6 +1010,7 @@ function setupFloatingBadge() {
 window.closeChatWidget = closeChatWidget;
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
+window.hideIframeLoader = hideIframeLoader;
 window.showLoginForm = showLoginForm;
 window.showSignupForm = showSignupForm;
 window.togglePassword = togglePassword;

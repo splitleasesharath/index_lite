@@ -1703,8 +1703,8 @@ body {
     transform: translateY(-50%) scale(1.05);
 }
 
-/* Auth Modal Styles */
-.modal {
+/* Auth Modal Styles - Iframe Version */
+.auth-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -1712,37 +1712,75 @@ body {
     right: 0;
     bottom: 0;
     z-index: 9999;
-}
-
-.modal.active {
-    display: block;
-}
-
-.modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
 }
 
-.modal-content {
+.auth-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    height: 85vh;
+    max-height: 750px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.iframe-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.iframe-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 16px;
+}
+
+/* Iframe loader */
+.iframe-loader {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    border-radius: 16px;
-    padding: 0;
-    width: 90%;
-    max-width: 500px;
-    height: 80vh;
-    max-height: 700px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: modalSlideIn 0.3s ease;
+    text-align: center;
+    z-index: 1;
+}
+
+.iframe-loader.hidden {
+    display: none;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--bg-purple);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.iframe-loader p {
+    color: #666;
+    font-size: 1rem;
 }
 
 @keyframes modalSlideIn {
@@ -1756,7 +1794,7 @@ body {
     }
 }
 
-.modal-close {
+.auth-modal-close {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -1776,9 +1814,10 @@ body {
     z-index: 10;
 }
 
-.modal-close:hover {
+.auth-modal-close:hover {
     color: #333;
     background: #f5f5f5;
+    transform: scale(1.1);
 }
 
 /* Custom Auth Form Styles */
