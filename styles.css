@@ -1940,13 +1940,13 @@ body {
     position: relative;
     background: white;
     border-radius: 16px;
-    width: auto;
-    min-width: 320px;
+    width: 480px;
     max-width: calc(100vw - 40px);
     height: auto;
     min-height: 400px;
     max-height: 75vh;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     transform: scale(0.95);
     opacity: 0;
@@ -1965,6 +1965,7 @@ body {
     flex: 1;
     position: relative;
     min-height: 400px;
+    overflow: hidden;
 }
 
 .market-research-iframe-container iframe {
@@ -1972,7 +1973,6 @@ body {
     height: 100%;
     min-height: 400px;
     border: none;
-    border-radius: 16px;
     background: white;
 }
 
