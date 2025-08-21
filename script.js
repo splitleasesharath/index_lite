@@ -537,7 +537,47 @@ function setupAuthModal() {
 // Setup modal events
 function setupModalEvents() {
     const modal = document.getElementById('authModal');
+    const iframe = document.getElementById('authIframe');
+    
     if (modal) {
+        // Preload iframe immediately on page load for faster opening
+        if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
+            console.log('Preloading Split Lease login iframe...');
+            iframe.src = 'https://app.splitlease.app/signup-login';
+            
+            let loadTimeout;
+            
+            // Add load event listener for debugging
+            iframe.addEventListener('load', function() {
+                console.log('Split Lease iframe loaded successfully');
+                clearTimeout(loadTimeout);
+                // Hide loader if it exists
+                const loader = document.querySelector('.iframe-loader');
+                if (loader) {
+                    loader.classList.add('hidden');
+                }
+            });
+            
+            iframe.addEventListener('error', function(e) {
+                console.error('Error loading Split Lease iframe:', e);
+                clearTimeout(loadTimeout);
+                // Show error message
+                const loader = document.querySelector('.iframe-loader');
+                if (loader) {
+                    loader.innerHTML = '<p style="color: red;">Failed to load login page. Please try again.</p>';
+                }
+            });
+            
+            // Set timeout for slow loading (30 seconds)
+            loadTimeout = setTimeout(function() {
+                console.warn('Split Lease iframe is taking long to load...');
+                const loader = document.querySelector('.iframe-loader');
+                if (loader && !loader.classList.contains('hidden')) {
+                    loader.innerHTML = '<div class="spinner"></div><p>Still loading... The page may be slow.</p>';
+                }
+            }, 30000);
+        }
+        
         // Click outside modal to close
         modal.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -556,20 +596,27 @@ function setupModalEvents() {
 
 // Open auth modal with embedded iframe
 function openAuthModal() {
-    console.log('Opening auth modal with iframe...');
+    console.log('Opening auth modal...');
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');
     const loader = document.querySelector('.iframe-loader');
     
-    // Show loader each time modal opens
-    if (loader) {
-        loader.classList.remove('hidden');
-    }
-    
-    // Set the iframe source if not already set
-    if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank') {
-        console.log('Setting iframe source to Split Lease login...');
-        iframe.src = 'https://app.splitlease.app/signup-login';
+    // Check if iframe is already loaded
+    if (iframe && iframe.src && iframe.src !== 'about:blank') {
+        // Iframe is preloaded, hide loader immediately
+        if (loader) {
+            loader.classList.add('hidden');
+        }
+        console.log('Modal opened with preloaded iframe');
+    } else {
+        // Fallback: load iframe now if not preloaded
+        if (loader) {
+            loader.classList.remove('hidden');
+        }
+        if (iframe) {
+            console.log('Loading iframe on demand...');
+            iframe.src = 'https://app.splitlease.app/signup-login';
+        }
     }
     
     // Show the modal
@@ -577,8 +624,6 @@ function openAuthModal() {
     
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
-    
-    console.log('Modal opened, iframe loading...');
 }
 
 // Close auth modal
