@@ -1638,9 +1638,9 @@ body {
 /* Floating Badge */
 .floating-badge {
     position: fixed;
+    bottom: 20px;
     right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    transform: none;
     z-index: 9999;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1650,8 +1650,8 @@ body {
 .badge-content {
     background: #31135D;
     color: white;
-    padding: 25px 20px; /* Adjusted padding for larger icon */
-    border-radius: 30px; /* Doubled from 15px */
+    padding: 21px 17px; /* Reduced by 15% */
+    border-radius: 26px; /* Reduced by 15% */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
@@ -1661,7 +1661,7 @@ body {
 }
 
 .badge-text-top {
-    font-size: 0.7rem; /* Reduced to accommodate larger icon */
+    font-size: 0.6rem; /* Reduced by 15% from 0.7rem */
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1677,14 +1677,14 @@ body {
 }
 
 .badge-icon lottie-player {
-    width: 120px !important; /* Force Lottie size */
-    height: 120px !important;
+    width: 102px !important; /* Reduced by 15% from 120px */
+    height: 102px !important; /* Reduced by 15% from 120px */
 }
 
 .badge-text-bottom {
     display: flex;
     flex-direction: column;
-    font-size: 0.7rem; /* Reduced to accommodate larger icon */
+    font-size: 0.6rem; /* Reduced by 15% from 0.7rem */
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1696,15 +1696,16 @@ body {
     right: 0;
     background: var(--bg-purple);
     color: white;
-    padding: 40px 60px; /* Doubled from 20px 30px */
-    border-radius: 32px; /* Doubled from 16px */
+    padding: 34px 51px; /* Reduced by 15% */
+    border-radius: 27px; /* Reduced by 15% */
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(20px); /* Doubled from 10px */
-    font-size: 2.4rem; /* Doubled from 1.2rem */
+    transform: translateY(20px);
+    font-size: 2rem; /* Reduced by 15% */
     transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Doubled shadow */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Reduced by 15% */
+    margin-bottom: 10px;
 }
 
 .floating-badge:hover .badge-expanded {
@@ -1713,7 +1714,7 @@ body {
 }
 
 .floating-badge:hover {
-    transform: translateY(-50%) scale(1.05);
+    transform: translateY(-5px) scale(1.05);
 }
 
 /* Auth Modal Styles - Iframe Version */
@@ -2656,37 +2657,38 @@ body {
     
     /* Floating badge adjustment for mobile */
     .floating-badge {
+        bottom: 10px;
         right: 10px;
-        width: 240px; /* Doubled from 120px */
-        height: 240px; /* Doubled from 120px */
+        width: 204px; /* Reduced by 15% from 240px */
+        height: 204px; /* Reduced by 15% from 240px */
     }
     
     .badge-text-top {
-        font-size: 0.8rem; /* Reduced for larger icon on mobile */
+        font-size: 0.68rem; /* Reduced by 15% */
     }
     
     .badge-icon {
-        font-size: 6rem; /* Large icon for mobile */
+        font-size: 5.1rem; /* Reduced by 15% from 6rem */
         width: auto;
         height: auto;
     }
     
     .badge-icon lottie-player {
-        width: 100px !important; /* Slightly smaller on mobile */
-        height: 100px !important;
+        width: 85px !important; /* Reduced by 15% from 100px */
+        height: 85px !important;
     }
     
     .badge-text-bottom {
-        font-size: 0.8rem; /* Reduced for larger icon on mobile */
+        font-size: 0.68rem; /* Reduced by 15% */
     }
     
     .badge-text-bottom span {
-        font-size: 0.7rem; /* Reduced for mobile */
+        font-size: 0.6rem; /* Reduced by 15% */
     }
     
     .badge-expanded {
-        font-size: 3rem; /* Doubled from 1.5rem */
-        padding: 1.6rem 3.2rem; /* Doubled from 0.8rem 1.6rem */
+        font-size: 2.55rem; /* Reduced by 15% from 3rem */
+        padding: 1.36rem 2.72rem; /* Reduced by 15% */
     }
     
     /* Mobile modal adjustments */
