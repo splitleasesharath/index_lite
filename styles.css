@@ -383,7 +383,7 @@ body {
 .hero-section {
     position: relative;
     min-height: 400px;
-    margin: 100px auto 3rem;
+    margin: 150px auto 3rem;
     width: 80%;
     max-width: none;
     padding: 0;
@@ -586,8 +586,8 @@ body {
 }
 
 .calendar-icon {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -595,15 +595,15 @@ body {
 }
 
 .day-badge {
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: "Inter", Helvetica, Arial, sans-serif;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 11px !important;
     line-height: 16px;
     cursor: pointer;
     transition: background 0.2s ease-in-out;
@@ -777,18 +777,6 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.day-badge {
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
 
 .day-badge.active {
     background: #31135D;
