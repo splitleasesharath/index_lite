@@ -540,42 +540,27 @@ function setupModalEvents() {
     const iframe = document.getElementById('authIframe');
     
     if (modal) {
-        // Preload iframe immediately on page load for faster opening
-        if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
-            console.log('Preloading Split Lease login iframe...');
-            iframe.src = 'https://app.splitlease.app/signup-login';
-            
-            let loadTimeout;
-            
-            // Add load event listener for debugging
+        // DO NOT PRELOAD - Load only when modal opens
+        
+        // Add load event listener for debugging
+        if (iframe) {
             iframe.addEventListener('load', function() {
-                console.log('Split Lease iframe loaded successfully');
-                clearTimeout(loadTimeout);
-                // Hide loader if it exists
+                console.log('✅ IFRAME LOADED SUCCESSFULLY!');
+                console.log('Iframe URL:', iframe.src);
+                // DO NOT HIDE LOADER - Keep it visible to confirm loading
                 const loader = document.querySelector('.iframe-loader');
                 if (loader) {
-                    loader.classList.add('hidden');
+                    loader.innerHTML = '<p style="color: green; font-weight: bold;">✅ Iframe Loaded Successfully!</p>';
                 }
             });
             
             iframe.addEventListener('error', function(e) {
-                console.error('Error loading Split Lease iframe:', e);
-                clearTimeout(loadTimeout);
-                // Show error message
+                console.error('❌ IFRAME LOAD ERROR:', e);
                 const loader = document.querySelector('.iframe-loader');
                 if (loader) {
-                    loader.innerHTML = '<p style="color: red;">Failed to load login page. Please try again.</p>';
+                    loader.innerHTML = '<p style="color: red; font-weight: bold;">❌ Failed to load iframe!</p>';
                 }
             });
-            
-            // Set timeout for slow loading (30 seconds)
-            loadTimeout = setTimeout(function() {
-                console.warn('Split Lease iframe is taking long to load...');
-                const loader = document.querySelector('.iframe-loader');
-                if (loader && !loader.classList.contains('hidden')) {
-                    loader.innerHTML = '<div class="spinner"></div><p>Still loading... The page may be slow.</p>';
-                }
-            }, 30000);
         }
         
         // Click outside modal to close
@@ -596,26 +581,45 @@ function setupModalEvents() {
 
 // Open auth modal with embedded iframe
 function openAuthModal() {
-    console.log('Opening auth modal...');
+    console.log('🔵 OPENING AUTH MODAL...');
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');
     const loader = document.querySelector('.iframe-loader');
     
-    // Check if iframe is already loaded
-    if (iframe && iframe.src && iframe.src !== 'about:blank') {
-        // Iframe is preloaded, hide loader immediately
-        if (loader) {
-            loader.classList.add('hidden');
-        }
-        console.log('Modal opened with preloaded iframe');
-    } else {
-        // Fallback: load iframe now if not preloaded
-        if (loader) {
-            loader.classList.remove('hidden');
-        }
-        if (iframe) {
-            console.log('Loading iframe on demand...');
-            iframe.src = 'https://app.splitlease.app/signup-login';
+    // Always show loader
+    if (loader) {
+        loader.classList.remove('hidden');
+        loader.innerHTML = '<div class="spinner"></div><p>Loading Split Lease login...</p>';
+    }
+    
+    // Always set iframe source when opening
+    if (iframe) {
+        console.log('🔵 SETTING IFRAME SOURCE TO:', 'https://app.splitlease.app/signup-login');
+        iframe.src = 'https://app.splitlease.app/signup-login';
+        
+        // Add timestamp to track loading
+        console.log('🔵 START TIME:', new Date().toISOString());
+        
+        // Update debug status
+        const debugDiv = document.getElementById('iframeDebug');
+        if (debugDiv) {
+            debugDiv.innerHTML = 'Status: Loading... | URL: https://app.splitlease.app/signup-login';
+            
+            // Monitor iframe status every second
+            let checkCount = 0;
+            const statusInterval = setInterval(function() {
+                checkCount++;
+                debugDiv.innerHTML = `Status: Loading (${checkCount}s) | URL: ${iframe.src || 'not set'}`;
+                
+                // Stop checking after 60 seconds
+                if (checkCount >= 60) {
+                    clearInterval(statusInterval);
+                    debugDiv.innerHTML = `Status: Timeout after 60s | URL: ${iframe.src}`;
+                }
+            }, 1000);
+            
+            // Store interval ID to clear on success
+            iframe.dataset.statusInterval = statusInterval;
         }
     }
     
@@ -624,6 +628,8 @@ function openAuthModal() {
     
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
+    
+    console.log('🔵 MODAL IS NOW ACTIVE - WAITING FOR IFRAME TO LOAD...');
 }
 
 // Close auth modal
@@ -636,13 +642,30 @@ function closeAuthModal() {
     document.body.style.overflow = '';
 }
 
-// Hide iframe loader when content loads
+// DO NOT HIDE - Show success message when iframe loads
 function hideIframeLoader() {
-    console.log('Iframe loaded, hiding loader...');
+    console.log('✅ IFRAME ONLOAD EVENT TRIGGERED!');
     const loader = document.querySelector('.iframe-loader');
+    const iframe = document.getElementById('authIframe');
+    const debugDiv = document.getElementById('iframeDebug');
+    
     if (loader) {
-        loader.classList.add('hidden');
+        // DO NOT HIDE - Show success message instead
+        loader.innerHTML = '<p style="color: green; font-weight: bold;">✅ Iframe Loaded Successfully!</p>';
     }
+    
+    // Clear the status interval
+    if (iframe && iframe.dataset.statusInterval) {
+        clearInterval(parseInt(iframe.dataset.statusInterval));
+    }
+    
+    // Update debug status
+    if (debugDiv) {
+        debugDiv.innerHTML = `✅ SUCCESS! Iframe loaded | URL: ${iframe.src}`;
+    }
+    
+    console.log('✅ END TIME:', new Date().toISOString());
+    console.log('✅ IFRAME CONFIRMED LOADED AT:', iframe.src);
 }
 
 // Legacy functions kept empty for compatibility
