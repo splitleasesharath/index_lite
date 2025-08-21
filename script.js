@@ -789,10 +789,16 @@ function openAuthModal() {
                 if (loader) {
                     loader.classList.add('hidden');
                 }
-            } else if (status === 'ERROR' || checkCount >= 15) {
+            } else if (status === 'ERROR' || checkCount >= 30) {
                 clearInterval(statusInterval);
-                // Fallback to direct navigation on error or timeout
-                window.location.href = 'https://app.splitlease.app/signup-login';
+                // Show error message but keep modal open
+                if (loader) {
+                    loader.innerHTML = `
+                        <p style="color: #d32f2f;">⚠ Loading is taking longer than expected...</p>
+                        <p style="font-size: 14px; margin-top: 10px;">Please check your connection and try again.</p>
+                        <button onclick="closeAuthModal(); setTimeout(openAuthModal, 100);" style="margin-top: 15px; padding: 8px 16px; background: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;">Retry</button>
+                    `;
+                }
             }
         }, 1000);
     }
@@ -871,30 +877,17 @@ function closeMarketResearchModal() {
     document.body.style.overflow = '';
 }
 
-// DO NOT HIDE - Show success message when iframe loads
+// Hide loader when iframe loads
 function hideIframeLoader() {
-    console.log('✅ IFRAME ONLOAD EVENT TRIGGERED!');
     const loader = document.querySelector('.iframe-loader');
-    const iframe = document.getElementById('authIframe');
-    const debugDiv = document.getElementById('iframeDebug');
     
     if (loader) {
-        // DO NOT HIDE - Show success message instead
-        loader.innerHTML = '<p style="color: green; font-weight: bold;">✅ Iframe Loaded Successfully!</p>';
+        // Actually hide the loader to show the iframe content
+        loader.classList.add('hidden');
     }
     
-    // Clear the status interval
-    if (iframe && iframe.dataset.statusInterval) {
-        clearInterval(parseInt(iframe.dataset.statusInterval));
-    }
-    
-    // Update debug status
-    if (debugDiv) {
-        debugDiv.innerHTML = `✅ SUCCESS! Iframe loaded | URL: ${iframe.src}`;
-    }
-    
-    console.log('✅ END TIME:', new Date().toISOString());
-    console.log('✅ IFRAME CONFIRMED LOADED AT:', iframe.src);
+    // Update IframeLoader state
+    IframeLoader.states.auth = 'LOADED';
 }
 
 // Legacy functions kept empty for compatibility
