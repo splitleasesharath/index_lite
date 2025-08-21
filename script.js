@@ -750,13 +750,7 @@ function openAuthModal() {
         return;
     }
     
-    // OPTION 1: Direct redirect (fastest - uncomment to use)
-    // window.location.href = 'https://app.splitlease.app/signup-login';
-    // return;
-    
-    // OPTION 2: Keep iframe but show what's loading
-    console.log('Loading iframe URL: https://app.splitlease.app/signup-login');
-    console.log('This is the FULL Bubble.io app (2-3MB) - consider creating a lightweight embed version');
+    // Continue with lazy loading iframe approach
     
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');
@@ -776,8 +770,7 @@ function openAuthModal() {
             loader.classList.remove('hidden');
             loader.innerHTML = `
                 <div class="spinner"></div>
-                <p>Loading Bubble.io app...</p>
-                <p style="font-size: 10px; color: #999; margin-top: 10px;">URL: app.splitlease.app/signup-login</p>
+                <p>Loading...</p>
             `;
         }
         
