@@ -829,6 +829,251 @@ function togglePassword() {}
 function handleLogin() {}
 function handleSignup() {}
 
+// Auth State Discovery System - Hybrid Approach
+const AuthStateManager = {
+    isLoggedIn: false,
+    lastCheckTime: null,
+    checkInProgress: false,
+    
+    // Initialize auth state checking after page load
+    init() {
+        // Run after page is fully loaded to avoid any impact on page load time
+        window.addEventListener('load', () => {
+            this.performInstantCheck();
+            this.scheduleLazyVerification();
+        });
+    },
+    
+    // Step 1: Instant check using localStorage (0ms impact)
+    performInstantCheck() {
+        const lastAuth = localStorage.getItem('split_lease_last_auth');
+        const authExpiry = localStorage.getItem('split_lease_auth_expiry');
+        
+        if (lastAuth && authExpiry) {
+            const now = Date.now();
+            const expiryTime = parseInt(authExpiry);
+            
+            // Check if auth is still valid (within 24 hours)
+            if (now < expiryTime) {
+                this.isLoggedIn = true;
+                this.updateUIForLoggedInState();
+                console.log('Auth state: Likely logged in (from cache)');
+            } else {
+                // Auth expired, clean up
+                localStorage.removeItem('split_lease_last_auth');
+                localStorage.removeItem('split_lease_auth_expiry');
+                console.log('Auth state: Cache expired');
+            }
+        } else {
+            console.log('Auth state: No cached auth found');
+        }
+    },
+    
+    // Step 2: Lazy verification in background (after 2 seconds)
+    scheduleLazyVerification() {
+        setTimeout(() => {
+            if (!this.checkInProgress) {
+                this.performBackgroundCheck();
+            }
+        }, 2000);
+    },
+    
+    // Background verification using Bubble API
+    performBackgroundCheck() {
+        this.checkInProgress = true;
+        console.log('Auth state: Starting background verification...');
+        
+        const timestamp = Date.now();
+        
+        // Try to fetch current user data from Bubble API
+        // This endpoint returns user data if logged in, or empty/error if not
+        fetch('https://app.splitlease.app/version-test/api/1.1/obj/user', {
+            method: 'GET',
+            credentials: 'include', // Include cookies for auth
+            headers: {
+                'Accept': 'application/json',
+            },
+            mode: 'cors'
+        })
+        .then(response => {
+            console.log('Auth check response status:', response.status);
+            
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Not authenticated');
+            }
+        })
+        .then(data => {
+            // Check if we got actual user data
+            // Bubble returns an object with 'response' containing user records
+            const hasUserData = data && data.response && 
+                               data.response.results && 
+                               data.response.results.length > 0;
+            
+            console.log('Auth check data received:', hasUserData ? 'User data found' : 'No user data');
+            
+            const wasLoggedIn = this.isLoggedIn;
+            this.isLoggedIn = hasUserData;
+            
+            if (hasUserData) {
+                // User is logged in
+                localStorage.setItem('split_lease_last_auth', timestamp.toString());
+                localStorage.setItem('split_lease_auth_expiry', (timestamp + 86400000).toString()); // 24 hours
+                
+                if (!wasLoggedIn) {
+                    this.updateUIForLoggedInState();
+                } else {
+                    console.log('Auth state: Still logged in');
+                }
+            } else {
+                // No user data means not logged in
+                localStorage.removeItem('split_lease_last_auth');
+                localStorage.removeItem('split_lease_auth_expiry');
+                
+                if (wasLoggedIn) {
+                    this.updateUIForLoggedOutState();
+                } else {
+                    console.log('Auth state: Not logged in');
+                }
+            }
+            
+            this.checkInProgress = false;
+            this.lastCheckTime = timestamp;
+        })
+        .catch(error => {
+            console.log('Auth check error:', error.message);
+            
+            // Error means not authenticated or CORS issue
+            // For CORS issues, we'll fall back to iframe method
+            if (error.message.includes('CORS') || error.message.includes('NetworkError')) {
+                console.log('CORS issue detected, trying iframe method...');
+                this.performIframeCheck();
+            } else {
+                // Assume logged out
+                const wasLoggedIn = this.isLoggedIn;
+                this.isLoggedIn = false;
+                
+                localStorage.removeItem('split_lease_last_auth');
+                localStorage.removeItem('split_lease_auth_expiry');
+                
+                if (wasLoggedIn) {
+                    this.updateUIForLoggedOutState();
+                }
+                console.log('Auth state: Not logged in');
+                
+                this.checkInProgress = false;
+                this.lastCheckTime = timestamp;
+            }
+        });
+        
+        // Timeout fallback - assume logged out if no response in 5 seconds
+        setTimeout(() => {
+            if (this.checkInProgress) {
+                console.log('Auth state: Check timeout - assuming logged out');
+                this.isLoggedIn = false;
+                localStorage.removeItem('split_lease_last_auth');
+                localStorage.removeItem('split_lease_auth_expiry');
+                this.updateUIForLoggedOutState();
+                this.checkInProgress = false;
+            }
+        }, 5000);
+    },
+    
+    // Fallback iframe check method if CORS fails
+    performIframeCheck() {
+        console.log('Auth state: Using iframe fallback method...');
+        
+        // Create a minimal iframe to check auth
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.src = 'https://app.splitlease.app/version-test/api/1.1/obj/user';
+        
+        const timestamp = Date.now();
+        let checkComplete = false;
+        
+        iframe.onload = () => {
+            if (!checkComplete) {
+                try {
+                    // Try to access iframe content (will fail for CORS but that's ok)
+                    // The fact it loaded means the request succeeded
+                    console.log('Auth state: Iframe loaded successfully');
+                    this.isLoggedIn = true;
+                    localStorage.setItem('split_lease_last_auth', timestamp.toString());
+                    localStorage.setItem('split_lease_auth_expiry', (timestamp + 86400000).toString());
+                    this.updateUIForLoggedInState();
+                } catch (e) {
+                    // Can't access content but load succeeded - likely authenticated
+                    console.log('Auth state: Iframe loaded (CORS protected)');
+                }
+                checkComplete = true;
+                document.body.removeChild(iframe);
+                this.checkInProgress = false;
+            }
+        };
+        
+        iframe.onerror = () => {
+            if (!checkComplete) {
+                console.log('Auth state: Iframe failed - not logged in');
+                this.isLoggedIn = false;
+                localStorage.removeItem('split_lease_last_auth');
+                localStorage.removeItem('split_lease_auth_expiry');
+                this.updateUIForLoggedOutState();
+                checkComplete = true;
+                document.body.removeChild(iframe);
+                this.checkInProgress = false;
+            }
+        };
+        
+        document.body.appendChild(iframe);
+        
+        // Clean up after 3 seconds if nothing happens
+        setTimeout(() => {
+            if (!checkComplete) {
+                console.log('Auth state: Iframe timeout');
+                if (document.body.contains(iframe)) {
+                    document.body.removeChild(iframe);
+                }
+                this.checkInProgress = false;
+            }
+        }, 3000);
+    },
+    
+    // Update UI to reflect logged-in state
+    updateUIForLoggedInState() {
+        // Just log for now - no UI changes
+        console.log('✅ User is LOGGED IN');
+    },
+    
+    // Update UI to reflect logged-out state  
+    updateUIForLoggedOutState() {
+        // Just log for now - no UI changes
+        console.log('❌ User is LOGGED OUT');
+    },
+    
+    // Manual check method (can be called on demand)
+    checkNow() {
+        if (!this.checkInProgress) {
+            this.performBackgroundCheck();
+        }
+        return this.isLoggedIn;
+    },
+    
+    // Get current auth state
+    getState() {
+        return {
+            isLoggedIn: this.isLoggedIn,
+            lastCheck: this.lastCheckTime,
+            checking: this.checkInProgress
+        };
+    }
+};
+
+// Initialize auth state discovery
+AuthStateManager.init();
+
 // Hero Day Selector Functions - Exact Split Lease Replication
 let selectedDays = [];
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -1325,6 +1570,7 @@ window.closeAuthModal = closeAuthModal;
 window.openMarketResearchModal = openMarketResearchModal;
 window.closeMarketResearchModal = closeMarketResearchModal;
 window.hideIframeLoader = hideIframeLoader;
+window.AuthStateManager = AuthStateManager;
 window.showLoginForm = showLoginForm;
 window.showSignupForm = showSignupForm;
 window.togglePassword = togglePassword;
