@@ -1646,7 +1646,7 @@ body {
 .badge-content {
     background: #31135D;
     color: white;
-    padding: 30px; /* Doubled from 15px */
+    padding: 25px 20px; /* Adjusted padding for larger icon */
     border-radius: 30px; /* Doubled from 15px */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -1657,24 +1657,33 @@ body {
 }
 
 .badge-text-top {
-    font-size: 1.12rem; /* Doubled from 0.56rem */
+    font-size: 0.7rem; /* Reduced to accommodate larger icon */
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 2px; /* Doubled from 1px */
+    letter-spacing: 1px;
 }
 
 .badge-icon {
-    font-size: 4rem; /* Doubled from 2rem */
-    margin: 10px 0; /* Doubled from 5px */
+    font-size: 8rem; /* Doubled again from 4rem for larger atom */
+    margin: 5px 0; /* Reduced margin to fit */
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge-icon lottie-player {
+    width: 120px !important; /* Force Lottie size */
+    height: 120px !important;
 }
 
 .badge-text-bottom {
     display: flex;
     flex-direction: column;
-    font-size: 1.12rem; /* Doubled from 0.56rem */
+    font-size: 0.7rem; /* Reduced to accommodate larger icon */
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 2px; /* Doubled from 1px */
+    letter-spacing: 1px;
 }
 
 .badge-expanded {
@@ -2649,20 +2658,26 @@ body {
     }
     
     .badge-text-top {
-        font-size: 1.5rem; /* Doubled from 0.75rem for mobile */
+        font-size: 0.8rem; /* Reduced for larger icon on mobile */
     }
     
     .badge-icon {
-        width: 120px; /* Doubled from 60px */
-        height: 120px; /* Doubled from 60px */
+        font-size: 6rem; /* Large icon for mobile */
+        width: auto;
+        height: auto;
+    }
+    
+    .badge-icon lottie-player {
+        width: 100px !important; /* Slightly smaller on mobile */
+        height: 100px !important;
     }
     
     .badge-text-bottom {
-        font-size: 1.8rem; /* Doubled from 0.9rem for mobile */
+        font-size: 0.8rem; /* Reduced for larger icon on mobile */
     }
     
     .badge-text-bottom span {
-        font-size: 1.352rem; /* Doubled from 0.676rem for mobile */
+        font-size: 0.7rem; /* Reduced for mobile */
     }
     
     .badge-expanded {
