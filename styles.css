@@ -2655,45 +2655,9 @@ body {
         transform: scale(0.98);
     }
     
-    /* App download section on mobile */
+    /* Hide app download section on mobile */
     .app-download-section {
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 2rem 1rem;
-    }
-    
-    .app-card,
-    .alexa-card {
-        flex-direction: column;
-        padding: 1.5rem;
-        text-align: center;
-    }
-    
-    .app-card .app-content,
-    .alexa-card .alexa-content {
-        order: 2;
-        margin-top: 1rem;
-    }
-    
-    .app-card img,
-    .alexa-card img {
-        order: 1;
-        width: 80px;
-        height: 80px;
-        margin: 0 auto;
-    }
-    
-    .app-tagline,
-    .alexa-tagline {
-        font-size: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .app-store-btn,
-    .alexa-btn {
-        display: inline-flex;
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
+        display: none;
     }
 
     .footer-bottom {
