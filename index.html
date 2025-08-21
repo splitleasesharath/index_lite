@@ -467,11 +467,7 @@
         </div>
     </div>
 
-    <!-- Hidden iframe for checking auth status -->
-    <iframe id="authCheckIframe" 
-            src="https://app.splitlease.app" 
-            style="display: none; position: absolute; width: 0; height: 0; border: 0;">
-    </iframe>
+    <!-- Auth status handled via lightweight localStorage/cookie check - iframe removed for performance -->
 
     <!-- Logging in popup (non-dismissible) -->
     <div id="loggingInPopup" class="logging-popup">

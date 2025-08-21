@@ -5,31 +5,32 @@ let isUserLoggedIn = false;
 let authCheckAttempts = 0;
 const MAX_AUTH_CHECK_ATTEMPTS = 3;
 
-// Check authentication status via iframe
+// Lightweight authentication status check (no iframe required)
 function checkAuthStatus() {
-    console.log('Checking authentication status...');
+    console.log('Checking authentication status via localStorage/cookies...');
     
-    // Try to communicate with the hidden iframe
-    const authCheckIframe = document.getElementById('authCheckIframe');
-    if (authCheckIframe) {
-        // Post message to iframe to check auth
-        try {
-            authCheckIframe.contentWindow.postMessage(
-                { type: 'check-auth-status' },
-                'https://app.splitlease.app'
-            );
-        } catch (e) {
-            console.log('Could not post message to iframe:', e);
-        }
+    // Check localStorage for auth token or session
+    const authToken = localStorage.getItem('splitlease_auth_token');
+    const sessionId = localStorage.getItem('splitlease_session_id');
+    const lastAuthTime = localStorage.getItem('splitlease_last_auth');
+    
+    // Check cookies as fallback
+    const authCookie = document.cookie.split('; ').find(row => row.startsWith('splitlease_auth='));
+    
+    // Validate session age (24 hours)
+    const sessionValid = lastAuthTime && 
+        (Date.now() - parseInt(lastAuthTime)) < 24 * 60 * 60 * 1000;
+    
+    if ((authToken || sessionId || authCookie) && sessionValid) {
+        console.log('Found valid auth session');
+        isUserLoggedIn = true;
+        // Optionally validate with lightweight API call in future
+    } else {
+        console.log('No valid auth session found');
+        isUserLoggedIn = false;
     }
     
-    // Timeout fallback - if no response in 3 seconds, assume not logged in
-    setTimeout(() => {
-        if (!isUserLoggedIn && authCheckAttempts < MAX_AUTH_CHECK_ATTEMPTS) {
-            authCheckAttempts++;
-            console.log(`Auth check attempt ${authCheckAttempts} of ${MAX_AUTH_CHECK_ATTEMPTS}`);
-        }
-    }, 3000);
+    return isUserLoggedIn;
 }
 
 // Handle logged-in state
@@ -89,8 +90,8 @@ window.addEventListener('message', function(event) {
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
-    // Check auth status after a short delay to let iframe load
-    setTimeout(checkAuthStatus, 1000);
+    // Check auth status immediately (no iframe to wait for)
+    checkAuthStatus();
 });
 
 // Initialize Application
@@ -628,32 +629,8 @@ function setupModalEvents() {
     const iframe = document.getElementById('authIframe');
     
     if (modal) {
-        // Add load event listener for debugging
-        if (iframe) {
-            iframe.addEventListener('load', function() {
-                console.log('✅ IFRAME LOADED SUCCESSFULLY!');
-                console.log('Iframe URL:', iframe.src);
-                
-                // Mark as preloaded if it has a valid source
-                if (iframe.src && iframe.src !== 'about:blank') {
-                    iframe.dataset.preloaded = 'true';
-                    console.log('🟢 IFRAME MARKED AS PRELOADED');
-                }
-                
-                // DO NOT HIDE LOADER - Keep it visible to confirm loading
-                const loader = document.querySelector('.iframe-loader');
-                if (loader) {
-                    loader.innerHTML = '<p style="color: green; font-weight: bold;">✅ Iframe Loaded Successfully!</p>';
-                }
-            });
-            
-            iframe.addEventListener('error', function(e) {
-                console.error('❌ IFRAME LOAD ERROR:', e);
-                const loader = document.querySelector('.iframe-loader');
-                if (loader) {
-                    loader.innerHTML = '<p style="color: red; font-weight: bold;">❌ Failed to load iframe!</p>';
-                }
-            });
+        // Event listeners are now handled by IframeLoader.loadAuthIframe()
+        // This ensures events are only added when iframe is actually loaded
         }
         
         // Click outside modal to close
@@ -670,12 +647,8 @@ function setupModalEvents() {
             }
         });
         
-        // PRELOAD IFRAME after 2 seconds delay
-        console.log('⏰ SCHEDULING IFRAME PRELOAD IN 2 SECONDS...');
-        setTimeout(function() {
-            console.log('🚀 STARTING IFRAME PRELOAD...');
-            preloadAuthIframe();
-        }, 2000);
+        // Intent-based preloading will be added in Phase 3
+        // No automatic preloading to improve performance
         
         // Close modals when clicking outside
         window.onclick = function(event) {
@@ -693,76 +666,77 @@ function setupModalEvents() {
     }
 }
 
-// Preload the iframe in background
-function preloadAuthIframe() {
-    const iframe = document.getElementById('authIframe');
-    console.log('🔍 Checking iframe for preload...');
-    console.log('  - iframe exists:', !!iframe);
-    if (iframe) {
-        console.log('  - iframe.src:', iframe.src);
-        console.log('  - iframe.src empty check:', iframe.src === '');
-        console.log('  - window.location.href:', window.location.href);
-    }
+// Iframe loading state management
+const IframeLoader = {
+    states: {
+        auth: 'NOT_LOADED',
+        marketResearch: 'NOT_LOADED'
+    },
     
-    if (iframe) {
-        // Check if iframe doesn't have a valid source yet
-        // Note: empty src="" becomes the current page URL, so we need to check for that
-        const currentPageUrl = window.location.href;
-        const hasValidSource = iframe.src && 
-                               iframe.src !== '' && 
-                               iframe.src !== currentPageUrl && 
-                               iframe.src !== 'about:blank' &&
-                               !iframe.src.includes('index.html');
-        
-        if (!hasValidSource) {
-            console.log('📥 PRELOADING IFRAME IN BACKGROUND...');
-            console.log('📥 Setting iframe src to:', 'https://app.splitlease.app/signup-login');
-            iframe.src = 'https://app.splitlease.app/signup-login';
-            // Don't mark as preloaded here - wait for the load event
-        } else {
-            console.log('⚠️ IFRAME ALREADY HAS VALID SOURCE:', iframe.src);
+    // Load iframe on demand only
+    loadAuthIframe() {
+        if (this.states.auth !== 'NOT_LOADED') {
+            console.log('Auth iframe already loaded or loading');
+            return;
         }
-    } else {
-        console.log('❌ IFRAME NOT FOUND!');
+        
+        const iframe = document.getElementById('authIframe');
+        if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
+            console.log('Loading auth iframe on demand...');
+            this.states.auth = 'LOADING';
+            iframe.src = 'https://app.splitlease.app/signup-login';
+            
+            // Update state when loaded
+            iframe.addEventListener('load', () => {
+                this.states.auth = 'LOADED';
+                console.log('Auth iframe loaded successfully');
+            }, { once: true });
+            
+            iframe.addEventListener('error', () => {
+                this.states.auth = 'ERROR';
+                console.error('Auth iframe failed to load');
+            }, { once: true });
+        }
+    },
+    
+    isLoaded(type) {
+        return this.states[type] === 'LOADED';
     }
-}
+};
 
-// Open auth modal with embedded iframe
+// Open auth modal with on-demand iframe loading
 function openAuthModal() {
-    // Check if user is already logged in
-    if (isUserLoggedIn) {
+    // Check if user is already logged in via lightweight check
+    if (checkAuthStatus()) {
         console.log('User already logged in, redirecting...');
         handleLoggedInUser();
         return;
     }
     
-    console.log('🔵 OPENING AUTH MODAL...');
+    console.log('Opening auth modal with lazy loading...');
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');
     const loader = document.querySelector('.iframe-loader');
     const debugDiv = document.getElementById('iframeDebug');
     
-    // Check if iframe is preloaded
-    const isPreloaded = iframe && iframe.dataset.preloaded === 'true';
-    console.log('🔍 PRELOAD STATUS:', isPreloaded ? 'YES - INSTANT OPEN!' : 'NO - NEED TO LOAD');
+    // Check if iframe is already loaded
+    const isLoaded = IframeLoader.isLoaded('auth');
+    console.log('Auth iframe status:', IframeLoader.states.auth);
     
-    if (isPreloaded) {
-        console.log('⚡ IFRAME IS PRELOADED - OPENING INSTANTLY!');
+    if (isLoaded) {
+        console.log('Auth iframe already loaded - showing instantly');
         
-        // Hide loader immediately since it's preloaded
+        // Hide loader immediately since it's loaded
         if (loader) {
-            loader.innerHTML = '<p style="color: green; font-weight: bold;">✅ Iframe Already Loaded!</p>';
-            setTimeout(function() {
-                loader.classList.add('hidden');
-            }, 500); // Show success briefly then hide
+            loader.classList.add('hidden');
         }
         
         // Update debug status
         if (debugDiv) {
-            debugDiv.innerHTML = '⚡ INSTANT OPEN - Iframe was preloaded! | URL: https://app.splitlease.app/signup-login';
+            debugDiv.innerHTML = 'Iframe ready - already loaded';
         }
     } else {
-        console.log('🔄 IFRAME NOT PRELOADED - LOADING NOW...');
+        console.log('Loading auth iframe on demand...');
         
         // Show loader
         if (loader) {
@@ -770,41 +744,38 @@ function openAuthModal() {
             loader.innerHTML = '<div class="spinner"></div><p>Loading Split Lease login...</p>';
         }
         
-        // Set iframe source if not already set
-        const currentPageUrl = window.location.href;
-        const needsSource = !iframe.src || 
-                           iframe.src === '' || 
-                           iframe.src === currentPageUrl || 
-                           iframe.src === 'about:blank' ||
-                           iframe.src.includes('index.html');
+        // Load iframe on demand
+        IframeLoader.loadAuthIframe();
         
-        if (iframe && needsSource) {
-            console.log('🔵 SETTING IFRAME SOURCE TO:', 'https://app.splitlease.app/signup-login');
-            iframe.src = 'https://app.splitlease.app/signup-login';
-            
-            // Add timestamp to track loading
-            console.log('🔵 START TIME:', new Date().toISOString());
-        }
-        
-        // Update debug status with timer
+        // Update debug status
         if (debugDiv) {
-            debugDiv.innerHTML = 'Status: Loading... | URL: https://app.splitlease.app/signup-login';
+            debugDiv.innerHTML = 'Status: Loading on demand...';
             
-            // Monitor iframe status every second
+            // Monitor loading progress
             let checkCount = 0;
             const statusInterval = setInterval(function() {
                 checkCount++;
-                debugDiv.innerHTML = `Status: Loading (${checkCount}s) | URL: ${iframe.src || 'not set'}`;
+                const status = IframeLoader.states.auth;
                 
-                // Stop checking after 60 seconds
-                if (checkCount >= 60) {
+                if (status === 'LOADED') {
                     clearInterval(statusInterval);
-                    debugDiv.innerHTML = `Status: Timeout after 60s | URL: ${iframe.src}`;
+                    debugDiv.innerHTML = 'Status: Loaded successfully';
+                    if (loader) {
+                        loader.classList.add('hidden');
+                    }
+                } else if (status === 'ERROR') {
+                    clearInterval(statusInterval);
+                    debugDiv.innerHTML = 'Status: Failed to load - falling back to redirect';
+                    // Fallback to direct navigation
+                    setTimeout(() => {
+                        window.location.href = 'https://app.splitlease.app/signup-login';
+                    }, 1000);
+                } else if (checkCount >= 30) {
+                    clearInterval(statusInterval);
+                    debugDiv.innerHTML = 'Status: Timeout - redirecting...';
+                    window.location.href = 'https://app.splitlease.app/signup-login';
                 }
             }, 1000);
-            
-            // Store interval ID to clear on success
-            iframe.dataset.statusInterval = statusInterval;
         }
     }
     
