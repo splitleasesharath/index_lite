@@ -540,13 +540,18 @@ function setupModalEvents() {
     const iframe = document.getElementById('authIframe');
     
     if (modal) {
-        // DO NOT PRELOAD - Load only when modal opens
-        
         // Add load event listener for debugging
         if (iframe) {
             iframe.addEventListener('load', function() {
                 console.log('✅ IFRAME LOADED SUCCESSFULLY!');
                 console.log('Iframe URL:', iframe.src);
+                
+                // Mark as preloaded if it has a valid source
+                if (iframe.src && iframe.src !== 'about:blank') {
+                    iframe.dataset.preloaded = 'true';
+                    console.log('🟢 IFRAME MARKED AS PRELOADED');
+                }
+                
                 // DO NOT HIDE LOADER - Keep it visible to confirm loading
                 const loader = document.querySelector('.iframe-loader');
                 if (loader) {
@@ -576,6 +581,26 @@ function setupModalEvents() {
                 closeAuthModal();
             }
         });
+        
+        // PRELOAD IFRAME after 2 seconds delay
+        console.log('⏰ SCHEDULING IFRAME PRELOAD IN 2 SECONDS...');
+        setTimeout(function() {
+            console.log('🚀 STARTING IFRAME PRELOAD...');
+            preloadAuthIframe();
+        }, 2000);
+    }
+}
+
+// Preload the iframe in background
+function preloadAuthIframe() {
+    const iframe = document.getElementById('authIframe');
+    if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
+        console.log('📥 PRELOADING IFRAME IN BACKGROUND...');
+        console.log('📥 Setting iframe src to:', 'https://app.splitlease.app/signup-login');
+        iframe.src = 'https://app.splitlease.app/signup-login';
+        // Don't mark as preloaded here - wait for the load event
+    } else {
+        console.log('⚠️ IFRAME ALREADY HAS SOURCE OR NOT FOUND');
     }
 }
 
@@ -585,23 +610,46 @@ function openAuthModal() {
     const modal = document.getElementById('authModal');
     const iframe = document.getElementById('authIframe');
     const loader = document.querySelector('.iframe-loader');
+    const debugDiv = document.getElementById('iframeDebug');
     
-    // Always show loader
-    if (loader) {
-        loader.classList.remove('hidden');
-        loader.innerHTML = '<div class="spinner"></div><p>Loading Split Lease login...</p>';
-    }
+    // Check if iframe is preloaded
+    const isPreloaded = iframe && iframe.dataset.preloaded === 'true';
+    console.log('🔍 PRELOAD STATUS:', isPreloaded ? 'YES - INSTANT OPEN!' : 'NO - NEED TO LOAD');
     
-    // Always set iframe source when opening
-    if (iframe) {
-        console.log('🔵 SETTING IFRAME SOURCE TO:', 'https://app.splitlease.app/signup-login');
-        iframe.src = 'https://app.splitlease.app/signup-login';
+    if (isPreloaded) {
+        console.log('⚡ IFRAME IS PRELOADED - OPENING INSTANTLY!');
         
-        // Add timestamp to track loading
-        console.log('🔵 START TIME:', new Date().toISOString());
+        // Hide loader immediately since it's preloaded
+        if (loader) {
+            loader.innerHTML = '<p style="color: green; font-weight: bold;">✅ Iframe Already Loaded!</p>';
+            setTimeout(function() {
+                loader.classList.add('hidden');
+            }, 500); // Show success briefly then hide
+        }
         
         // Update debug status
-        const debugDiv = document.getElementById('iframeDebug');
+        if (debugDiv) {
+            debugDiv.innerHTML = '⚡ INSTANT OPEN - Iframe was preloaded! | URL: https://app.splitlease.app/signup-login';
+        }
+    } else {
+        console.log('🔄 IFRAME NOT PRELOADED - LOADING NOW...');
+        
+        // Show loader
+        if (loader) {
+            loader.classList.remove('hidden');
+            loader.innerHTML = '<div class="spinner"></div><p>Loading Split Lease login...</p>';
+        }
+        
+        // Set iframe source if not already set
+        if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
+            console.log('🔵 SETTING IFRAME SOURCE TO:', 'https://app.splitlease.app/signup-login');
+            iframe.src = 'https://app.splitlease.app/signup-login';
+            
+            // Add timestamp to track loading
+            console.log('🔵 START TIME:', new Date().toISOString());
+        }
+        
+        // Update debug status with timer
         if (debugDiv) {
             debugDiv.innerHTML = 'Status: Loading... | URL: https://app.splitlease.app/signup-login';
             
@@ -629,7 +677,7 @@ function openAuthModal() {
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
     
-    console.log('🔵 MODAL IS NOW ACTIVE - WAITING FOR IFRAME TO LOAD...');
+    console.log('🔵 MODAL IS NOW ACTIVE');
 }
 
 // Close auth modal
