@@ -109,6 +109,7 @@ function initializeApp() {
     setupDropdownMenus();
     setupFloatingBadge();
     setupModalEvents();
+    setupIntentDetection();
 }
 
 // Navigation Functionality
@@ -631,7 +632,6 @@ function setupModalEvents() {
     if (modal) {
         // Event listeners are now handled by IframeLoader.loadAuthIframe()
         // This ensures events are only added when iframe is actually loaded
-        }
         
         // Click outside modal to close
         modal.addEventListener('click', function(e) {
@@ -1304,6 +1304,81 @@ function setupFloatingBadge() {
         badge.style.display = 'block';
         localStorage.setItem('isLoggedIn', 'false');
     });
+}
+
+// Setup intent-based preloading detection
+function setupIntentDetection() {
+    console.log('Setting up intent detection for smart preloading...');
+    
+    // 1. Mouse proximity to header (contains sign-in button)
+    let headerProximityTriggered = false;
+    document.addEventListener('mousemove', function(e) {
+        if (!headerProximityTriggered && e.clientY < 150) {
+            headerProximityTriggered = true;
+            IframeLoader.addIntentScore(10, 'Mouse near header');
+        }
+    });
+    
+    // 2. Hover on sign-in/sign-up links (high intent)
+    const signInElements = document.querySelectorAll('.nav-link');
+    signInElements.forEach(el => {
+        if (el.textContent.includes('Sign')) {
+            el.addEventListener('mouseenter', function() {
+                IframeLoader.addIntentScore(40, 'Hover on Sign In/Up');
+            }, { once: true });
+            
+            // Focus event for keyboard navigation
+            el.addEventListener('focus', function() {
+                IframeLoader.addIntentScore(35, 'Focus on Sign In/Up');
+            }, { once: true });
+        }
+    });
+    
+    // 3. Scroll depth tracking (medium intent)
+    let scrollTriggered = false;
+    window.addEventListener('scroll', function() {
+        if (!scrollTriggered) {
+            const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            if (scrollPercentage > 50) {
+                scrollTriggered = true;
+                IframeLoader.addIntentScore(20, 'Scrolled past 50%');
+            }
+        }
+    });
+    
+    // 4. Idle time detection (3 seconds of idle = interested user)
+    let idleTimer = null;
+    let idleTriggered = false;
+    
+    function resetIdleTimer() {
+        clearTimeout(idleTimer);
+        if (!idleTriggered) {
+            idleTimer = setTimeout(function() {
+                idleTriggered = true;
+                IframeLoader.addIntentScore(15, 'User idle for 3s');
+            }, 3000);
+        }
+    }
+    
+    // Reset idle timer on user activity
+    ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+        document.addEventListener(event, resetIdleTimer, { passive: true });
+    });
+    resetIdleTimer();
+    
+    // 5. Mobile touch detection (first touch = engagement)
+    document.addEventListener('touchstart', function() {
+        IframeLoader.addIntentScore(25, 'Mobile touch detected');
+    }, { once: true });
+    
+    // 6. Tab/focus navigation (accessibility)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+            IframeLoader.addIntentScore(5, 'Tab navigation');
+        }
+    }, { once: true });
+    
+    console.log('Intent detection setup complete');
 }
 
 // Export functions for global use

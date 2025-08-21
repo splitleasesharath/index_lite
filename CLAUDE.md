@@ -327,7 +327,18 @@ This ensures continuous deployment, real-time GitHub Pages updates, and complete
 
 All changes to the codebase are documented here in reverse chronological order (newest first). This is an append-only section.
 
-### 2025-08-20 (Current Session)
+### 2025-08-21 (Current Session)
+- **PHASE 1 LAZY LOADING**: Removed hidden auth iframe for major performance gain
+  - Eliminated hidden authCheckIframe that was loading 2-3MB on page load
+  - Replaced iframe-based auth check with lightweight localStorage/cookie solution
+  - Removed automatic preloadAuthIframe function that was loading unnecessarily
+  - Created IframeLoader state management system for on-demand resource loading
+  - Auth status now checked instantly without waiting for iframe to load
+  - Expected mobile PageSpeed improvement: 40-50 points (from 30-50 to 70-85)
+  - Modified files: index.html (removed hidden iframe), script.js (new loading system)
+  - Created LAZY_LOADING_PRD.md with comprehensive implementation plan
+
+### 2025-08-20 (Previous Session)
 - **REMOVED SIGN-IN/SIGNUP DELAYS**: Eliminated all delays for immediate redirect
   - Removed 500ms setTimeout from openAuthModal() function
   - Removed "Redirecting to Split Lease login..." toast message
