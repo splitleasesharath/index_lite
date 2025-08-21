@@ -1089,11 +1089,39 @@ body {
     color: var(--text-dark);
 }
 
+.listings-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
 .listings-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Scroll indicators */
+.scroll-indicators {
+    display: none;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.scroll-indicators .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.scroll-indicators .indicator.active {
+    background: var(--bg-purple);
+    width: 24px;
+    border-radius: 4px;
 }
 
 .listing-card {
@@ -2332,8 +2360,29 @@ body {
         border-radius: 8px;
     }
 
+    /* Horizontal scroll for listings on mobile */
     .listings-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        padding: 0 1rem;
+        grid-template-columns: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .listings-grid::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .listing-card {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+        max-width: 400px;
+    }
+    
+    .scroll-indicators {
+        display: flex;
     }
 
     .support-options {
@@ -2659,8 +2708,8 @@ body {
     .floating-badge {
         bottom: 10px;
         right: 10px;
-        width: 204px; /* Reduced by 15% from 240px */
-        height: 204px; /* Reduced by 15% from 240px */
+        width: 102px; /* Reduced by 50% from 204px */
+        height: 153px; /* Reduced by 25% from 204px */
     }
     
     .badge-text-top {

@@ -264,22 +264,47 @@
     <!-- Listings Preview -->
     <section class="listings-section">
         <h2>Check Out Some Listings</h2>
-        <div class="listings-grid">
-            <div class="listing-card">
-                <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                <div class="listing-details">
-                    <span class="listing-location">📍</span>
-                    <h3>One Platt | Studio</h3>
-                    <p>Studio • 1 bed • 1 bathroom • Free Storage</p>
+        <div class="listings-container">
+            <div class="listings-grid">
+                <div class="listing-card" data-property-id="1">
+                    <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    <div class="listing-details">
+                        <span class="listing-location">📍</span>
+                        <h3>Listing 1 Title</h3>
+                        <p>Details for listing 1 • Ready for your info</p>
+                    </div>
+                </div>
+                <div class="listing-card" data-property-id="2">
+                    <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                    <div class="listing-details">
+                        <span class="listing-location">📍</span>
+                        <h3>Listing 2 Title</h3>
+                        <p>Details for listing 2 • Ready for your info</p>
+                    </div>
+                </div>
+                <div class="listing-card" data-property-id="3">
+                    <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
+                    <div class="listing-details">
+                        <span class="listing-location">📍</span>
+                        <h3>Listing 3 Title</h3>
+                        <p>Details for listing 3 • Ready for your info</p>
+                    </div>
+                </div>
+                <div class="listing-card" data-property-id="4">
+                    <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);"></div>
+                    <div class="listing-details">
+                        <span class="listing-location">📍</span>
+                        <h3>Listing 4 Title</h3>
+                        <p>Details for listing 4 • Ready for your info</p>
+                    </div>
                 </div>
             </div>
-            <div class="listing-card">
-                <div class="listing-image-placeholder" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                <div class="listing-details">
-                    <span class="listing-location">📍</span>
-                    <h3>Pied-à-terre , Perfect 2 BR Apartment for Commuters</h3>
-                    <p>2 bedrooms • 2 bed(s) • 1 bathroom • Free Storage</p>
-                </div>
+            <!-- Scroll indicators for mobile -->
+            <div class="scroll-indicators">
+                <span class="indicator active" data-slide="0"></span>
+                <span class="indicator" data-slide="1"></span>
+                <span class="indicator" data-slide="2"></span>
+                <span class="indicator" data-slide="3"></span>
             </div>
         </div>
         <button class="show-more-btn">Show me more Rentals</button>
