@@ -34,24 +34,28 @@ start index.html
 npx http-server
 ```
 
-### Git Operations (MANDATORY WORKFLOW)
-**CRITICAL RULE**: ALWAYS pull before making changes, push after making changes
+### Git Operations (LOCAL-ONLY WORKFLOW)
+**CRITICAL RULE**: COMMIT EVERY CHANGE IMMEDIATELY - No remote operations
 ```bash
-# STEP 1: Always pull first before making any changes
-git pull origin main
-
-# STEP 2: Make your changes to files
+# STEP 1: Make your changes to files
 # (edit files here)
 
-# STEP 3: Stage and commit changes (without sensitive files)
-git add index.html styles.css script.js README.md CLAUDE.md
+# STEP 2: Stage changes immediately after each modification
+git add [modified files]
+
+# STEP 3: Commit changes with descriptive message
 git commit -m "Your commit message with context"
 
-# STEP 4: Always push immediately after committing
-git push origin main
+# Alternative: One-line commit for quick changes
+git add . && git commit -m "Description of change"
 ```
 
-**MANDATORY**: This workflow must be followed religiously for EVERY SINGLE change to prevent merge conflicts and ensure continuous deployment.
+**MANDATORY LOCAL WORKFLOW**: 
+- Every single file change MUST be committed immediately
+- No pushing or pulling from remote repositories
+- Use atomic commits (one logical change per commit)
+- Descriptive commit messages for every change
+- This ensures complete change history without remote dependencies
 
 ### GitHub Pages Deployment
 - Repository is configured for GitHub Pages
