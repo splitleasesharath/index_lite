@@ -19,6 +19,7 @@ function initializeApp() {
     setupFooterNavigation();
     setupDropdownMenus();
     setupFloatingBadge();
+    setupModalEvents();
 }
 
 // Navigation Functionality
@@ -531,6 +532,26 @@ document.head.appendChild(styleSheet);
 // Auth Modal Functions - Simplified for redirect
 function setupAuthModal() {
     // Modal functionality removed - now redirects directly to Split Lease
+}
+
+// Setup modal events
+function setupModalEvents() {
+    const modal = document.getElementById('authModal');
+    if (modal) {
+        // Click outside modal to close
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAuthModal();
+            }
+        });
+        
+        // ESC key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeAuthModal();
+            }
+        });
+    }
 }
 
 // Open auth modal with embedded iframe
