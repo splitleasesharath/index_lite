@@ -741,89 +741,15 @@ const IframeLoader = {
     }
 };
 
-// Open auth modal with on-demand iframe loading
+// Direct redirect to login page (no modal, no iframe)
 function openAuthModal() {
-    // Check if user is already logged in via lightweight check
-    if (checkAuthStatus()) {
-        console.log('User already logged in, redirecting...');
-        handleLoggedInUser();
-        return;
-    }
-    
-    // Continue with lazy loading iframe approach
-    
-    const modal = document.getElementById('authModal');
-    const iframe = document.getElementById('authIframe');
-    const loader = document.querySelector('.iframe-loader');
-    
-    // Check if iframe is already loaded
-    const isLoaded = IframeLoader.isLoaded('auth');
-    
-    if (isLoaded) {
-        // Already loaded - hide loader immediately
-        if (loader) {
-            loader.classList.add('hidden');
-        }
-    } else {
-        // Show simple loading spinner with URL info
-        if (loader) {
-            loader.classList.remove('hidden');
-            loader.innerHTML = `
-                <div class="spinner"></div>
-                <p>Loading...</p>
-            `;
-        }
-        
-        // Load iframe on demand
-        IframeLoader.loadAuthIframe();
-        
-        // Monitor loading with timeout fallback
-        let checkCount = 0;
-        const statusInterval = setInterval(function() {
-            checkCount++;
-            const status = IframeLoader.states.auth;
-            
-            if (status === 'LOADED') {
-                clearInterval(statusInterval);
-                // Hide loader when loaded
-                if (loader) {
-                    loader.classList.add('hidden');
-                }
-            } else if (status === 'ERROR' || checkCount >= 30) {
-                clearInterval(statusInterval);
-                // Show error message but keep modal open
-                if (loader) {
-                    loader.innerHTML = `
-                        <p style="color: #d32f2f;">⚠ Loading is taking longer than expected...</p>
-                        <p style="font-size: 14px; margin-top: 10px;">Please check your connection and try again.</p>
-                        <button onclick="closeAuthModal(); setTimeout(openAuthModal, 100);" style="margin-top: 15px; padding: 8px 16px; background: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;">Retry</button>
-                    `;
-                }
-            }
-        }, 1000);
-    }
-    
-    // Force a reflow before adding the class to ensure smooth animation
-    modal.offsetHeight;
-    
-    // Show the modal with smooth animation
-    requestAnimationFrame(() => {
-        modal.classList.add('active');
-        // Prevent body scroll when modal is open
-        document.body.style.overflow = 'hidden';
-    });
-    
-    // Modal is now active
+    // Direct redirect to Split Lease login page
+    window.location.href = 'https://app.splitlease.app/signup-login';
 }
 
-// Close auth modal
+// Close auth modal (kept for compatibility but not used)
 function closeAuthModal() {
-    console.log('Closing auth modal...');
-    const modal = document.getElementById('authModal');
-    modal.classList.remove('active');
-    
-    // Restore body scroll
-    document.body.style.overflow = '';
+    // No longer needed - using direct redirect
 }
 
 // Market Research Modal Functions
