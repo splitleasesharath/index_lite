@@ -666,12 +666,16 @@ function setupModalEvents() {
     }
 }
 
-// Iframe loading state management
+// Iframe loading state management with intent-based preloading
 const IframeLoader = {
     states: {
         auth: 'NOT_LOADED',
         marketResearch: 'NOT_LOADED'
     },
+    
+    preloadStartTime: null,
+    intentScore: 0,
+    preloadThreshold: 30,
     
     // Load iframe on demand only
     loadAuthIframe() {
@@ -690,12 +694,45 @@ const IframeLoader = {
             iframe.addEventListener('load', () => {
                 this.states.auth = 'LOADED';
                 console.log('Auth iframe loaded successfully');
+                
+                // Track preload effectiveness
+                if (this.preloadStartTime) {
+                    const loadTime = Date.now() - this.preloadStartTime;
+                    console.log(`Preload completed in ${loadTime}ms`);
+                    this.preloadStartTime = null;
+                }
             }, { once: true });
             
             iframe.addEventListener('error', () => {
                 this.states.auth = 'ERROR';
                 console.error('Auth iframe failed to load');
             }, { once: true });
+        }
+    },
+    
+    // Preload iframe based on user intent
+    preloadAuthIframe() {
+        if (this.states.auth === 'NOT_LOADED') {
+            console.log('Intent detected - preloading auth iframe...');
+            this.preloadStartTime = Date.now();
+            
+            // Show subtle preloading indicator
+            const loader = document.querySelector('.iframe-loader');
+            if (loader) {
+                loader.classList.add('preloading');
+            }
+            
+            this.loadAuthIframe();
+        }
+    },
+    
+    // Track user intent signals
+    addIntentScore(points, reason) {
+        this.intentScore += points;
+        console.log(`Intent: ${reason} (+${points}) Total: ${this.intentScore}`);
+        
+        if (this.intentScore >= this.preloadThreshold && this.states.auth === 'NOT_LOADED') {
+            this.preloadAuthIframe();
         }
     },
     
@@ -738,10 +775,17 @@ function openAuthModal() {
     } else {
         console.log('Loading auth iframe on demand...');
         
-        // Show loader
+        // Show enhanced loader with progress bar
         if (loader) {
-            loader.classList.remove('hidden');
-            loader.innerHTML = '<div class="spinner"></div><p>Loading Split Lease login...</p>';
+            loader.classList.remove('hidden', 'preloading');
+            loader.classList.add('loading');
+            loader.innerHTML = `
+                <div class="spinner"></div>
+                <p>Loading Split Lease login...</p>
+                <div class="loading-progress">
+                    <div class="loading-progress-bar"></div>
+                </div>
+            `;
         }
         
         // Load iframe on demand
@@ -761,15 +805,25 @@ function openAuthModal() {
                     clearInterval(statusInterval);
                     debugDiv.innerHTML = 'Status: Loaded successfully';
                     if (loader) {
-                        loader.classList.add('hidden');
+                        // Smooth fade out with success message
+                        loader.classList.remove('loading');
+                        loader.innerHTML = '<p style="color: green; font-size: 1.2rem;">✓ Ready!</p>';
+                        setTimeout(() => {
+                            loader.classList.add('hidden');
+                        }, 500);
                     }
                 } else if (status === 'ERROR') {
                     clearInterval(statusInterval);
                     debugDiv.innerHTML = 'Status: Failed to load - falling back to redirect';
+                    if (loader) {
+                        loader.classList.remove('loading');
+                        loader.classList.add('error');
+                        loader.innerHTML = '<p style="color: #d32f2f;">⚠ Loading failed. Redirecting...</p>';
+                    }
                     // Fallback to direct navigation
                     setTimeout(() => {
                         window.location.href = 'https://app.splitlease.app/signup-login';
-                    }, 1000);
+                    }, 1500);
                 } else if (checkCount >= 30) {
                     clearInterval(statusInterval);
                     debugDiv.innerHTML = 'Status: Timeout - redirecting...';
