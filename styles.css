@@ -1829,6 +1829,28 @@ body {
     transform: scale(1.1);
 }
 
+/* Mobile responsiveness for auth modal */
+@media (max-width: 768px) {
+    .auth-modal-content {
+        width: 95%;
+        height: 90vh;
+        max-height: none;
+        border-radius: 12px;
+    }
+    
+    .auth-modal-close {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.95);
+    }
+    
+    .iframe-container iframe {
+        border-radius: 12px;
+    }
+}
+
 /* Custom Auth Form Styles */
 .auth-container {
     padding: 2rem;
