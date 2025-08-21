@@ -739,11 +739,15 @@ function openMarketResearchModal() {
     const loader = document.querySelector('.market-research-loader');
     
     if (modal && iframe) {
-        // Show modal
-        modal.classList.add('active');
+        // Force a reflow before adding the class to ensure smooth animation
+        modal.offsetHeight;
         
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
+        // Show modal with smooth animation
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        });
         
         // Set iframe source if not already set
         if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href) {
