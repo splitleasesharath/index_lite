@@ -1434,10 +1434,73 @@ function updateCheckinCheckout() {
         checkinDay = dayNames[selectedDays[0]];
         checkoutDay = dayNames[selectedDays[0]];
     } else {
-        // Multiple day selection - show first and last
+        // Multiple day selection
         const sortedDays = [...selectedDays].sort((a, b) => a - b);
-        checkinDay = dayNames[sortedDays[0]];
-        checkoutDay = dayNames[sortedDays[sortedDays.length - 1]];
+        const hasSunday = sortedDays.includes(0);
+        const hasSaturday = sortedDays.includes(6);
+        
+        // Check if this is a wrap-around case
+        if (hasSunday && hasSaturday && sortedDays.length < 7) {
+            // Find the gap (unselected days) in the week
+            let gapStart = -1;
+            let gapEnd = -1;
+            
+            // Look for the gap in the sorted days
+            for (let i = 0; i < sortedDays.length - 1; i++) {
+                if (sortedDays[i + 1] - sortedDays[i] > 1) {
+                    // Found the gap
+                    gapStart = sortedDays[i] + 1;  // First unselected day
+                    gapEnd = sortedDays[i + 1] - 1;  // Last unselected day
+                    break;
+                }
+            }
+            
+            if (gapStart !== -1 && gapEnd !== -1) {
+                // Wrap-around case with a gap in the middle
+                // Check-in: First selected day AFTER the gap ends
+                // Check-out: Last selected day BEFORE the gap starts
+                
+                // All days after the gap end are check-in candidates
+                const daysAfterGap = sortedDays.filter(day => day > gapEnd || day < gapStart);
+                // All days before the gap start are check-out candidates  
+                const daysBeforeGap = sortedDays.filter(day => day < gapStart || day > gapEnd);
+                
+                // Check-in is the smallest day after the gap (considering wrap)
+                let checkinDayIndex;
+                if (sortedDays.some(day => day > gapEnd)) {
+                    // There are days after the gap in the same week
+                    checkinDayIndex = sortedDays.find(day => day > gapEnd);
+                } else {
+                    // Wrap to Sunday
+                    checkinDayIndex = 0;
+                }
+                
+                // Check-out is the largest day before the gap
+                let checkoutDayIndex;
+                if (sortedDays.some(day => day < gapStart)) {
+                    // There are days before the gap
+                    checkoutDayIndex = sortedDays.filter(day => day < gapStart).pop();
+                } else {
+                    // Wrap to Saturday
+                    checkoutDayIndex = 6;
+                }
+                
+                checkinDay = dayNames[checkinDayIndex];
+                checkoutDay = dayNames[checkoutDayIndex];
+                
+                console.log(`🔄 Wrap-around: Gap is ${dayNames[gapStart]}-${dayNames[gapEnd]}`);
+                console.log(`   Check-in: ${checkinDay}, Check-out: ${checkoutDay}`);
+            } else {
+                // No gap found (shouldn't happen with Sunday and Saturday selected)
+                // Use standard min/max
+                checkinDay = dayNames[sortedDays[0]];
+                checkoutDay = dayNames[sortedDays[sortedDays.length - 1]];
+            }
+        } else {
+            // Non-wrap-around case: use first and last in sorted order
+            checkinDay = dayNames[sortedDays[0]];
+            checkoutDay = dayNames[sortedDays[sortedDays.length - 1]];
+        }
     }
     
     // Restore original HTML structure for valid selections
