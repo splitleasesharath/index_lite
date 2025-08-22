@@ -1297,16 +1297,12 @@ body {
 }
 
 .listing-details {
-    padding: 1.5rem;
+    padding: 1.25rem 1rem;
 }
 
-.listing-location {
-    font-size: 1.5rem;
-    margin-right: 0.5rem;
-}
 
 .listing-details h3 {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--text-dark);
@@ -1314,24 +1310,27 @@ body {
 
 .listing-details p {
     color: var(--text-gray);
+    font-size: 0.9rem;
+    line-height: 1.4;
 }
 
 .show-more-btn {
     display: block;
     margin: 2rem auto 0;
-    background: var(--bg-light);
-    color: var(--text-gray);
+    background: #5B21B6;
+    color: white;
     border: none;
-    padding: 1rem 2rem;
+    padding: 1rem 2.5rem;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     border-radius: var(--radius-lg);
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .show-more-btn:hover {
-    background: var(--border-color);
+    background: #4C1D95;
+    transform: translateY(-2px);
 }
 
 /* Testimonials Section */
@@ -1513,11 +1512,17 @@ body {
     margin-bottom: 0;
 }
 
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+}
+
 .footer-column h4 {
     color: white;
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .footer-column a {
@@ -1533,19 +1538,17 @@ body {
     color: white;
 }
 
-.footer-column a.emergency {
-    color: #ef4444;
-}
 
 .referral-text {
     font-size: 0.8rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .referral-options {
     display: flex;
     gap: 0.75rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .referral-options label {
@@ -1563,45 +1566,45 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-md);
     color: white;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    height: 44px;
+    box-sizing: border-box;
 }
 
-.share-btn {
-    background: var(--primary-color);
+.footer-column:nth-child(4),
+.footer-column:nth-child(5) {
+    justify-content: flex-start;
+}
+
+.footer-column:nth-child(4) > *:last-child,
+.footer-column:nth-child(5) > *:last-child {
+    margin-top: auto;
+}
+
+.share-btn,
+.import-btn {
+    width: 100%;
+    background: #5B21B6;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
     font-weight: 600;
+    font-size: 1rem;
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.3s ease;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.share-btn:hover {
-    background: var(--primary-hover);
-}
-
-
-.import-input {
-    margin-bottom: 0.5rem;
-}
-
-.import-btn {
-    width: 100%;
-    background: white;
-    color: var(--bg-purple);
-    border: none;
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
+.share-btn:hover,
 .import-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    background: #4C1D95;
+    transform: translateY(-2px);
 }
+
 
 /* App Download Section */
 .app-download-section {

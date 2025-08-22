@@ -293,10 +293,12 @@ function setupListings() {
         card.addEventListener('click', function() {
             const title = this.querySelector('h3').textContent;
             
-            // Property IDs from the original site
+            // Property IDs from the original site - matching each listing
             const propertyIds = [
-                '1586447992720x748691103167545300', // One Platt | Studio
-                '1586449069262x103395043556966670'  // Pied-à-terre
+                '1586447992720x748691103167545300', // One Platt | Studio - no change
+                '1701107772942x447054126943830000', // Pied-à-terre , Perfect 2 BR
+                '1701115344294x620453327586984000', // Fully furnished 1bdr apartment
+                '1701196985127x160157906679627780'  // Furnished Studio Apt for Rent
             ];
             
             const propertyId = propertyIds[index] || propertyIds[0];
@@ -306,7 +308,7 @@ function setupListings() {
                 ? selectedDays.join(',') 
                 : '1,2,3,4,5';
             
-            const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
+            const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}&weekly-frequency=Every%20week`;
             
             window.location.href = propertyUrl;
         });
