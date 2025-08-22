@@ -69,8 +69,8 @@ function handleLoggedInUser() {
 
 // Listen for messages from iframes
 window.addEventListener('message', function(event) {
-    // Only accept messages from the Split Lease domain
-    if (event.origin !== 'https://app.splitlease.app') {
+    // Accept messages from both app.splitlease.app and www.split.lease
+    if (event.origin !== 'https://app.splitlease.app' && event.origin !== 'https://www.split.lease') {
         return;
     }
     
@@ -84,6 +84,23 @@ window.addEventListener('message', function(event) {
     // Alternative message format
     if (event.data.authenticated === true || event.data.loggedIn === true) {
         handleLoggedInUser();
+    }
+    
+    // Handle auth state response from Market Research iframe
+    if (event.data.type === 'auth-state-response') {
+        const isLoggedIn = event.data.elementId === '596573';
+        console.log('📨 PostMessage Auth Response:');
+        console.log(`   Element ID: ${event.data.elementId}`);
+        console.log(`   User is ${isLoggedIn ? '✅ LOGGED IN' : '❌ NOT LOGGED IN'}`);
+        
+        // Store auth state
+        if (isLoggedIn) {
+            localStorage.setItem('bubble_market_research_auth', 'true');
+            localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
+        } else {
+            localStorage.removeItem('bubble_market_research_auth');
+            localStorage.removeItem('bubble_market_research_auth_time');
+        }
     }
 });
 
@@ -110,6 +127,9 @@ function initializeApp() {
     setupFloatingBadge();
     setupModalEvents();
     setupIntentDetection();
+    
+    // Setup delayed preload for Market Research iframe (4 seconds after page load)
+    setupDelayedMarketResearchPreload();
 }
 
 // Navigation Functionality
@@ -752,7 +772,7 @@ function closeAuthModal() {
     // No longer needed - using direct redirect
 }
 
-// Market Research Modal Functions
+// Market Research Modal Functions with Login Detection
 function openMarketResearchModal() {
     const modal = document.getElementById('marketResearchModal');
     const iframe = document.getElementById('marketResearchIframe');
@@ -769,7 +789,7 @@ function openMarketResearchModal() {
             document.body.style.overflow = 'hidden';
         });
         
-        // Set iframe source if not already set
+        // Set iframe source if not already set or preloaded
         if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href) {
             iframe.src = 'https://www.split.lease/embed-ai-drawer';
             
@@ -778,18 +798,111 @@ function openMarketResearchModal() {
                 loader.classList.remove('hidden');
             }
             
-            // Hide loader when iframe loads
+            // Hide loader and check auth when iframe loads
             iframe.onload = function() {
                 if (loader) {
                     loader.classList.add('hidden');
                 }
+                // Check auth state after iframe loads
+                checkBubbleAuthState(iframe);
             };
         } else {
-            // If already loaded, hide loader immediately
+            // If already loaded, hide loader immediately and check auth
             if (loader) {
                 loader.classList.add('hidden');
             }
+            // Check auth state for preloaded iframe
+            checkBubbleAuthState(iframe);
         }
+    }
+}
+
+// Check Bubble auth state by examining iframe content
+function checkBubbleAuthState(iframe) {
+    try {
+        // Try to access iframe document (will fail for cross-origin)
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        
+        // Look for the main page element
+        const pageElement = iframeDoc.querySelector('.main-page');
+        
+        if (pageElement) {
+            const elementId = pageElement.id;
+            const isLoggedIn = elementId === '596573';
+            
+            console.log('🔍 Bubble Auth Detection:');
+            console.log(`   Element ID: ${elementId}`);
+            console.log(`   User is ${isLoggedIn ? '✅ LOGGED IN' : '❌ NOT LOGGED IN'}`);
+            
+            // Store auth state
+            if (isLoggedIn) {
+                localStorage.setItem('bubble_market_research_auth', 'true');
+                localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
+            } else {
+                localStorage.removeItem('bubble_market_research_auth');
+                localStorage.removeItem('bubble_market_research_auth_time');
+            }
+            
+            return isLoggedIn;
+        }
+    } catch (e) {
+        // Cross-origin access denied - use postMessage fallback
+        console.log('⚠️ Cross-origin iframe - using postMessage for auth detection');
+        
+        // Request auth state via postMessage
+        iframe.contentWindow.postMessage({ type: 'request-auth-state' }, 'https://www.split.lease');
+    }
+    
+    return null;
+}
+
+// Delayed preload for Market Research iframe
+function setupDelayedMarketResearchPreload() {
+    console.log('⏰ Scheduling Market Research iframe preload in 4 seconds...');
+    
+    setTimeout(() => {
+        preloadMarketResearchIframe();
+    }, 4000);
+}
+
+// Preload Market Research iframe
+function preloadMarketResearchIframe() {
+    const iframe = document.getElementById('marketResearchIframe');
+    
+    if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href)) {
+        console.log('🚀 Preloading Market Research iframe...');
+        
+        // Set the iframe source to preload it
+        iframe.src = 'https://www.split.lease/embed-ai-drawer';
+        
+        // Hide the iframe while preloading
+        const modal = document.getElementById('marketResearchModal');
+        if (modal && !modal.classList.contains('active')) {
+            iframe.style.visibility = 'hidden';
+        }
+        
+        // When iframe loads, check auth state
+        iframe.onload = function() {
+            console.log('✅ Market Research iframe preloaded successfully');
+            
+            // Make iframe visible again
+            iframe.style.visibility = '';
+            
+            // Check auth state
+            const isLoggedIn = checkBubbleAuthState(iframe);
+            
+            if (isLoggedIn !== null) {
+                console.log(`📊 Preload Auth Check: User is ${isLoggedIn ? 'logged in' : 'not logged in'}`);
+            }
+        };
+        
+        iframe.onerror = function() {
+            console.error('❌ Failed to preload Market Research iframe');
+            iframe.style.visibility = '';
+        };
+    } else if (iframe && iframe.src && iframe.src !== '' && iframe.src !== 'about:blank') {
+        console.log('ℹ️ Market Research iframe already loaded');
+        checkBubbleAuthState(iframe);
     }
 }
 
@@ -1571,6 +1684,9 @@ window.openMarketResearchModal = openMarketResearchModal;
 window.closeMarketResearchModal = closeMarketResearchModal;
 window.hideIframeLoader = hideIframeLoader;
 window.AuthStateManager = AuthStateManager;
+window.checkBubbleAuthState = checkBubbleAuthState;
+window.preloadMarketResearchIframe = preloadMarketResearchIframe;
+window.setupDelayedMarketResearchPreload = setupDelayedMarketResearchPreload;
 window.showLoginForm = showLoginForm;
 window.showSignupForm = showSignupForm;
 window.togglePassword = togglePassword;
