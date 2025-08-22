@@ -819,42 +819,108 @@ function openMarketResearchModal() {
 
 // Check Bubble auth state by examining iframe content
 function checkBubbleAuthState(iframe) {
-    // Since we can't access cross-origin iframe content directly,
-    // we'll use a different approach:
+    console.log('🔍 Attempting to check Bubble page for auth state...');
     
-    // 1. Check if we have a recent auth state in localStorage
-    const cachedAuth = localStorage.getItem('bubble_market_research_auth');
-    const cachedTime = localStorage.getItem('bubble_market_research_auth_time');
-    
-    if (cachedAuth && cachedTime) {
-        const cacheAge = Date.now() - parseInt(cachedTime);
-        // If cache is less than 5 minutes old, use it
-        if (cacheAge < 5 * 60 * 1000) {
-            const isLoggedIn = cachedAuth === 'true';
-            console.log(`🔐 Auth Status (from cache): User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
-            return isLoggedIn;
-        }
-    }
-    
-    // 2. Try to detect auth by checking if iframe loads successfully
-    // The iframe URL might redirect or behave differently based on auth state
-    console.log('🔍 Checking auth status via iframe load behavior...');
-    
-    // 3. Send postMessage to request auth state
-    // Note: This requires the Bubble page to have a listener that responds
     try {
-        iframe.contentWindow.postMessage(
-            { type: 'request-auth-state' }, 
-            'https://www.split.lease'
-        );
-        console.log('📨 Sent auth state request via postMessage');
+        // Try to access the iframe document
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        console.log('✅ Successfully accessed iframe document!');
+        
+        // Look for elements with the IDs you specified
+        // ID "596573" = logged in, ID "4E6F" = not logged in
+        const loggedInElement = iframeDoc.getElementById('596573');
+        const notLoggedInElement = iframeDoc.getElementById('4E6F');
+        
+        // Also try looking for main-page class with these IDs
+        const mainPage = iframeDoc.querySelector('.main-page');
+        
+        let isLoggedIn = null;
+        let detectionMethod = '';
+        
+        if (loggedInElement) {
+            isLoggedIn = true;
+            detectionMethod = 'Found element with ID 596573';
+        } else if (notLoggedInElement) {
+            isLoggedIn = false;
+            detectionMethod = 'Found element with ID 4E6F';
+        } else if (mainPage) {
+            const pageId = mainPage.id;
+            if (pageId === '596573') {
+                isLoggedIn = true;
+                detectionMethod = `Found .main-page with ID ${pageId}`;
+            } else if (pageId === '4E6F') {
+                isLoggedIn = false;
+                detectionMethod = `Found .main-page with ID ${pageId}`;
+            } else {
+                detectionMethod = `Found .main-page but ID is "${pageId}" (unexpected)`;
+            }
+        } else {
+            // Try to log what we CAN see in the iframe
+            const body = iframeDoc.body;
+            if (body) {
+                const allIds = Array.from(body.querySelectorAll('[id]')).map(el => el.id).slice(0, 10);
+                console.log('📋 Found these IDs in iframe:', allIds.join(', '));
+                
+                // Check if any element contains our target IDs
+                const hasLoggedInId = allIds.includes('596573');
+                const hasNotLoggedInId = allIds.includes('4E6F');
+                
+                if (hasLoggedInId) {
+                    isLoggedIn = true;
+                    detectionMethod = 'Found ID 596573 in document';
+                } else if (hasNotLoggedInId) {
+                    isLoggedIn = false;
+                    detectionMethod = 'Found ID 4E6F in document';
+                }
+            }
+        }
+        
+        if (isLoggedIn !== null) {
+            console.log(`🔐 Auth Status: User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
+            console.log(`   Detection method: ${detectionMethod}`);
+            
+            // Cache the result
+            localStorage.setItem('bubble_market_research_auth', isLoggedIn.toString());
+            localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
+            
+            return isLoggedIn;
+        } else {
+            console.log('⚠️ Could not find auth indicators (596573 or 4E6F) in iframe');
+            return null;
+        }
+        
     } catch (e) {
-        console.log('⚠️ Could not send postMessage to iframe');
+        console.log('❌ Cannot access iframe content due to cross-origin restrictions');
+        console.log(`   iframe.src: ${iframe.src}`);
+        console.log(`   Current origin: ${window.location.origin}`);
+        console.log(`   Error: ${e.message}`);
+        
+        // Check cached auth state
+        const cachedAuth = localStorage.getItem('bubble_market_research_auth');
+        const cachedTime = localStorage.getItem('bubble_market_research_auth_time');
+        
+        if (cachedAuth && cachedTime) {
+            const cacheAge = Date.now() - parseInt(cachedTime);
+            if (cacheAge < 5 * 60 * 1000) { // 5 minutes
+                const isLoggedIn = cachedAuth === 'true';
+                console.log(`🔐 Auth Status (from cache): User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
+                return isLoggedIn;
+            }
+        }
+        
+        // Try postMessage as fallback
+        try {
+            iframe.contentWindow.postMessage(
+                { type: 'request-auth-state' }, 
+                'https://www.split.lease'
+            );
+            console.log('📨 Sent auth state request via postMessage (fallback)');
+        } catch (postMessageError) {
+            console.log('⚠️ Could not send postMessage to iframe');
+        }
+        
+        return null;
     }
-    
-    // 4. For now, we can't determine auth state directly
-    // The postMessage response handler will update the state when received
-    return null;
 }
 
 // Delayed preload for Market Research iframe
@@ -892,13 +958,7 @@ function preloadMarketResearchIframe() {
             
             // Check auth state after a short delay to allow iframe to fully initialize
             setTimeout(() => {
-                const isLoggedIn = checkBubbleAuthState(iframe);
-                
-                if (isLoggedIn !== null) {
-                    console.log(`📊 Auth Check Result: ${isLoggedIn ? 'User is logged in' : 'User is not logged in'}`);
-                } else {
-                    console.log('📊 Auth Check: Waiting for postMessage response...');
-                }
+                checkBubbleAuthState(iframe);
             }, 1000);
         };
         
