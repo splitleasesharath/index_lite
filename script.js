@@ -93,6 +93,11 @@ window.addEventListener('message', function(event) {
         console.log(`🔐 Auth Status: User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
         console.log(`   Element ID: ${event.data.elementId}`);
         
+        // Show alert if user is logged in
+        if (isLoggedIn) {
+            alert('Logging in...');
+        }
+        
         // Always update cache with fresh auth state
         // This ensures logout is properly reflected
         localStorage.setItem('bubble_market_research_auth', isLoggedIn.toString());
@@ -955,6 +960,11 @@ function checkBubbleAuthState(iframe) {
             console.log(`🔐 Auth Status: User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
             console.log(`   Detection method: ${detectionMethod}`);
             
+            // Show alert if user is logged in
+            if (isLoggedIn) {
+                alert('Logging in...');
+            }
+            
             // Cache the result
             localStorage.setItem('bubble_market_research_auth', isLoggedIn.toString());
             localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
@@ -1002,6 +1012,12 @@ function checkBubbleAuthState(iframe) {
                     const isLoggedIn = cachedAuth === 'true';
                     console.log(`🔐 Auth Status (from 1-min cache): User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
                     console.log(`   Cache age: ${Math.round(cacheAge / 1000)}s`);
+                    
+                    // Show alert if user is logged in (from cache)
+                    if (isLoggedIn) {
+                        alert('Logging in...');
+                    }
+                    
                     return isLoggedIn;
                 } else {
                     console.log('🕰️ Cache expired (older than 1 minute)');
