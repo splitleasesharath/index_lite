@@ -90,7 +90,7 @@ body {
     font-family: var(--font-inter);
     color: var(--text-dark);
     line-height: 1.6;
-    background: var(--bg-white);
+    background: #f7f8f9;
     overflow-x: hidden;
 }
 
@@ -382,20 +382,16 @@ body {
 /* Hero Section */
 .hero-section {
     position: relative;
-    min-height: 650px;
-    padding-top: 72px;
+    min-height: 400px;
+    margin: 150px auto 3rem;
+    width: 80%;
+    max-width: none;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    /* Static waterfall gradient effect */
-    background: linear-gradient(180deg, 
-        #E8E3F5 0%, 
-        #EDE9F7 20%,
-        #F2EFF9 40%,
-        #F5F3FA 60%,
-        #F8F7FB 80%,
-        #FAFAFC 100%);
+    overflow: visible;
+    background: transparent;
 }
 
 .hero-background {
@@ -410,22 +406,28 @@ body {
 
 .hero-illustration {
     position: absolute;
-    opacity: 0.8;
+    opacity: 1;
     object-fit: contain;
+    height: 500px;
+    width: auto;
+    z-index: 0;
 }
 
 .hero-illustration-left {
-    left: 15%;
+    left: 7%;
     bottom: 5%;
-    width: 480px;
-    height: auto;
+    transform: rotate(-2deg);
+    height: 440px;
+    width: 380px;
 }
 
 .hero-illustration-right {
-    right: 15%;
-    bottom: 0%;
-    width: 624px;
-    height: auto;
+    right: 7%;
+    bottom: 5%;
+    top: auto;
+    transform: none;
+    height: 440px;
+    width: 400px;
 }
 
 .bridge-illustration,
@@ -438,24 +440,19 @@ body {
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 600px;
-    background: linear-gradient(180deg, 
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 0.98) 50%,
-        rgba(252, 251, 254, 1) 100%);
-    border-radius: 0 0 20px 20px;
-    box-shadow: 
-        0 2px 4px rgba(49, 19, 93, 0.05),
-        0 4px 8px rgba(49, 19, 93, 0.08),
-        0 8px 16px rgba(49, 19, 93, 0.10),
-        0 16px 32px rgba(49, 19, 93, 0.12),
-        0 24px 48px rgba(49, 19, 93, 0.14);
-    padding: 3rem;
-    /* Static waterfall/cascade visual effect - no animation */
-    transform: translateY(0) scale(1);
+    max-width: none;
+    background: linear-gradient(135deg, #E8E3F5 0%, #EDE9F7 50%, #F2EFF9 100%);
+    border-radius: 20px;
+    box-shadow: none;
+    padding: 0;
+    transform: none;
     transform-origin: top center;
-    /* Subtle depth effect */
-    border: 1px solid rgba(232, 227, 245, 0.3);
+    border: none;
+    min-height: 380px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: visible;
 }
 
 /* Static waterfall/cascade effect - removed animations */
@@ -500,22 +497,35 @@ body {
 
 .hero-content {
     text-align: center;
+    background: #f7f8f9;
+    border-radius: 0 0 20px 20px;
+    padding: 4rem 3rem 2rem;
+    margin-top: 0;
+    position: relative;
+    z-index: 2;
+    box-shadow: none;
+    width: 50%;
+    max-width: 600px;
 }
 
 .hero-title {
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
     line-height: 1.2;
-    margin-bottom: 1rem;
-    color: #1a1a1a;
-    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    color: #000000;
+    letter-spacing: -0.01em;
+    width: 100%;
+    white-space: nowrap;
 }
 
 .hero-subtitle {
-    font-size: 1.1rem;
-    color: #6b7280;
-    margin-bottom: 2rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    color: #4a4a4a;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    font-weight: 400;
+    width: 100%;
 }
 
 .hero-tagline {
@@ -527,22 +537,23 @@ body {
 
 .hero-cta-button {
     background: white;
-    color: #31135D;
+    color: #5B5FCF;
     border: 2px solid #5B5FCF;
-    padding: 0.875rem 2.5rem;
-    font-size: 1.05rem;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-top: 0.5rem;
+    margin-top: 0.25rem;
+    display: inline-block;
 }
 
 .hero-cta-button:hover {
-    background: #31135D;
+    background: #5B5FCF;
     color: white;
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(91, 95, 207, 0.3);
+    box-shadow: 0 2px 8px rgba(91, 95, 207, 0.3);
 }
 
 .cta-button {
@@ -567,37 +578,54 @@ body {
 /* Day Selector */
 .day-selector {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.4rem;
     justify-content: center;
-    margin: 0 0 2rem 0;
+    align-items: center;
+    margin: 0 0 0.75rem 0;
+    width: 100%;
 }
 
-.day-badge {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
+.calendar-icon {
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 0.5rem;
+}
+
+.day-badge {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 11px !important;
+    line-height: 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    background: #E5E7EB;
-    color: #9CA3AF;
-    border: 2px solid transparent;
+    transition: background 0.2s ease-in-out;
+    background-color: #E5E7EB !important;
+    color: #9CA3AF !important;
+    border: none;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .day-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(91, 95, 207, 0.15);
+    background-color: #E5E7EB !important;
+    color: #9CA3AF !important;
 }
 
 .day-badge.active {
-    background: #31135D;
-    color: white;
-    border-color: #31135D;
-    box-shadow: 0 2px 8px rgba(91, 95, 207, 0.25);
+    background-color: #4B47CE !important;
+    color: #ffffff !important;
+}
+
+.day-badge.active:hover {
+    background-color: #4B47CE !important;
+    color: #ffffff !important;
 }
 
 /* Check-in/Check-out Display */
@@ -606,13 +634,14 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    margin: 1rem 0;
-    padding: 0.75rem 1.5rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    font-size: 0.875rem;
-    color: var(--text-dark);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 0.5rem 0 1rem 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    font-size: 1rem;
+    color: #000000;
+    box-shadow: none;
+    width: 100%;
 }
 
 .checkin-checkout .separator {
@@ -748,18 +777,6 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.day-badge {
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
 
 .day-badge.active {
     background: #31135D;
@@ -771,10 +788,7 @@ body {
     color: #9ca3af;
 }
 
-.day-badge:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(49, 19, 93, 0.3);
-}
+/* Removed hover effect to maintain consistent appearance */
 
 /* Schedule card specific hover effects to indicate group selection */
 .schedule-card .day-badge {
@@ -853,10 +867,10 @@ body {
     display: flex;
     flex-direction: column !important;
     align-items: center;
-    gap: 1.5rem;
-    margin: 1.5rem 0;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, rgba(91, 33, 182, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: white;
     border-radius: 12px;
 }
 
@@ -868,12 +882,21 @@ body {
 
 .lottie-container {
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: 0.5rem;
+    background-color: white !important;
+    border-radius: 12px;
+}
+
+.lottie-container lottie-player {
+    background-color: white !important;
+    width: 100% !important;
+    max-width: 650px !important;
+    height: auto !important;
 }
 
 .calendar-header {
@@ -984,21 +1007,30 @@ body {
 
 /* Benefits Section */
 .benefits-section {
-    padding: 4rem 2rem;
-    background: var(--bg-light);
-    text-align: center;
+    padding: 3rem 0;
+    background: transparent;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.benefits-wrapper {
+    background: linear-gradient(135deg, #E8E3F5 0%, #EDE9F7 50%, #F2EFF9 100%);
+    border-radius: 20px;
+    padding: 3rem 4rem;
+    min-height: 320px;
 }
 
 .benefits-section h2 {
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--text-dark);
+    margin-bottom: 2.5rem;
+    color: #000000;
+    text-align: left;
 }
 
 .benefits-list {
-    max-width: 700px;
-    margin: 0 auto 2rem;
+    max-width: none;
+    margin: 0 0 2.5rem 0;
 }
 
 .benefit-item {
@@ -1006,17 +1038,52 @@ body {
     align-items: flex-start;
     margin-bottom: 1.5rem;
     text-align: left;
+    background: transparent;
+    padding: 0;
 }
 
 .benefit-icon {
-    margin-right: 1rem;
-    color: var(--primary-color);
-    font-size: 1.5rem;
+    margin-right: 0.75rem;
+    margin-top: -1px;
+    background: transparent;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.benefit-icon svg {
+    width: 24px;
+    height: 24px;
 }
 
 .benefit-item p {
-    font-size: 1.125rem;
-    color: var(--text-gray);
+    font-size: 1rem;
+    color: #1a1a1a;
+    line-height: 1.5;
+    margin: 0;
+    padding-top: 2px;
+}
+
+.benefits-cta {
+    background: white;
+    color: #5B5FCF;
+    border: 2px solid #5B5FCF;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.benefits-cta:hover {
+    background: #5B5FCF;
+    color: white;
+    transform: translateY(-1px);
 }
 
 /* Listings Section */
@@ -1399,6 +1466,11 @@ body {
     flex-wrap: wrap;
     max-width: 600px;
     margin: 0 auto;
+}
+
+.support-card-link {
+    text-decoration: none;
+    color: inherit;
 }
 
 .support-card {
@@ -2611,6 +2683,15 @@ body {
         flex-wrap: nowrap;
         gap: 0.4rem;
         margin: 0 0 1.5rem 0;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem;
+        white-space: normal;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.85rem;
     }
     
     .hero-section .day-badge {
