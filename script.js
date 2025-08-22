@@ -879,20 +879,63 @@ function checkBubbleAuthState(iframe) {
         } else {
             // Try to log what we CAN see in the iframe
             const body = iframeDoc.body;
-            if (body) {
-                const allIds = Array.from(body.querySelectorAll('[id]')).map(el => el.id).slice(0, 10);
-                console.log('📋 Found these IDs in iframe:', allIds.join(', '));
+            const html = iframeDoc.documentElement;
+            
+            // Check if the HTML or BODY element has the ID
+            if (html && html.id) {
+                console.log(`🎯 Found ID on <html> element: "${html.id}"`);
+                if (html.id === '596573') {
+                    isLoggedIn = true;
+                    detectionMethod = 'Found ID 596573 on html element';
+                } else if (html.id === '4E6F') {
+                    isLoggedIn = false;
+                    detectionMethod = 'Found ID 4E6F on html element';
+                }
+            }
+            
+            if (body && body.id && isLoggedIn === null) {
+                console.log(`🎯 Found ID on <body> element: "${body.id}"`);
+                if (body.id === '596573') {
+                    isLoggedIn = true;
+                    detectionMethod = 'Found ID 596573 on body element';
+                } else if (body.id === '4E6F') {
+                    isLoggedIn = false;
+                    detectionMethod = 'Found ID 4E6F on body element';
+                }
+            }
+            
+            // Also check all other elements
+            if (body && isLoggedIn === null) {
+                const allElements = body.querySelectorAll('[id]');
+                const allIds = Array.from(allElements).map(el => ({
+                    tag: el.tagName.toLowerCase(),
+                    id: el.id
+                }));
+                
+                console.log(`📋 Found ${allIds.length} elements with IDs in iframe:`);
+                allIds.forEach(item => {
+                    console.log(`   <${item.tag} id="${item.id}">`);
+                });
                 
                 // Check if any element contains our target IDs
-                const hasLoggedInId = allIds.includes('596573');
-                const hasNotLoggedInId = allIds.includes('4E6F');
+                const hasLoggedInId = allIds.some(item => item.id === '596573');
+                const hasNotLoggedInId = allIds.some(item => item.id === '4E6F');
                 
                 if (hasLoggedInId) {
                     isLoggedIn = true;
-                    detectionMethod = 'Found ID 596573 in document';
+                    const element = allIds.find(item => item.id === '596573');
+                    detectionMethod = `Found ID 596573 on <${element.tag}> element`;
                 } else if (hasNotLoggedInId) {
                     isLoggedIn = false;
-                    detectionMethod = 'Found ID 4E6F in document';
+                    const element = allIds.find(item => item.id === '4E6F');
+                    detectionMethod = `Found ID 4E6F on <${element.tag}> element`;
+                }
+                
+                // If still no IDs found, log more debug info
+                if (allIds.length === 0) {
+                    console.log('⚠️ No elements with ID attributes found in iframe');
+                    console.log('   Body innerHTML length:', body.innerHTML.length);
+                    console.log('   Body text content preview:', body.textContent.substring(0, 100));
                 }
             }
         }
@@ -985,10 +1028,11 @@ function preloadMarketResearchIframe() {
             // Make iframe visible again
             iframe.style.visibility = '';
             
-            // Check auth state after a short delay to allow iframe to fully initialize
+            // Check auth state after a delay to allow Bubble page to fully render
             setTimeout(() => {
+                console.log('🕒 Checking auth state after 2 second delay...');
                 checkBubbleAuthState(iframe);
-            }, 1000);
+            }, 2000);
         };
         
         iframe.onerror = function() {
@@ -997,10 +1041,11 @@ function preloadMarketResearchIframe() {
         };
     } else if (iframe && iframe.src && iframe.src !== '' && iframe.src !== 'about:blank') {
         console.log('ℹ️ Market Research iframe already loaded');
-        // Check auth state with delay to ensure iframe is ready
+        // Check auth state with delay to ensure Bubble page is fully rendered
         setTimeout(() => {
+            console.log('🕒 Checking auth state after delay...');
             checkBubbleAuthState(iframe);
-        }, 500);
+        }, 1500);
     }
 }
 
