@@ -4,6 +4,8 @@
 let isUserLoggedIn = false;
 let authCheckAttempts = 0;
 const MAX_AUTH_CHECK_ATTEMPTS = 3;
+let preloadedIframe = null;
+let isPreloading = false;
 
 // Lightweight authentication status check (no iframe required)
 function checkAuthStatus() {
@@ -24,13 +26,72 @@ function checkAuthStatus() {
     if ((authToken || sessionId || authCookie) && sessionValid) {
         // Found valid auth session
         isUserLoggedIn = true;
-        // Optionally validate with lightweight API call in future
+        // Handle logged in user
+        handleLoggedInUser();
     } else {
         // No valid auth session found
         isUserLoggedIn = false;
     }
     
     return isUserLoggedIn;
+}
+
+// Preload the app site in background
+function preloadAppSite() {
+    if (isPreloading || preloadedIframe) return;
+    
+    isPreloading = true;
+    console.log('🔄 Preloading app.splitlease.app...');
+    
+    // Create hidden iframe to preload the site
+    preloadedIframe = document.createElement('iframe');
+    preloadedIframe.src = 'https://app.splitlease.app';
+    preloadedIframe.style.position = 'absolute';
+    preloadedIframe.style.width = '1px';
+    preloadedIframe.style.height = '1px';
+    preloadedIframe.style.opacity = '0';
+    preloadedIframe.style.pointerEvents = 'none';
+    preloadedIframe.style.left = '-9999px';
+    preloadedIframe.setAttribute('aria-hidden', 'true');
+    preloadedIframe.setAttribute('tabindex', '-1');
+    
+    // Listen for load completion
+    preloadedIframe.onload = function() {
+        console.log('✅ app.splitlease.app preloaded successfully');
+        isPreloading = false;
+        
+        // Show login alert
+        showLoginAlert();
+        
+        // Redirect after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'https://app.splitlease.app';
+        }, 2000);
+    };
+    
+    // Add iframe to document
+    document.body.appendChild(preloadedIframe);
+}
+
+// Show login alert UI
+function showLoginAlert() {
+    // Create alert container
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'login-alert';
+    alertDiv.innerHTML = `
+        <div class="login-alert-content">
+            <div class="login-alert-spinner"></div>
+            <span>Logging in...</span>
+        </div>
+    `;
+    
+    // Add to body
+    document.body.appendChild(alertDiv);
+    
+    // Trigger animation
+    setTimeout(() => {
+        alertDiv.classList.add('show');
+    }, 10);
 }
 
 // Handle logged-in state
@@ -55,16 +116,8 @@ function handleLoggedInUser() {
         btn.style.cursor = 'not-allowed';
     });
     
-    // Show logging in popup
-    const loggingPopup = document.getElementById('loggingInPopup');
-    if (loggingPopup) {
-        loggingPopup.classList.add('active');
-    }
-    
-    // Redirect after 1.5 seconds
-    setTimeout(() => {
-        window.location.href = 'https://app.splitlease.app';
-    }, 1500);
+    // Start preloading the app site
+    preloadAppSite();
 }
 
 // Listen for messages from iframes
@@ -114,6 +167,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check auth status immediately (no iframe to wait for)
     checkAuthStatus();
 });
+
+// Test function to simulate logged-in state (for development)
+window.simulateLogin = function() {
+    // Set auth tokens in localStorage
+    localStorage.setItem('splitlease_auth_token', 'test_token_' + Date.now());
+    localStorage.setItem('splitlease_session_id', 'test_session_' + Date.now());
+    localStorage.setItem('splitlease_last_auth', Date.now().toString());
+    
+    console.log('✅ Simulated login - refresh page to see preload effect');
+    console.log('Run window.clearLogin() to clear the test login state');
+};
+
+// Clear test login
+window.clearLogin = function() {
+    localStorage.removeItem('splitlease_auth_token');
+    localStorage.removeItem('splitlease_session_id');
+    localStorage.removeItem('splitlease_last_auth');
+    console.log('🗑️ Login state cleared');
+};
 
 // Initialize Application
 function initializeApp() {
