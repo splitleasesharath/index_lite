@@ -2996,32 +2996,47 @@ button.loading {
 
 /* Mobile Hero Section Redesign */
 @media (max-width: 768px) {
-    /* Hero Container with Purple Gradient */
+    /* Hero Container with Light Purple Background */
     .hero-section {
-        background: linear-gradient(180deg, #DDD6F3 0%, #E8E3F5 100%) !important;
-        padding: 20px 15px 30px 15px;
-        min-height: auto;
-        border-radius: 0 0 24px 24px;
+        background: rgb(223, 223, 246) !important; /* #DFDFF6 - exact color from original */
+        padding: 0 !important;
+        min-height: 500px !important;
+        border-radius: 0 !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: visible !important;
     }
     
     /* Hide gradient overlays on mobile */
     .hero-section::before,
     .hero-section::after {
-        display: none;
+        display: none !important;
     }
     
-    /* Reposition building illustrations to top */
+    /* Hero background container for image */
+    .hero-background {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        padding: 20px 0 !important;
+        position: relative !important;
+        z-index: 1 !important;
+    }
+    
+    /* Building illustration at top */
     .hero-illustration {
         position: static !important;
-        display: block;
-        margin: 0 auto;
-        opacity: 1;
+        display: block !important;
+        opacity: 1 !important;
     }
     
     .hero-illustration-left {
         display: block !important;
-        width: 120px !important;
-        margin-bottom: 20px;
+        width: 85% !important;
+        max-width: 320px !important;
+        height: auto !important;
+        margin: 0 auto !important;
         left: auto !important;
         bottom: auto !important;
     }
@@ -3030,88 +3045,120 @@ button.loading {
         display: none !important;
     }
     
-    /* Hero content wrapper adjustments */
+    /* White content container at bottom */
     .hero-content-wrapper {
-        background: transparent !important;
-        box-shadow: none !important;
-        padding: 0 !important;
+        background: rgb(247, 248, 249) !important; /* #F7F8F9 - exact white-gray from original */
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1) !important;
+        padding: 15px !important;
         margin: 0 !important;
         border-radius: 0 !important;
+        position: relative !important;
+        z-index: 2 !important;
+        min-height: 65% !important;
+        margin-top: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
     }
     
     /* Title and subtitle styling */
     .hero-title {
-        font-size: 1.75rem !important;
-        margin-bottom: 0.75rem !important;
+        font-size: 26px !important;
+        line-height: 1.2 !important;
+        margin: 15px 0 0 0 !important;
         color: #1a1a1a !important;
+        font-weight: 600 !important;
+        text-align: center !important;
     }
     
     .hero-subtitle {
-        font-size: 0.95rem !important;
+        font-size: 13px !important;
         line-height: 1.4 !important;
         color: #4a4a4a !important;
-        margin-bottom: 1.5rem !important;
+        margin-bottom: 20px !important;
+        text-align: center !important;
+        padding: 0 10px !important;
     }
     
-    /* Circular Day Badges */
-    .hero-section .day-badge {
-        width: 36px !important;
-        height: 36px !important;
-        border-radius: 50% !important;
-        background-color: #E5E7EB !important;
-        color: #6B7280 !important;
-        border: 1px solid #D1D5DB !important;
-        font-size: 0.9rem !important;
-        font-weight: 500 !important;
-    }
-    
-    .hero-section .day-badge.active {
-        background-color: #8B5CF6 !important;
-        color: white !important;
-        border-color: #8B5CF6 !important;
-    }
-    
-    .hero-section .day-badge:hover {
-        transform: scale(1.05) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    /* Hero content section */
+    .hero-content {
+        background: rgb(247, 248, 249) !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
     }
     
     /* Day selector container */
     .day-selector {
-        gap: 0.5rem !important;
-        margin-bottom: 1.5rem !important;
+        display: flex !important;
+        gap: 8px !important;
+        margin-bottom: 20px !important;
+        justify-content: center !important;
+        padding: 0 15px !important;
     }
     
-    /* Outlined Explore Rentals Button */
+    /* Circular Day Badges - exact styling from original */
+    .hero-section .day-badge {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        background-color: rgb(178, 178, 178) !important; /* Gray for unselected */
+        color: white !important;
+        border: none !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        user-select: none !important;
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6),
+                    inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+                    0 2px 5px rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .hero-section .day-badge.active {
+        background: rgb(75, 71, 206) !important; /* #4B47CE - purple for selected */
+        color: rgb(255, 255, 255) !important;
+        box-shadow: 0 4px 8px rgba(76, 110, 245, 0.45),
+                    0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .hero-section .day-badge:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6),
+                    inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+                    0 3px 6px rgba(0, 0, 0, 0.14) !important;
+    }
+    
+    /* Outlined Explore Rentals Button - exact styling */
     .hero-cta-button {
-        background: transparent !important;
-        color: #5B21B6 !important;
-        border: 2px solid #5B21B6 !important;
-        padding: 0.75rem 2rem !important;
-        font-size: 1rem !important;
+        background-color: rgb(255, 255, 255) !important;
+        color: rgb(75, 71, 206) !important;
+        border: 2px solid rgb(75, 71, 206) !important;
+        padding: 12px 24px !important;
+        font-size: 14px !important;
         font-weight: 600 !important;
-        border-radius: 8px !important;
-        width: 100% !important;
-        max-width: 280px !important;
-        margin: 0 auto !important;
+        border-radius: 6px !important;
+        width: calc(100% - 30px) !important;
+        margin: 0 15px 20px 15px !important;
         display: block !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
     }
     
     .hero-cta-button:hover {
-        background: #5B21B6 !important;
+        background: rgb(75, 71, 206) !important;
         color: white !important;
-        border-color: #5B21B6 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 8px rgba(75, 71, 206, 0.3) !important;
     }
     
     /* Hide check-in/checkout display on mobile */
     .checkin-checkout {
         display: none !important;
-    }
-    
-    /* Hero background container */
-    .hero-background {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1rem;
     }
 }
