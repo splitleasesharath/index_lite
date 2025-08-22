@@ -1539,7 +1539,8 @@ body {
 }
 
 
-.referral-text {
+.referral-text,
+.import-text {
     font-size: 0.8rem;
     margin-bottom: 0.75rem;
     color: rgba(255, 255, 255, 0.8);
