@@ -113,6 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize Application
 function initializeApp() {
+    // Enable subdomain access between splitlease.app and app.splitlease.app
+    // This allows iframe access when deployed to production
+    try {
+        if (window.location.hostname.includes('splitlease.app')) {
+            document.domain = 'splitlease.app';
+            console.log('🔓 Set document.domain to splitlease.app for subdomain access');
+        }
+    } catch (e) {
+        // Not on splitlease.app domain, skip domain setting
+    }
+    
     setupNavigation();
     setupDaySelectors();
     setupScheduleControls();
@@ -791,7 +802,7 @@ function openMarketResearchModal() {
         
         // Set iframe source if not already set or preloaded
         if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href) {
-            iframe.src = 'https://www.split.lease/embed-ai-drawer';
+            iframe.src = 'https://app.splitlease.app/embed-ai-drawer';
             
             // Show loader
             if (loader) {
@@ -820,6 +831,17 @@ function openMarketResearchModal() {
 // Check Bubble auth state by examining iframe content
 function checkBubbleAuthState(iframe) {
     console.log('🔍 Attempting to check Bubble page for auth state...');
+    
+    // Wait a moment for iframe to be ready and set its document.domain
+    // This is necessary for subdomain access between splitlease.app and app.splitlease.app
+    if (window.location.hostname.includes('splitlease.app')) {
+        try {
+            // The iframe also needs to set document.domain='splitlease.app' on its side
+            console.log('🌐 Domain: Parent is on splitlease.app, attempting subdomain access...');
+        } catch (e) {
+            // Domain setting might fail in development
+        }
+    }
     
     try {
         // Try to access the iframe document
@@ -895,6 +917,13 @@ function checkBubbleAuthState(iframe) {
         console.log(`   Current origin: ${window.location.origin}`);
         console.log(`   Error: ${e.message}`);
         
+        // Note about subdomain access
+        if (window.location.hostname.includes('splitlease.app') && iframe.src.includes('app.splitlease.app')) {
+            console.log('💡 Note: Both sites are on splitlease.app subdomains.');
+            console.log('   The Bubble app needs to set: document.domain = "splitlease.app"');
+            console.log('   to enable cross-subdomain access.');
+        }
+        
         // Check cached auth state
         const cachedAuth = localStorage.getItem('bubble_market_research_auth');
         const cachedTime = localStorage.getItem('bubble_market_research_auth_time');
@@ -912,7 +941,7 @@ function checkBubbleAuthState(iframe) {
         try {
             iframe.contentWindow.postMessage(
                 { type: 'request-auth-state' }, 
-                'https://www.split.lease'
+                'https://app.splitlease.app'
             );
             console.log('📨 Sent auth state request via postMessage (fallback)');
         } catch (postMessageError) {
@@ -941,7 +970,7 @@ function preloadMarketResearchIframe() {
         console.log('🚀 Starting to preload Market Research iframe...');
         
         // Set the iframe source to preload it
-        iframe.src = 'https://www.split.lease/embed-ai-drawer';
+        iframe.src = 'https://app.splitlease.app/embed-ai-drawer';
         
         // Hide the iframe while preloading
         const modal = document.getElementById('marketResearchModal');
