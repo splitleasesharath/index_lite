@@ -3577,3 +3577,47 @@ button.loading {
 }
 
 .p-4 { padding: 2rem; }
+
+/* Login Alert Styles */
+.login-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 24px 48px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.login-alert.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.login-alert-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+}
+
+.login-alert-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
