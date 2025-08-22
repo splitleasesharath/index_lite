@@ -1498,7 +1498,7 @@ body {
 .main-footer {
     background: #31135D;
     color: rgba(255, 255, 255, 0.9);
-    padding: 2rem 1.5rem 0;
+    padding: 2rem 1.5rem 1rem;
     width: 100%;
     margin: 0;
 }
@@ -1565,7 +1565,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-md);
     color: white;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     height: 44px;
     box-sizing: border-box;
 }
@@ -1577,13 +1577,13 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-md);
     color: white;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     height: 44px;
     box-sizing: border-box;
 }
 
 .import-input:last-of-type {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
 }
 
 .footer-column:nth-child(4),
@@ -1612,6 +1612,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 1rem;
 }
 
 .share-btn:hover,
