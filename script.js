@@ -93,14 +93,13 @@ window.addEventListener('message', function(event) {
         console.log(`🔐 Auth Status: User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
         console.log(`   Element ID: ${event.data.elementId}`);
         
-        // Store auth state
-        if (isLoggedIn) {
-            localStorage.setItem('bubble_market_research_auth', 'true');
-            localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
-        } else {
-            localStorage.removeItem('bubble_market_research_auth');
-            localStorage.removeItem('bubble_market_research_auth_time');
-        }
+        // Always update cache with fresh auth state
+        // This ensures logout is properly reflected
+        localStorage.setItem('bubble_market_research_auth', isLoggedIn.toString());
+        localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
+        
+        // Also update a flag to indicate we got a fresh response
+        localStorage.setItem('bubble_market_research_auth_fresh', 'true');
     }
 });
 
@@ -122,6 +121,18 @@ function initializeApp() {
         }
     } catch (e) {
         // Not on splitlease.app domain, skip domain setting
+    }
+    
+    // Clear stale auth cache on page load (older than 2 minutes)
+    const cachedTime = localStorage.getItem('bubble_market_research_auth_time');
+    if (cachedTime) {
+        const cacheAge = Date.now() - parseInt(cachedTime);
+        if (cacheAge > 2 * 60 * 1000) { // 2 minutes
+            console.log('🧹 Clearing stale auth cache (older than 2 minutes)');
+            localStorage.removeItem('bubble_market_research_auth');
+            localStorage.removeItem('bubble_market_research_auth_time');
+            localStorage.removeItem('bubble_market_research_auth_fresh');
+        }
     }
     
     setupNavigation();
@@ -967,28 +978,37 @@ function checkBubbleAuthState(iframe) {
             console.log('   to enable cross-subdomain access.');
         }
         
-        // Check cached auth state
-        const cachedAuth = localStorage.getItem('bubble_market_research_auth');
-        const cachedTime = localStorage.getItem('bubble_market_research_auth_time');
-        
-        if (cachedAuth && cachedTime) {
-            const cacheAge = Date.now() - parseInt(cachedTime);
-            if (cacheAge < 5 * 60 * 1000) { // 5 minutes
-                const isLoggedIn = cachedAuth === 'true';
-                console.log(`🔐 Auth Status (from cache): User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
-                return isLoggedIn;
-            }
-        }
-        
-        // Try postMessage as fallback
+        // Always try postMessage first for fresh auth state
         try {
             iframe.contentWindow.postMessage(
                 { type: 'request-auth-state' }, 
                 'https://app.splitlease.app'
             );
-            console.log('📨 Sent auth state request via postMessage (fallback)');
+            console.log('📨 Sent auth state request via postMessage');
+            
+            // Don't use cache immediately - wait for postMessage response
+            // The response handler will update the cache with fresh data
         } catch (postMessageError) {
             console.log('⚠️ Could not send postMessage to iframe');
+            
+            // Only use cache as last resort if postMessage fails
+            const cachedAuth = localStorage.getItem('bubble_market_research_auth');
+            const cachedTime = localStorage.getItem('bubble_market_research_auth_time');
+            
+            if (cachedAuth && cachedTime) {
+                const cacheAge = Date.now() - parseInt(cachedTime);
+                // Reduce cache validity to 1 minute for more frequent checks
+                if (cacheAge < 60 * 1000) { // 1 minute
+                    const isLoggedIn = cachedAuth === 'true';
+                    console.log(`🔐 Auth Status (from 1-min cache): User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
+                    console.log(`   Cache age: ${Math.round(cacheAge / 1000)}s`);
+                    return isLoggedIn;
+                } else {
+                    console.log('🕰️ Cache expired (older than 1 minute)');
+                    localStorage.removeItem('bubble_market_research_auth');
+                    localStorage.removeItem('bubble_market_research_auth_time');
+                }
+            }
         }
         
         return null;
