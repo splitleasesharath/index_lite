@@ -1558,7 +1558,18 @@ body {
     cursor: pointer;
 }
 
-.referral-input,
+.referral-input {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    color: white;
+    margin-bottom: 0.5rem;
+    height: 44px;
+    box-sizing: border-box;
+}
+
 .import-input {
     width: 100%;
     padding: 0.75rem;
@@ -1566,9 +1577,13 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-md);
     color: white;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     height: 44px;
     box-sizing: border-box;
+}
+
+.import-input:last-of-type {
+    margin-bottom: 0.75rem;
 }
 
 .footer-column:nth-child(4),
