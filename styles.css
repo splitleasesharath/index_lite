@@ -481,19 +481,6 @@ body {
     z-index: 1;
 }
 
-.hero-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: 
-        radial-gradient(ellipse at top, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom, rgba(232, 227, 245, 0.3) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-}
 
 .hero-content {
     text-align: center;
@@ -575,6 +562,7 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+
 /* Day Selector */
 .day-selector {
     display: flex;
@@ -586,8 +574,8 @@ body {
 }
 
 .calendar-icon {
-    width: 28px;
-    height: 28px;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -595,27 +583,26 @@ body {
 }
 
 .day-badge {
-    width: 28px !important;
-    height: 28px !important;
-    border-radius: 6px !important;
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 8px !important;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: "Inter", Helvetica, Arial, sans-serif;
     font-weight: 600;
-    font-size: 11px !important;
+    font-size: 14px !important;
     line-height: 16px;
     cursor: pointer;
-    transition: background 0.2s ease-in-out;
-    background-color: #E5E7EB !important;
-    color: #9CA3AF !important;
+    transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+    background-color: #b2b2b2 !important;
+    color: #ffffff !important;
     border: none;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .day-badge:hover {
-    background-color: #E5E7EB !important;
-    color: #9CA3AF !important;
+    transform: translateY(-2px);
 }
 
 .day-badge.active {
@@ -2630,39 +2617,43 @@ body {
         padding: 1rem;
     }
 
-    .hero-title {
-        font-size: 1.75rem;
-        line-height: 1.15;
-        margin-bottom: 0.75rem;
-    }
-
-    .hero-subtitle {
-        font-size: 0.95rem;
-        line-height: 1.4;
-        margin-bottom: 1.5rem;
+    /* Adjust building illustrations for mobile */
+    .hero-illustration-left,
+    .hero-illustration-right {
+        display: block !important;
+        position: absolute;
+        z-index: 1;
+        /* Create placeholder buildings with CSS when images don't load */
+        background: linear-gradient(to bottom, #444, #666);
+        border-radius: 2px;
     }
     
     .hero-illustration-left {
-        display: none;
+        width: 50px;
+        height: 55px;
+        left: 30%;
+        top: 20px;
+        transform: translateX(-50%);
+        opacity: 0.3;
     }
     
     .hero-illustration-right {
-        left: 50%;
-        right: auto;
+        width: 65px;
+        height: 70px;
+        left: 70%;
+        top: 15px;
         transform: translateX(-50%);
-        width: 350px;
-        bottom: 5%;
-    }
-    
-    .hero-content-wrapper {
-        margin: 1rem;
-        padding: 2rem 1.5rem;
-        border-radius: 1rem;
-        background: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        animation: waterfall 0.8s ease-out forwards;
-        position: relative;
-        z-index: 3;
+        opacity: 0.35;
+        /* Empire State Building shape */
+        clip-path: polygon(
+            40% 100%, 60% 100%, /* base */
+            60% 30%, 55% 30%, /* first tier */
+            55% 20%, 50% 20%, /* second tier */
+            50% 5%, 45% 5%, /* third tier */
+            45% 20%, 40% 20%, /* other side second tier */
+            40% 30%, 35% 30%, /* other side first tier */
+            35% 100%
+        );
     }
 
     .value-container {
@@ -2679,33 +2670,124 @@ body {
         font-size: 0.85rem;
     }
 
-    .day-selector {
-        flex-wrap: nowrap;
-        gap: 0.4rem;
-        margin: 0 0 1.5rem 0;
+    
+    /* Hero Section Mobile Styles */
+    .hero-section {
+        margin: 15px auto 2rem;
+        width: 92%;
+        min-height: auto;
+        padding: 100px 0 20px 0;
+        position: relative;
+        overflow: visible;
+        background: linear-gradient(180deg, #DDD6F3 0%, #E8E3F5 100%);
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .hero-background {
+        display: none;
+    }
+    
+    .hero-section::before {
+        display: none;
+    }
+    
+    .hero-content-wrapper {
+        width: 100%;
+        max-width: 100%;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-content {
+        background: #ffffff;
+        width: calc(100% - 1.5rem);
+        max-width: 100%;
+        padding: 1.75rem 1.25rem;
+        border-radius: 12px;
+        margin: 0 0.75rem;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
     
     .hero-title {
-        font-size: 1.5rem;
-        white-space: normal;
+        font-size: 1.4rem;
+        line-height: 1.25;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        font-weight: 700;
+        color: #1a1a1a;
     }
     
     .hero-subtitle {
-        font-size: 0.85rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin-bottom: 1.25rem;
+        text-align: center;
+        color: #6b7280;
+    }
+    
+    .day-selector {
+        justify-content: center;
+        gap: 0.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .calendar-icon {
+        display: none;
     }
     
     .hero-section .day-badge {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-        border-radius: 10px;
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 14px !important;
+        border-radius: 50% !important;
+        font-weight: 500 !important;
+        background-color: #D1D5DB !important;
+        color: #ffffff !important;
+    }
+    
+    .hero-section .day-badge.active {
+        background-color: #4B47CE !important;
+        color: #ffffff !important;
+    }
+    
+    .check-in-out {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 1.25rem;
+        font-size: 0.875rem;
+        text-align: center;
+    }
+    
+    .check-in-out span {
+        color: #000;
+        font-weight: 600;
+    }
+    
+    .check-in-out > div {
+        flex: 1;
+    }
+    
+    .check-in-out .separator {
+        width: 4px;
+        height: 4px;
+        background: #9CA3AF;
+        border-radius: 50%;
+        margin: 0 1rem;
     }
     
     .hero-cta-button {
         width: 100%;
-        padding: 0.75rem 2rem;
-        font-size: 1rem;
-        border-radius: 8px;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        border-radius: 6px;
+        background: transparent;
+        color: #4B47CE;
+        border: 1.5px solid #4B47CE;
+        font-weight: 500;
     }
 
     /* Horizontal scroll for listings on mobile */
