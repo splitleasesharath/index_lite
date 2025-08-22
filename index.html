@@ -380,49 +380,43 @@
                 </div>
                 <input type="text" placeholder="Your friend's" class="referral-input">
                 <button class="share-btn">Share now</button>
-                
-                <div class="import-section">
-                    <h4>Import your listing from another site</h4>
-                    <input type="text" placeholder="https://your-listing-link" class="import-input" id="importUrl">
-                    <input type="email" placeholder="janedoe@your_email.com" class="import-input" id="importEmail">
-                    <button class="import-btn" onclick="handleImportListing()">Submit</button>
-                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Import your listing from another site</h4>
+                <input type="text" placeholder="https://your-listing-link" class="import-input" id="importUrl">
+                <input type="email" placeholder="janedoe@your_email.com" class="import-input" id="importEmail">
+                <button class="import-btn" onclick="handleImportListing()">Submit</button>
             </div>
         </div>
-        
-        <!-- App Download Section -->
-        <div class="app-download-section">
+    </footer>
+    
+    <!-- App Download Section (Outside Footer) -->
+    <div class="app-download-section">
             <div class="app-card">
+                <img src="https://50bf0464e4735aabad1cc8848a0e8b8a.cdn.bubble.io/cdn-cgi/image/w=256,h=330,f=auto,dpr=1,fit=contain/f1743107051105x956510081926083000/iphone-removebg-preview.png" alt="Split Lease App" class="app-phone-image" loading="lazy">
                 <div class="app-content">
-                    <p class="app-tagline">Now you can change your nights <em>on the go</em>.</p>
+                    <p class="app-tagline">Now you can change<br>your nights<br><em>on the go.</em></p>
                     <a href="https://apps.apple.com/app/split-lease" class="app-store-btn">
-                        <svg width="20" height="24" viewBox="0 0 20 24" fill="currentColor">
-                            <path d="M15.7 12.5c0-2.9 2.4-4.3 2.5-4.4-1.4-2-3.5-2.3-4.2-2.3-1.8-.2-3.5 1-4.4 1-.9 0-2.3-1-3.8-1C3.6 6 1.6 7.2.7 9.2c-1.9 4.1-.5 10.2 1.4 13.5.9 1.6 2 3.4 3.4 3.3 1.4-.1 1.9-.9 3.6-.9s2.1.9 3.6.9c1.5 0 2.4-1.6 3.3-3.2 1.1-1.9 1.5-3.7 1.5-3.8-.1 0-2.8-1.1-2.8-4.5z"/>
-                            <path d="M13 3.7c.7-.9 1.2-2.2 1.1-3.5-1 0-2.3.7-3 1.6-.7.8-1.3 2.1-1.1 3.3 1.2.1 2.4-.6 3-1.4z"/>
-                        </svg>
-                        <span>Download at the App Store</span>
+                        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="40">
                     </a>
+                    <p class="app-subtitle">Download at the App Store</p>
                 </div>
-                <img src="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' font-size='40' fill='%23999'%3E📱%3C/text%3E%3C/svg%3E" alt="App Screenshot" class="app-image" loading="lazy">
             </div>
             
             <div class="alexa-card">
+                <img src="https://50bf0464e4735aabad1cc8848a0e8b8a.cdn.bubble.io/cdn-cgi/image/w=256,h=225,f=auto,dpr=1,fit=cover,q=75/f1625329487406x361063433051586300/402087-smart-speakers-amazon-echo-dot-4th-gen-10015594%201.png" alt="Amazon Alexa" class="alexa-device-image" loading="lazy">
                 <div class="alexa-content">
-                    <p class="alexa-tagline">Voice-controlled concierge, at your service.</p>
+                    <p class="alexa-tagline">Voice-controlled concierge,<br>at your service.</p>
                     <a href="https://www.amazon.com/dp/B08XYZ123" class="alexa-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="2" fill="none"/>
-                            <circle cx="12" cy="8" r="2"/>
-                            <path d="M12 10v8"/>
-                        </svg>
-                        <span>"Alexa, enable Split Lease"</span>
+                        <span class="amazon-logo">Available on<br><strong>amazon.com</strong></span>
                     </a>
+                    <p class="alexa-command">"Alexa, enable Split Lease"</p>
                 </div>
-                <img src="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' font-size='40' fill='%23999'%3E🔊%3C/text%3E%3C/svg%3E" alt="Alexa Device" class="alexa-image" loading="lazy">
             </div>
-        </div>
-        
-        <div class="footer-bottom">
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
             <a href="https://app.splitlease.app/terms">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style="margin-right: 0.5rem;">
                     <path d="M2 2h8v8H2z" stroke="currentColor" stroke-width="1" fill="none"/>
@@ -432,8 +426,7 @@
             </a>
             <span>Made with love in New York City</span>
             <span>© 2025 SplitLease</span>
-        </div>
-    </footer>
+    </div>
 
     <!-- Floating Free Market Research Badge -->
     <div class="floating-badge" onclick="openMarketResearchModal()">

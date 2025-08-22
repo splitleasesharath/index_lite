@@ -1499,16 +1499,18 @@ body {
 .main-footer {
     background: #31135D;
     color: rgba(255, 255, 255, 0.9);
-    padding: 2rem 1.5rem 1rem;
+    padding: 2rem 1.5rem 0;
+    width: 100%;
+    margin: 0;
 }
 
 .footer-container {
     max-width: var(--max-width);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+    margin-bottom: 0;
 }
 
 .footer-column h4 {
@@ -1579,9 +1581,6 @@ body {
     background: var(--primary-hover);
 }
 
-.import-section {
-    margin-top: 1rem;
-}
 
 .import-input {
     margin-bottom: 0.5rem;
@@ -1606,19 +1605,29 @@ body {
 
 /* App Download Section */
 .app-download-section {
-    max-width: var(--max-width);
-    margin: 1.5rem auto 1rem;
-    padding: 0 1.5rem;
+    background: #f5f5f5;
+    padding: 3rem 2rem;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
 }
 
 .app-card {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
     gap: 2rem;
+    flex: 1;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.app-phone-image {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
 }
 
 .app-content {
@@ -1627,13 +1636,21 @@ body {
 
 .app-tagline {
     font-size: 1.25rem;
-    color: white;
-    margin-bottom: 1.5rem;
+    color: #333;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+    font-weight: 500;
 }
 
 .app-tagline em {
     font-style: italic;
-    color: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+.app-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
 }
 
 .app-store-btn {
@@ -1663,12 +1680,16 @@ body {
 .alexa-card {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
     gap: 2rem;
-    margin-top: 1.5rem;
+    flex: 1;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.alexa-device-image {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
 }
 
 .alexa-content {
@@ -1677,24 +1698,43 @@ body {
 
 .alexa-tagline {
     font-size: 1.25rem;
-    color: white;
-    margin-bottom: 1.5rem;
+    color: #333;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+    font-weight: 500;
 }
 
 .alexa-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: linear-gradient(135deg, #00a8cc 0%, #0072ce 100%);
+    display: inline-block;
+    background: #232f3e;
     color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
     text-decoration: none;
     transition: transform 0.3s ease;
+    font-size: 0.9rem;
 }
 
 .alexa-btn:hover {
     transform: scale(1.05);
+    background: #37475a;
+}
+
+.amazon-logo {
+    font-size: 0.85rem;
+    line-height: 1.2;
+}
+
+.amazon-logo strong {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.alexa-command {
+    font-size: 0.95rem;
+    color: #666;
+    margin-top: 0.75rem;
+    font-style: italic;
 }
 
 .alexa-image {
@@ -1706,23 +1746,28 @@ body {
 
 .footer-bottom {
     text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.5rem 0;
+    margin: 0;
+    background: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    max-width: var(--max-width);
-    margin: 0 auto;
+    gap: 2rem;
+    font-size: 0.9rem;
+    color: #666;
 }
 
 .footer-bottom a {
-    color: rgba(255, 255, 255, 0.7);
+    color: #666;
     text-decoration: none;
 }
 
 .footer-bottom a:hover {
-    color: white;
+    color: #333;
 }
+
 
 /* Floating Badge */
 .floating-badge {
