@@ -7,7 +7,7 @@ const MAX_AUTH_CHECK_ATTEMPTS = 3;
 
 // Lightweight authentication status check (no iframe required)
 function checkAuthStatus() {
-    console.log('Checking authentication status via localStorage/cookies...');
+    // Check authentication status via localStorage/cookies
     
     // Check localStorage for auth token or session
     const authToken = localStorage.getItem('splitlease_auth_token');
@@ -22,11 +22,11 @@ function checkAuthStatus() {
         (Date.now() - parseInt(lastAuthTime)) < 24 * 60 * 60 * 1000;
     
     if ((authToken || sessionId || authCookie) && sessionValid) {
-        console.log('Found valid auth session');
+        // Found valid auth session
         isUserLoggedIn = true;
         // Optionally validate with lightweight API call in future
     } else {
-        console.log('No valid auth session found');
+        // No valid auth session found
         isUserLoggedIn = false;
     }
     
@@ -35,7 +35,7 @@ function checkAuthStatus() {
 
 // Handle logged-in state
 function handleLoggedInUser() {
-    console.log('User is logged in! Redirecting...');
+    // User is logged in - updating UI
     isUserLoggedIn = true;
     
     // Disable sign in and sign up buttons
@@ -89,9 +89,9 @@ window.addEventListener('message', function(event) {
     // Handle auth state response from Market Research iframe
     if (event.data.type === 'auth-state-response') {
         const isLoggedIn = event.data.elementId === '596573';
-        console.log('📨 PostMessage Auth Response:');
+        console.log('📨 PostMessage Response Received!');
+        console.log(`🔐 Auth Status: User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
         console.log(`   Element ID: ${event.data.elementId}`);
-        console.log(`   User is ${isLoggedIn ? '✅ LOGGED IN' : '❌ NOT LOGGED IN'}`);
         
         // Store auth state
         if (isLoggedIn) {
@@ -700,20 +700,20 @@ const IframeLoader = {
     // Load iframe on demand only
     loadAuthIframe() {
         if (this.states.auth !== 'NOT_LOADED') {
-            console.log('Auth iframe already loaded or loading');
+            // Auth iframe already loaded or loading
             return;
         }
         
         const iframe = document.getElementById('authIframe');
         if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
-            console.log('Loading auth iframe on demand...');
+            // Loading auth iframe on demand
             this.states.auth = 'LOADING';
             iframe.src = 'https://app.splitlease.app/signup-login';
             
             // Update state when loaded
             iframe.addEventListener('load', () => {
                 this.states.auth = 'LOADED';
-                console.log('Auth iframe loaded successfully');
+                // Auth iframe loaded successfully
                 
                 // Track preload effectiveness
                 if (this.preloadStartTime) {
@@ -733,7 +733,7 @@ const IframeLoader = {
     // Preload iframe based on user intent
     preloadAuthIframe() {
         if (this.states.auth === 'NOT_LOADED') {
-            console.log('Intent detected - preloading auth iframe...');
+            // Intent detected - preloading auth iframe
             this.preloadStartTime = Date.now();
             
             // Show subtle preloading indicator
@@ -819,40 +819,41 @@ function openMarketResearchModal() {
 
 // Check Bubble auth state by examining iframe content
 function checkBubbleAuthState(iframe) {
-    try {
-        // Try to access iframe document (will fail for cross-origin)
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        
-        // Look for the main page element
-        const pageElement = iframeDoc.querySelector('.main-page');
-        
-        if (pageElement) {
-            const elementId = pageElement.id;
-            const isLoggedIn = elementId === '596573';
-            
-            console.log('🔍 Bubble Auth Detection:');
-            console.log(`   Element ID: ${elementId}`);
-            console.log(`   User is ${isLoggedIn ? '✅ LOGGED IN' : '❌ NOT LOGGED IN'}`);
-            
-            // Store auth state
-            if (isLoggedIn) {
-                localStorage.setItem('bubble_market_research_auth', 'true');
-                localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
-            } else {
-                localStorage.removeItem('bubble_market_research_auth');
-                localStorage.removeItem('bubble_market_research_auth_time');
-            }
-            
+    // Since we can't access cross-origin iframe content directly,
+    // we'll use a different approach:
+    
+    // 1. Check if we have a recent auth state in localStorage
+    const cachedAuth = localStorage.getItem('bubble_market_research_auth');
+    const cachedTime = localStorage.getItem('bubble_market_research_auth_time');
+    
+    if (cachedAuth && cachedTime) {
+        const cacheAge = Date.now() - parseInt(cachedTime);
+        // If cache is less than 5 minutes old, use it
+        if (cacheAge < 5 * 60 * 1000) {
+            const isLoggedIn = cachedAuth === 'true';
+            console.log(`🔐 Auth Status (from cache): User is ${isLoggedIn ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
             return isLoggedIn;
         }
-    } catch (e) {
-        // Cross-origin access denied - use postMessage fallback
-        console.log('⚠️ Cross-origin iframe - using postMessage for auth detection');
-        
-        // Request auth state via postMessage
-        iframe.contentWindow.postMessage({ type: 'request-auth-state' }, 'https://www.split.lease');
     }
     
+    // 2. Try to detect auth by checking if iframe loads successfully
+    // The iframe URL might redirect or behave differently based on auth state
+    console.log('🔍 Checking auth status via iframe load behavior...');
+    
+    // 3. Send postMessage to request auth state
+    // Note: This requires the Bubble page to have a listener that responds
+    try {
+        iframe.contentWindow.postMessage(
+            { type: 'request-auth-state' }, 
+            'https://www.split.lease'
+        );
+        console.log('📨 Sent auth state request via postMessage');
+    } catch (e) {
+        console.log('⚠️ Could not send postMessage to iframe');
+    }
+    
+    // 4. For now, we can't determine auth state directly
+    // The postMessage response handler will update the state when received
     return null;
 }
 
@@ -861,6 +862,7 @@ function setupDelayedMarketResearchPreload() {
     console.log('⏰ Scheduling Market Research iframe preload in 4 seconds...');
     
     setTimeout(() => {
+        console.log('🏃 Starting delayed preload now...');
         preloadMarketResearchIframe();
     }, 4000);
 }
@@ -870,7 +872,7 @@ function preloadMarketResearchIframe() {
     const iframe = document.getElementById('marketResearchIframe');
     
     if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href)) {
-        console.log('🚀 Preloading Market Research iframe...');
+        console.log('🚀 Starting to preload Market Research iframe...');
         
         // Set the iframe source to preload it
         iframe.src = 'https://www.split.lease/embed-ai-drawer';
@@ -888,12 +890,16 @@ function preloadMarketResearchIframe() {
             // Make iframe visible again
             iframe.style.visibility = '';
             
-            // Check auth state
-            const isLoggedIn = checkBubbleAuthState(iframe);
-            
-            if (isLoggedIn !== null) {
-                console.log(`📊 Preload Auth Check: User is ${isLoggedIn ? 'logged in' : 'not logged in'}`);
-            }
+            // Check auth state after a short delay to allow iframe to fully initialize
+            setTimeout(() => {
+                const isLoggedIn = checkBubbleAuthState(iframe);
+                
+                if (isLoggedIn !== null) {
+                    console.log(`📊 Auth Check Result: ${isLoggedIn ? 'User is logged in' : 'User is not logged in'}`);
+                } else {
+                    console.log('📊 Auth Check: Waiting for postMessage response...');
+                }
+            }, 1000);
         };
         
         iframe.onerror = function() {
@@ -902,7 +908,10 @@ function preloadMarketResearchIframe() {
         };
     } else if (iframe && iframe.src && iframe.src !== '' && iframe.src !== 'about:blank') {
         console.log('ℹ️ Market Research iframe already loaded');
-        checkBubbleAuthState(iframe);
+        // Check auth state with delay to ensure iframe is ready
+        setTimeout(() => {
+            checkBubbleAuthState(iframe);
+        }, 500);
     }
 }
 
@@ -970,15 +979,15 @@ const AuthStateManager = {
             if (now < expiryTime) {
                 this.isLoggedIn = true;
                 this.updateUIForLoggedInState();
-                console.log('Auth state: Likely logged in (from cache)');
+                // Likely logged in (from cache)
             } else {
                 // Auth expired, clean up
                 localStorage.removeItem('split_lease_last_auth');
                 localStorage.removeItem('split_lease_auth_expiry');
-                console.log('Auth state: Cache expired');
+                // Cache expired
             }
         } else {
-            console.log('Auth state: No cached auth found');
+            // No cached auth found
         }
     },
     
@@ -994,7 +1003,7 @@ const AuthStateManager = {
     // Background verification using Bubble API
     performBackgroundCheck() {
         this.checkInProgress = true;
-        console.log('Auth state: Starting background verification...');
+        // Starting background verification
         
         const timestamp = Date.now();
         
@@ -1009,7 +1018,7 @@ const AuthStateManager = {
             mode: 'cors'
         })
         .then(response => {
-            console.log('Auth check response status:', response.status);
+            // Auth check response
             
             if (response.ok) {
                 return response.json();
@@ -1024,7 +1033,7 @@ const AuthStateManager = {
                                data.response.results && 
                                data.response.results.length > 0;
             
-            console.log('Auth check data received:', hasUserData ? 'User data found' : 'No user data');
+            // Auth check data received
             
             const wasLoggedIn = this.isLoggedIn;
             this.isLoggedIn = hasUserData;
@@ -1037,7 +1046,7 @@ const AuthStateManager = {
                 if (!wasLoggedIn) {
                     this.updateUIForLoggedInState();
                 } else {
-                    console.log('Auth state: Still logged in');
+                    // Still logged in
                 }
             } else {
                 // No user data means not logged in
@@ -1047,7 +1056,7 @@ const AuthStateManager = {
                 if (wasLoggedIn) {
                     this.updateUIForLoggedOutState();
                 } else {
-                    console.log('Auth state: Not logged in');
+                    // Not logged in
                 }
             }
             
@@ -1055,12 +1064,12 @@ const AuthStateManager = {
             this.lastCheckTime = timestamp;
         })
         .catch(error => {
-            console.log('Auth check error:', error.message);
+            // Auth check error
             
             // Error means not authenticated or CORS issue
             // For CORS issues, we'll fall back to iframe method
             if (error.message.includes('CORS') || error.message.includes('NetworkError')) {
-                console.log('CORS issue detected, trying iframe method...');
+                // CORS issue detected, trying iframe method
                 this.performIframeCheck();
             } else {
                 // Assume logged out
@@ -1073,7 +1082,7 @@ const AuthStateManager = {
                 if (wasLoggedIn) {
                     this.updateUIForLoggedOutState();
                 }
-                console.log('Auth state: Not logged in');
+                // Not logged in
                 
                 this.checkInProgress = false;
                 this.lastCheckTime = timestamp;
@@ -1083,7 +1092,7 @@ const AuthStateManager = {
         // Timeout fallback - assume logged out if no response in 5 seconds
         setTimeout(() => {
             if (this.checkInProgress) {
-                console.log('Auth state: Check timeout - assuming logged out');
+                // Check timeout - assuming logged out
                 this.isLoggedIn = false;
                 localStorage.removeItem('split_lease_last_auth');
                 localStorage.removeItem('split_lease_auth_expiry');
@@ -1095,7 +1104,7 @@ const AuthStateManager = {
     
     // Fallback iframe check method if CORS fails
     performIframeCheck() {
-        console.log('Auth state: Using iframe fallback method...');
+        // Using iframe fallback method
         
         // Create a minimal iframe to check auth
         const iframe = document.createElement('iframe');
@@ -1112,14 +1121,14 @@ const AuthStateManager = {
                 try {
                     // Try to access iframe content (will fail for CORS but that's ok)
                     // The fact it loaded means the request succeeded
-                    console.log('Auth state: Iframe loaded successfully');
+                    // Iframe loaded successfully
                     this.isLoggedIn = true;
                     localStorage.setItem('split_lease_last_auth', timestamp.toString());
                     localStorage.setItem('split_lease_auth_expiry', (timestamp + 86400000).toString());
                     this.updateUIForLoggedInState();
                 } catch (e) {
                     // Can't access content but load succeeded - likely authenticated
-                    console.log('Auth state: Iframe loaded (CORS protected)');
+                    // Iframe loaded (CORS protected)
                 }
                 checkComplete = true;
                 document.body.removeChild(iframe);
@@ -1129,7 +1138,7 @@ const AuthStateManager = {
         
         iframe.onerror = () => {
             if (!checkComplete) {
-                console.log('Auth state: Iframe failed - not logged in');
+                // Iframe failed - not logged in
                 this.isLoggedIn = false;
                 localStorage.removeItem('split_lease_last_auth');
                 localStorage.removeItem('split_lease_auth_expiry');
@@ -1145,7 +1154,7 @@ const AuthStateManager = {
         // Clean up after 3 seconds if nothing happens
         setTimeout(() => {
             if (!checkComplete) {
-                console.log('Auth state: Iframe timeout');
+                // Iframe timeout
                 if (document.body.contains(iframe)) {
                     document.body.removeChild(iframe);
                 }
@@ -1157,13 +1166,13 @@ const AuthStateManager = {
     // Update UI to reflect logged-in state
     updateUIForLoggedInState() {
         // Just log for now - no UI changes
-        console.log('✅ User is LOGGED IN');
+        // User is LOGGED IN
     },
     
     // Update UI to reflect logged-out state  
     updateUIForLoggedOutState() {
         // Just log for now - no UI changes
-        console.log('❌ User is LOGGED OUT');
+        // User is LOGGED OUT
     },
     
     // Manual check method (can be called on demand)
@@ -1184,8 +1193,7 @@ const AuthStateManager = {
     }
 };
 
-// Initialize auth state discovery
-AuthStateManager.init();
+// Auth state discovery removed - using delayed preload instead
 
 // Hero Day Selector Functions - Exact Split Lease Replication
 let selectedDays = [];
