@@ -1253,7 +1253,7 @@ const AuthStateManager = {
         
         // Try to fetch current user data from Bubble API
         // This endpoint returns user data if logged in, or empty/error if not
-        fetch('https://app.split.lease/version-test/api/1.1/obj/user', {
+        fetch('https://app.split.lease/api/1.1/obj/user', {
             method: 'GET',
             credentials: 'include', // Include cookies for auth
             headers: {
@@ -1355,7 +1355,7 @@ const AuthStateManager = {
         iframe.style.display = 'none';
         iframe.style.width = '0';
         iframe.style.height = '0';
-        iframe.src = 'https://app.split.lease/version-test/api/1.1/obj/user';
+        iframe.src = 'https://app.split.lease/api/1.1/obj/user';
         
         const timestamp = Date.now();
         let checkComplete = false;
