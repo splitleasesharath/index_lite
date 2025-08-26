@@ -1751,51 +1751,68 @@ function redirectToSearch(daysSelected, preset) {
 function setupDropdownMenus() {
     const dropdowns = document.querySelectorAll('.nav-dropdown');
     
+    // Function to close all dropdowns
+    function closeAllDropdowns() {
+        dropdowns.forEach(dropdown => {
+            dropdown.classList.remove('active');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            if (menu) {
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+            }
+            // Reset the data attribute
+            dropdown.setAttribute('data-open', 'false');
+        });
+    }
+    
     dropdowns.forEach(dropdown => {
         const trigger = dropdown.querySelector('.dropdown-trigger');
         const menu = dropdown.querySelector('.dropdown-menu');
-        let isOpen = false;
+        
+        // Set initial state
+        dropdown.setAttribute('data-open', 'false');
         
         // Toggle on click
         trigger.addEventListener('click', function(e) {
             e.preventDefault();
-            isOpen = !isOpen;
+            e.stopPropagation();
             
-            if (isOpen) {
+            const isCurrentlyOpen = dropdown.getAttribute('data-open') === 'true';
+            
+            // Close all other dropdowns first
+            closeAllDropdowns();
+            
+            if (!isCurrentlyOpen) {
+                // Open this dropdown
                 dropdown.classList.add('active');
-                menu.style.opacity = '1';
-                menu.style.visibility = 'visible';
-            } else {
-                dropdown.classList.remove('active');
-                menu.style.opacity = '0';
-                menu.style.visibility = 'hidden';
+                dropdown.setAttribute('data-open', 'true');
+                if (menu) {
+                    menu.style.opacity = '1';
+                    menu.style.visibility = 'visible';
+                }
             }
         });
         
-        // Keep open on hover
-        dropdown.addEventListener('mouseenter', function() {
-            dropdown.classList.add('hover');
-        });
-        
-        dropdown.addEventListener('mouseleave', function() {
-            dropdown.classList.remove('hover');
-            if (!isOpen) {
-                dropdown.classList.remove('active');
-                menu.style.opacity = '0';
-                menu.style.visibility = 'hidden';
-            }
-        });
+        // Prevent closing when clicking inside the dropdown menu
+        if (menu) {
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
     });
     
     // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
+        // Check if click is outside all dropdowns
         if (!e.target.closest('.nav-dropdown')) {
-            dropdowns.forEach(dropdown => {
-                dropdown.classList.remove('active');
-                const menu = dropdown.querySelector('.dropdown-menu');
-                menu.style.opacity = '0';
-                menu.style.visibility = 'hidden';
-            });
+            closeAllDropdowns();
+        }
+    });
+    
+    // ESC key to close dropdowns
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAllDropdowns();
         }
     });
     
@@ -1823,7 +1840,7 @@ function setupDropdownMenus() {
                     e.preventDefault();
                     items[index - 1]?.focus() || trigger.focus();
                 } else if (e.key === 'Escape') {
-                    dropdown.classList.remove('active');
+                    closeAllDropdowns();
                     trigger.focus();
                 }
             });
