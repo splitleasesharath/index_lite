@@ -1,18 +1,18 @@
-# Setting Up splitlease.app with Bubble App Integration
+# Setting Up split.lease with Bubble App Integration
 
 ## Overview
-- **Main Site** (splitlease.app/): Your static site on Cloudflare Pages
-- **Bubble App** (splitlease.app/app): Your Bubble app
+- **Main Site** (split.lease/): Your static site on Cloudflare Pages
+- **Bubble App** (split.lease/app): Your Bubble app
 
 ## Method 1: Using Cloudflare Page Rules (Simplest)
 
 ### Step 1: In Cloudflare Dashboard
 
-1. Go to your domain (splitlease.app) in Cloudflare
+1. Go to your domain (split.lease) in Cloudflare
 2. Navigate to **Rules → Page Rules**
 3. Create a new Page Rule:
    ```
-   URL: splitlease.app/app/*
+   URL: split.lease/app/*
    Settings: 
    - Forwarding URL (301 Permanent Redirect)
    - Destination: https://your-bubble-app.bubbleapps.io/app/$1
@@ -21,7 +21,7 @@
 ### Step 2: In Bubble
 
 1. Go to Settings → Domain/Email
-2. Add a domain: `splitlease.app`
+2. Add a domain: `split.lease`
 3. Set the path to `/app`
 4. Bubble will give you a CNAME record to add
 
@@ -49,7 +49,7 @@
 1. Go to your domain → Workers Routes
 2. Add route:
    ```
-   Route: splitlease.app/*
+   Route: split.lease/*
    Worker: [your-worker-name]
    ```
 
@@ -59,7 +59,7 @@ Replace `your-bubble-app.bubbleapps.io` with your actual Bubble app URL in worke
 
 ## Method 3: Using Subdomain (Easiest)
 
-Instead of `/app`, use `app.splitlease.app`:
+Instead of `/app`, use `app.split.lease`:
 
 ### Step 1: In Cloudflare DNS
 
@@ -74,7 +74,7 @@ Proxy: OFF (Gray cloud)
 ### Step 2: In Bubble
 
 1. Settings → Domain/Email
-2. Add domain: `app.splitlease.app`
+2. Add domain: `app.split.lease`
 3. Save
 
 ## Bubble Configuration Steps
@@ -84,7 +84,7 @@ Proxy: OFF (Gray cloud)
 1. **Go to Settings → Domain/Email**
 
 2. **Add Your Domain:**
-   - Domain name: `splitlease.app`
+   - Domain name: `split.lease`
    - Subdirectory: `/app` (or whatever path you want)
 
 3. **Bubble Will Show:**
@@ -111,7 +111,7 @@ Proxy: OFF (Gray cloud)
 
 2. **Configure Page Rules:**
    ```
-   URL Pattern: splitlease.app/app*
+   URL Pattern: split.lease/app*
    Settings: 
    - SSL: Flexible
    - Cache Level: Bypass
@@ -121,9 +121,9 @@ Proxy: OFF (Gray cloud)
 ## Testing Your Setup
 
 ### Check These URLs:
-- `https://splitlease.app` → Your static site ✅
-- `https://splitlease.app/app` → Your Bubble app ✅
-- `https://splitlease.app/app/login` → Bubble login page ✅
+- `https://split.lease` → Your static site ✅
+- `https://split.lease/app` → Your Bubble app ✅
+- `https://split.lease/app/login` → Bubble login page ✅
 
 ### Troubleshooting:
 
@@ -178,22 +178,22 @@ git commit -m "Add Bubble app routing"
 git push
 
 # Test routing
-curl -I https://splitlease.app/app
+curl -I https://split.lease/app
 ```
 
 ## Final Configuration
 
 Your domain structure will be:
 ```
-splitlease.app/           → Static site (Cloudflare Pages)
-splitlease.app/app        → Bubble app dashboard
-splitlease.app/app/login  → Bubble login
-splitlease.app/app/signup → Bubble signup
-splitlease.app/api        → Bubble API endpoints
+split.lease/           → Static site (Cloudflare Pages)
+split.lease/app        → Bubble app dashboard
+split.lease/app/login  → Bubble login
+split.lease/app/signup → Bubble signup
+split.lease/api        → Bubble API endpoints
 ```
 
 Or with subdomain:
 ```
-splitlease.app/     → Static site
-app.splitlease.app/ → Bubble app
+split.lease/     → Static site
+app.split.lease/ → Bubble app
 ```

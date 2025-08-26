@@ -4,7 +4,7 @@ const commits = [
     { hash: '7fe87a0', message: 'Pushes' },
     { hash: '588fa5a', message: 'Add major milestones documentation to gitignore' },
     { hash: 'd0b19f5', message: 'Remove auth modal and switch to direct redirect' },
-    { hash: '9a84fea', message: 'Update logo link to redirect to splitlease.app' },
+    { hash: '9a84fea', message: 'Update logo link to redirect to split.lease' },
     { hash: 'fee9bc7', message: 'Fix: Keep login embedded in popup instead of redirecting' },
     { hash: 'ce558c1', message: 'Clean up lazy loading implementation - production ready' },
     { hash: 'b6e6ea5', message: 'Simplify loading experience and identify performance bottleneck' },

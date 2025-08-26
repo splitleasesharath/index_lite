@@ -2,8 +2,8 @@
 
 A modern, responsive clone of the Split Lease website built with vanilla HTML, CSS, and JavaScript. This is a local fork with enhanced version control.
 
-🔗 **Live Site**: [https://splitlease.app](https://splitlease.app)  
-🔗 **Bubble App**: [https://app.splitlease.app](https://app.splitlease.app)
+🔗 **Live Site**: [https://split.lease](https://split.lease)  
+🔗 **Bubble App**: [https://app.split.lease](https://app.split.lease)
 
 ## Features
 

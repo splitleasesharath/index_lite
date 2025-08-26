@@ -41,11 +41,11 @@ function preloadAppSite() {
     if (isPreloading || preloadedIframe) return;
     
     isPreloading = true;
-    console.log('🔄 Preloading app.splitlease.app...');
+    console.log('🔄 Preloading app.split.lease...');
     
     // Create hidden iframe to preload the site
     preloadedIframe = document.createElement('iframe');
-    preloadedIframe.src = 'https://app.splitlease.app';
+    preloadedIframe.src = 'https://app.split.lease';
     preloadedIframe.style.position = 'absolute';
     preloadedIframe.style.width = '1px';
     preloadedIframe.style.height = '1px';
@@ -57,7 +57,7 @@ function preloadAppSite() {
     
     // Listen for load completion
     preloadedIframe.onload = function() {
-        console.log('✅ app.splitlease.app preloaded successfully');
+        console.log('✅ app.split.lease preloaded successfully');
         isPreloading = false;
         
         // Show login alert
@@ -65,7 +65,7 @@ function preloadAppSite() {
         
         // Redirect after 2 seconds
         setTimeout(() => {
-            window.location.href = 'https://app.splitlease.app';
+            window.location.href = 'https://app.split.lease';
         }, 2000);
     };
     
@@ -122,8 +122,8 @@ function handleLoggedInUser() {
 
 // Listen for messages from iframes
 window.addEventListener('message', function(event) {
-    // Accept messages from both app.splitlease.app and www.split.lease
-    if (event.origin !== 'https://app.splitlease.app' && event.origin !== 'https://www.split.lease') {
+    // Accept messages from both app.split.lease and www.split.lease
+    if (event.origin !== 'https://app.split.lease' && event.origin !== 'https://www.split.lease') {
         return;
     }
     
@@ -189,15 +189,15 @@ window.clearLogin = function() {
 
 // Initialize Application
 function initializeApp() {
-    // Enable subdomain access between splitlease.app and app.splitlease.app
+    // Enable subdomain access between split.lease and app.split.lease
     // This allows iframe access when deployed to production
     try {
-        if (window.location.hostname.includes('splitlease.app')) {
-            document.domain = 'splitlease.app';
-            console.log('🔓 Set document.domain to splitlease.app for subdomain access');
+        if (window.location.hostname.includes('split.lease')) {
+            document.domain = 'split.lease';
+            console.log('🔓 Set document.domain to split.lease for subdomain access');
         }
     } catch (e) {
-        // Not on splitlease.app domain, skip domain setting
+        // Not on split.lease domain, skip domain setting
     }
     
     // Clear stale auth cache on page load (older than 2 minutes)
@@ -353,7 +353,7 @@ function setupListings() {
                 ? selectedDays.join(',') 
                 : '1,2,3,4,5,6';
             
-            const searchUrl = `https://app.splitlease.app/search?days-selected=${daysParam}`;
+            const searchUrl = `https://app.split.lease/search?days-selected=${daysParam}`;
             
             window.location.href = searchUrl;
         });
@@ -380,7 +380,7 @@ function setupListings() {
                 ? selectedDays.join(',') 
                 : '1,2,3,4,5';
             
-            const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}&weekly-frequency=Every%20week`;
+            const propertyUrl = `https://app.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}&weekly-frequency=Every%20week`;
             
             window.location.href = propertyUrl;
         });
@@ -471,7 +471,7 @@ function createListingCard(listing) {
             ? selectedDays.join(',') 
             : '1,2,3,4,5';
         
-        const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
+        const propertyUrl = `https://app.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
         
         window.location.href = propertyUrl;
     });
@@ -504,7 +504,7 @@ function handleSupportAction(type) {
             window.location.href = 'tel:1-800-SPLIT-LEASE';
             break;
         case 'faq':
-            window.location.href = 'https://app.splitlease.app/faq';
+            window.location.href = 'https://app.split.lease/faq';
             break;
     }
 }
@@ -809,7 +809,7 @@ const IframeLoader = {
         if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
             // Loading auth iframe on demand
             this.states.auth = 'LOADING';
-            iframe.src = 'https://app.splitlease.app/signup-login';
+            iframe.src = 'https://app.split.lease/signup-login';
             
             // Update state when loaded
             iframe.addEventListener('load', () => {
@@ -865,7 +865,7 @@ const IframeLoader = {
 // Direct redirect to login page (no modal, no iframe)
 function openAuthModal() {
     // Direct redirect to Split Lease login page
-    window.location.href = 'https://app.splitlease.app/signup-login';
+    window.location.href = 'https://app.split.lease/signup-login';
 }
 
 // Close auth modal (kept for compatibility but not used)
@@ -892,7 +892,7 @@ function openMarketResearchModal() {
         
         // Set iframe source if not already set or preloaded
         if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href) {
-            iframe.src = 'https://app.splitlease.app/embed-ai-drawer';
+            iframe.src = 'https://app.split.lease/embed-ai-drawer';
             
             // Show loader
             if (loader) {
@@ -923,11 +923,11 @@ function checkBubbleAuthState(iframe) {
     console.log('🔍 Attempting to check Bubble page for auth state...');
     
     // Wait a moment for iframe to be ready and set its document.domain
-    // This is necessary for subdomain access between splitlease.app and app.splitlease.app
-    if (window.location.hostname.includes('splitlease.app')) {
+    // This is necessary for subdomain access between split.lease and app.split.lease
+    if (window.location.hostname.includes('split.lease')) {
         try {
-            // The iframe also needs to set document.domain='splitlease.app' on its side
-            console.log('🌐 Domain: Parent is on splitlease.app, attempting subdomain access...');
+            // The iframe also needs to set document.domain='split.lease' on its side
+            console.log('🌐 Domain: Parent is on split.lease, attempting subdomain access...');
         } catch (e) {
             // Domain setting might fail in development
         }
@@ -1056,9 +1056,9 @@ function checkBubbleAuthState(iframe) {
         console.log(`   Error: ${e.message}`);
         
         // Note about subdomain access
-        if (window.location.hostname.includes('splitlease.app') && iframe.src.includes('app.splitlease.app')) {
-            console.log('💡 Note: Both sites are on splitlease.app subdomains.');
-            console.log('   The Bubble app needs to set: document.domain = "splitlease.app"');
+        if (window.location.hostname.includes('split.lease') && iframe.src.includes('app.split.lease')) {
+            console.log('💡 Note: Both sites are on split.lease subdomains.');
+            console.log('   The Bubble app needs to set: document.domain = "split.lease"');
             console.log('   to enable cross-subdomain access.');
         }
         
@@ -1066,7 +1066,7 @@ function checkBubbleAuthState(iframe) {
         try {
             iframe.contentWindow.postMessage(
                 { type: 'request-auth-state' }, 
-                'https://app.splitlease.app'
+                'https://app.split.lease'
             );
             console.log('📨 Sent auth state request via postMessage');
             
@@ -1123,7 +1123,7 @@ function preloadMarketResearchIframe() {
         console.log('🚀 Starting to preload Market Research iframe...');
         
         // Set the iframe source to preload it
-        iframe.src = 'https://app.splitlease.app/embed-ai-drawer';
+        iframe.src = 'https://app.split.lease/embed-ai-drawer';
         
         // Hide the iframe while preloading
         const modal = document.getElementById('marketResearchModal');
@@ -1253,7 +1253,7 @@ const AuthStateManager = {
         
         // Try to fetch current user data from Bubble API
         // This endpoint returns user data if logged in, or empty/error if not
-        fetch('https://app.splitlease.app/version-test/api/1.1/obj/user', {
+        fetch('https://app.split.lease/version-test/api/1.1/obj/user', {
             method: 'GET',
             credentials: 'include', // Include cookies for auth
             headers: {
@@ -1355,7 +1355,7 @@ const AuthStateManager = {
         iframe.style.display = 'none';
         iframe.style.width = '0';
         iframe.style.height = '0';
-        iframe.src = 'https://app.splitlease.app/version-test/api/1.1/obj/user';
+        iframe.src = 'https://app.split.lease/version-test/api/1.1/obj/user';
         
         const timestamp = Date.now();
         let checkComplete = false;
@@ -1730,7 +1730,7 @@ function exploreRentals() {
     const bubbleDays = selectedDays.map(day => day + 1);
     
     // Redirect with selected days using exact format
-    const searchUrl = `https://app.splitlease.app/search?days-selected=${bubbleDays.join(',')}`;
+    const searchUrl = `https://app.split.lease/search?days-selected=${bubbleDays.join(',')}`;
     
     window.location.href = searchUrl;
 }
@@ -1738,7 +1738,7 @@ function exploreRentals() {
 function redirectToSearch(daysSelected, preset) {
     // Note: daysSelected here is already a string like "2,3,4,5,6" for weeknight
     // These are already 1-based from the schedule section, so no conversion needed
-    const searchUrl = `https://app.splitlease.app/search?days-selected=${daysSelected}`;
+    const searchUrl = `https://app.split.lease/search?days-selected=${daysSelected}`;
     
     window.location.href = searchUrl;
 }

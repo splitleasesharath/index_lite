@@ -1,10 +1,10 @@
 # Redirects for Cloudflare Pages
 
 # Redirect www to non-www
-https://www.splitlease.app/* https://splitlease.app/:splat 301
+https://www.split.lease/* https://split.lease/:splat 301
 
 # Force HTTPS
-http://splitlease.app/* https://splitlease.app/:splat 301
+http://split.lease/* https://split.lease/:splat 301
 
-# Note: Bubble app is now on subdomain app.splitlease.app
+# Note: Bubble app is now on subdomain app.split.lease
 # No proxy needed - it's handled via DNS A records
