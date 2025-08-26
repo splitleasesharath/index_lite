@@ -863,9 +863,13 @@ const IframeLoader = {
 };
 
 // Direct redirect to login page (no modal, no iframe)
-function openAuthModal() {
-    // Direct redirect to Split Lease login page
-    window.location.href = 'https://app.split.lease/signup-login';
+function openAuthModal(section) {
+    // Direct redirect to Split Lease login page with section parameter
+    let url = 'https://app.split.lease/signup-login';
+    if (section) {
+        url += '?section=' + section;
+    }
+    window.location.href = url;
 }
 
 // Close auth modal (kept for compatibility but not used)
