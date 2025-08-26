@@ -1721,12 +1721,16 @@ function updateURL() {
 }
 
 function exploreRentals() {
+    // If no days selected, redirect to search without parameters (show all)
     if (selectedDays.length === 0) {
+        window.location.href = 'https://app.split.lease/search';
         return;
     }
     
     // Check if days are continuous before allowing exploration
     if (!areDaysContinuous(selectedDays)) {
+        // If days aren't continuous, redirect without parameters
+        window.location.href = 'https://app.split.lease/search';
         return;
     }
     
