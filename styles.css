@@ -2613,6 +2613,9 @@ body {
     .nav-container {
         position: relative;
         padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     
     .hamburger-menu {
@@ -2628,6 +2631,9 @@ body {
         background: transparent;
         padding: 0;
         box-shadow: none;
+        justify-content: center;
+        flex: 1;
+        margin: 0;
     }
     
     .nav-right {
@@ -2636,6 +2642,7 @@ body {
         background: transparent;
         padding: 0;
         box-shadow: none;
+        margin-right: 0;
     }
     
     .nav-right .divider,
