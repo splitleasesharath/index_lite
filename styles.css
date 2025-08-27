@@ -2737,19 +2737,19 @@ body {
     .hero-section::before {
         content: '';
         position: absolute;
-        bottom: 65%;
+        top: 20px;
         left: 0;
         right: 0;
         height: 120px;
         background-image: 
             /* Left building */
-            linear-gradient(to top, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.2)),
+            linear-gradient(to top, rgba(99, 102, 241, 0.25), rgba(99, 102, 241, 0.25)),
             /* Empire State Building (center) */
-            linear-gradient(to top, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.3)),
-            linear-gradient(to top, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.3)),
-            linear-gradient(to top, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.3)),
+            linear-gradient(to top, rgba(99, 102, 241, 0.35), rgba(99, 102, 241, 0.35)),
+            linear-gradient(to top, rgba(99, 102, 241, 0.35), rgba(99, 102, 241, 0.35)),
+            linear-gradient(to top, rgba(99, 102, 241, 0.35), rgba(99, 102, 241, 0.35)),
             /* Right building */
-            linear-gradient(to top, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.2));
+            linear-gradient(to top, rgba(99, 102, 241, 0.25), rgba(99, 102, 241, 0.25));
         background-size: 
             40px 70px,  /* Left building */
             50px 110px, /* Empire State base */
@@ -2802,13 +2802,13 @@ body {
         padding: 2rem 1.5rem;
         border-radius: 0;
         margin: 0;
+        margin-top: 150px;
         position: relative;
         z-index: 2;
         box-shadow: none;
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: auto;
     }
     
     .hero-title {
