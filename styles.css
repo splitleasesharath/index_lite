@@ -2859,14 +2859,7 @@ body {
     }
     
     .hero-cta-button {
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 0.95rem;
-        border-radius: 6px;
-        background: transparent;
-        color: #4B47CE;
-        border: 1.5px solid #4B47CE;
-        font-weight: 500;
+        display: none !important;
     }
 
     /* Horizontal scroll for listings on mobile */
