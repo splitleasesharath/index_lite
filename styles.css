@@ -2777,6 +2777,8 @@ body {
         position: relative;
         z-index: 2;
         box-shadow: none;
+        display: flex;
+        flex-direction: column;
     }
     
     .hero-title {
@@ -2790,6 +2792,7 @@ body {
         word-wrap: break-word;
         overflow-wrap: break-word;
         padding: 0 0.25rem;
+        order: 1;
     }
     
     .hero-title .mobile-break {
@@ -2805,11 +2808,19 @@ body {
         color: #4b5563;
         font-weight: 400;
         padding: 0 0.5rem;
+        order: 2;
     }
     
     .day-selector {
         justify-content: center;
         gap: 0.25rem;
+        margin-bottom: 0;
+        margin-top: 1.5rem;
+        order: 4;
+    }
+    
+    .checkin-checkout {
+        order: 3;
         margin-bottom: 1rem;
     }
     
