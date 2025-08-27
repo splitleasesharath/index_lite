@@ -2749,7 +2749,7 @@ body {
         box-sizing: border-box;
     }
     
-    /* Add opaque red border using pseudo-element */
+    /* Add white gradient fade to hide bottom overflow */
     .mobile-empire-state::after {
         content: '';
         position: absolute;
@@ -2757,9 +2757,16 @@ body {
         left: 0;
         right: 0;
         height: 150px;
-        background-color: red;
+        background: linear-gradient(to bottom, 
+            transparent 0%, 
+            transparent 30%, 
+            rgba(255, 255, 255, 0.5) 50%, 
+            rgba(255, 255, 255, 0.9) 70%, 
+            white 90%, 
+            white 100%);
         opacity: 1;
         z-index: 1;
+        pointer-events: none;
     }
     
     /* Building silhouettes - disabled, using actual image instead */
@@ -2792,7 +2799,14 @@ body {
     }
     
     .hero-content {
-        background: #ffffff !important;
+        background: linear-gradient(to bottom, 
+            #E8E3F5 0%,
+            #EDE9F7 5%,
+            #F2EFF9 10%,
+            #F8F7FA 15%,
+            #FDFCFE 20%,
+            #ffffff 30%,
+            #ffffff 100%) !important;
         width: 100%;
         max-width: 100%;
         padding: 2rem 1.5rem;
@@ -2872,24 +2886,28 @@ body {
     }
     
     .hero-section .day-badge {
-        width: 42px !important;
-        height: 42px !important;
-        font-size: 16px !important;
-        border-radius: 50% !important;
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 15px !important;
+        border-radius: 8px !important;
         font-weight: 600 !important;
-        background-color: #9CA3AF !important;
+        background-color: #b2b2b2 !important;
         color: #ffffff !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         cursor: pointer !important;
         transition: all 0.2s ease !important;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
     }
     
     .hero-section .day-badge.active {
-        background-color: #6366F1 !important;
+        background-color: #4B47CE !important;
         color: #ffffff !important;
-        transform: scale(1.05) !important;
+    }
+    
+    .hero-section .day-badge:hover {
+        transform: translateY(-2px);
     }
     
     .check-in-out {
