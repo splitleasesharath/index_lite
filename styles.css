@@ -2737,31 +2737,33 @@ body {
     .hero-section::before {
         content: '';
         position: absolute;
-        top: 20px;
+        top: 15px;
         left: 0;
         right: 0;
-        height: 120px;
+        height: 130px;
         background-image: 
             /* Left building */
-            linear-gradient(to top, rgba(99, 102, 241, 0.25), rgba(99, 102, 241, 0.25)),
-            /* Empire State Building (center) */
-            linear-gradient(to top, rgba(99, 102, 241, 0.35), rgba(99, 102, 241, 0.35)),
-            linear-gradient(to top, rgba(99, 102, 241, 0.35), rgba(99, 102, 241, 0.35)),
-            linear-gradient(to top, rgba(99, 102, 241, 0.35), rgba(99, 102, 241, 0.35)),
+            linear-gradient(to top, #C4B5FD, #C4B5FD),
+            /* Empire State Building (center) - base */
+            linear-gradient(to top, #A78BFA, #A78BFA),
+            /* Empire State Building - middle */
+            linear-gradient(to top, #A78BFA, #A78BFA),
+            /* Empire State Building - top spire */
+            linear-gradient(to top, #A78BFA, #A78BFA),
             /* Right building */
-            linear-gradient(to top, rgba(99, 102, 241, 0.25), rgba(99, 102, 241, 0.25));
+            linear-gradient(to top, #C4B5FD, #C4B5FD);
         background-size: 
-            40px 70px,  /* Left building */
-            50px 110px, /* Empire State base */
-            30px 115px, /* Empire State middle */
-            15px 120px, /* Empire State top */
-            35px 60px;  /* Right building */
+            45px 80px,   /* Left building */
+            50px 100px,  /* Empire State base */
+            32px 110px,  /* Empire State middle */
+            16px 120px,  /* Empire State top */
+            40px 70px;   /* Right building */
         background-position: 
-            20% bottom,
-            calc(50% - 10px) bottom,
-            50% bottom,
-            calc(50% + 5px) bottom,
-            75% bottom;
+            25% bottom,
+            calc(50% - 12px) bottom,
+            calc(50% - 4px) bottom,
+            calc(50% + 2px) bottom,
+            70% bottom;
         background-repeat: no-repeat;
         pointer-events: none;
         z-index: 1;
