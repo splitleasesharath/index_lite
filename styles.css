@@ -2728,45 +2728,24 @@ body {
         flex-direction: column;
     }
     
-    /* Mobile Empire State Building - hidden, using CSS buildings instead */
+    /* Mobile Empire State Building - show in purple section */
     .mobile-empire-state {
-        display: none !important;
+        display: block !important;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: auto;
+        z-index: 2;
+        opacity: 0.5;
+        animation: none;
+        filter: none;
     }
     
-    /* Building silhouettes in purple section */
+    /* Building silhouettes - disabled, using actual image instead */
     .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 15px;
-        left: 0;
-        right: 0;
-        height: 130px;
-        background-image: 
-            /* Left building */
-            linear-gradient(to top, #C4B5FD, #C4B5FD),
-            /* Empire State Building (center) - base */
-            linear-gradient(to top, #A78BFA, #A78BFA),
-            /* Empire State Building - middle */
-            linear-gradient(to top, #A78BFA, #A78BFA),
-            /* Empire State Building - top spire */
-            linear-gradient(to top, #A78BFA, #A78BFA),
-            /* Right building */
-            linear-gradient(to top, #C4B5FD, #C4B5FD);
-        background-size: 
-            45px 80px,   /* Left building */
-            50px 100px,  /* Empire State base */
-            32px 110px,  /* Empire State middle */
-            16px 120px,  /* Empire State top */
-            40px 70px;   /* Right building */
-        background-position: 
-            25% bottom,
-            calc(50% - 12px) bottom,
-            calc(50% - 4px) bottom,
-            calc(50% + 2px) bottom,
-            70% bottom;
-        background-repeat: no-repeat;
-        pointer-events: none;
-        z-index: 1;
+        display: none;
     }
     
     .hero-section::after {
