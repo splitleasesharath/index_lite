@@ -2730,13 +2730,14 @@ body {
     .mobile-empire-state {
         display: block !important;
         position: absolute;
-        top: -50px;
+        top: -60px;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 3.5rem;
+        width: 80px;
+        height: auto;
         z-index: 10;
         animation: bounce 2s ease-in-out infinite;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
     }
     
     @keyframes bounce {
