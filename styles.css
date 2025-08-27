@@ -2786,10 +2786,6 @@ body {
         display: none;
     }
     
-    .hero-section::before {
-        display: none;
-    }
-    
     .hero-content-wrapper {
         width: 100%;
         max-width: 100%;
