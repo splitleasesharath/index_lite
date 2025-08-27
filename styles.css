@@ -2733,7 +2733,40 @@ body {
         display: none !important;
     }
     
-    /* Remove building silhouettes - keep purple area clean */
+    /* Building silhouettes in purple section */
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        bottom: 65%;
+        left: 0;
+        right: 0;
+        height: 120px;
+        background-image: 
+            /* Left building */
+            linear-gradient(to top, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.2)),
+            /* Empire State Building (center) */
+            linear-gradient(to top, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.3)),
+            linear-gradient(to top, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.3)),
+            linear-gradient(to top, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.3)),
+            /* Right building */
+            linear-gradient(to top, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.2));
+        background-size: 
+            40px 70px,  /* Left building */
+            50px 110px, /* Empire State base */
+            30px 115px, /* Empire State middle */
+            15px 120px, /* Empire State top */
+            35px 60px;  /* Right building */
+        background-position: 
+            20% bottom,
+            calc(50% - 10px) bottom,
+            50% bottom,
+            calc(50% + 5px) bottom,
+            75% bottom;
+        background-repeat: no-repeat;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
     .hero-section::after {
         display: none;
     }
