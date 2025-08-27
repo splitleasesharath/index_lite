@@ -2715,7 +2715,7 @@ body {
     
     /* Hero Section Mobile Styles */
     .hero-section {
-        margin: 120px auto 2rem;
+        margin: 200px auto 2rem;
         width: 95%;
         min-height: auto;
         padding: 1rem;
@@ -2730,14 +2730,15 @@ body {
     .mobile-empire-state {
         display: block !important;
         position: absolute;
-        top: -60px;
+        top: -140px;
         left: 50%;
         transform: translateX(-50%);
-        width: 80px;
+        width: 150px;
+        max-width: 80%;
         height: auto;
         z-index: 10;
         animation: bounce 2s ease-in-out infinite;
-        filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     }
     
     @keyframes bounce {
