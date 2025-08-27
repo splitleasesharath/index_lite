@@ -2728,19 +2728,21 @@ body {
         flex-direction: column;
     }
     
-    /* Mobile Empire State Building - show in purple section */
+    /* Mobile Empire State Building - troubleshooting position */
     .mobile-empire-state {
         display: block !important;
         position: absolute;
-        top: 10px;
+        top: 5px;
         left: 50%;
         transform: translateX(-50%);
-        width: 100px;
+        width: 120px;
         height: auto;
-        z-index: 2;
-        opacity: 0.5;
+        z-index: 9999 !important;
+        opacity: 1;
         animation: none;
         filter: none;
+        background: red;  /* Red background to see if element exists */
+        min-height: 100px;  /* Minimum height to ensure visibility */
     }
     
     /* Building silhouettes - disabled, using actual image instead */
