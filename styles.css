@@ -2720,7 +2720,7 @@ body {
         min-height: 400px;
         padding: 180px 0 0 0;
         position: relative;
-        overflow: visible;
+        overflow: hidden;
         background: linear-gradient(180deg, #8B5CF6 0%, #7C3AED 100%);
         border-radius: 16px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -2774,8 +2774,10 @@ body {
         width: 100%;
         max-width: 100%;
         padding: 1.5rem;
+        padding-bottom: 2rem;
         border-radius: 16px 16px 0 0;
         margin: 0;
+        margin-bottom: -1px;
         position: relative;
         z-index: 2;
         box-shadow: none;
