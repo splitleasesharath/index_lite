@@ -109,8 +109,8 @@
         <!-- Video Background -->
         <div class="hero-video-background">
             <video autoplay muted loop playsinline>
-                <source src="https://cdn.pixabay.com/video/2024/01/29/198386-907519447_large.mp4" type="video/mp4">
-                <source src="https://cdn.pixabay.com/video/2022/08/30/129662-745027610_large.mp4" type="video/mp4">
+                <source src="It's Time for New York City - NYC Tourism + Conventions (1080p, h264, youtube) (online-video-cutter.com).mp4" type="video/mp4">
+                Your browser does not support the video tag.
             </video>
             <div class="hero-video-overlay"></div>
         </div>
@@ -120,25 +120,28 @@
                 <h1 class="hero-title">Ongoing Rentals <span class="mobile-break">for Repeat Stays</span></h1>
                 <p class="hero-subtitle">Select which days you'd like to stay in NYC and<br>only pay for the nights you need.</p>
                 
-                <!-- Day Selector -->
-                <div class="day-selector">
-                    <div class="calendar-icon">
-                        <img src="https://c.animaapp.com/meh6k861XoGXNn/img/calendar-minimalistic-svgrepo-com-202-svg.svg" alt="Calendar" width="35" height="35">
+                <!-- Elegant Day Selector Card -->
+                <div class="day-selector-card">
+                    <h3>Choose your weekly schedule</h3>
+                    <div class="day-selector">
+                        <div class="calendar-icon">
+                            <img src="https://c.animaapp.com/meh6k861XoGXNn/img/calendar-minimalistic-svgrepo-com-202-svg.svg" alt="Calendar" width="35" height="35">
+                        </div>
+                        <div class="day-badge" data-day="0" onclick="toggleDay(0)">S</div>
+                        <div class="day-badge" data-day="1" onclick="toggleDay(1)">M</div>
+                        <div class="day-badge" data-day="2" onclick="toggleDay(2)">T</div>
+                        <div class="day-badge" data-day="3" onclick="toggleDay(3)">W</div>
+                        <div class="day-badge" data-day="4" onclick="toggleDay(4)">T</div>
+                        <div class="day-badge" data-day="5" onclick="toggleDay(5)">F</div>
+                        <div class="day-badge" data-day="6" onclick="toggleDay(6)">S</div>
                     </div>
-                    <div class="day-badge" data-day="0" onclick="toggleDay(0)">S</div>
-                    <div class="day-badge" data-day="1" onclick="toggleDay(1)">M</div>
-                    <div class="day-badge" data-day="2" onclick="toggleDay(2)">T</div>
-                    <div class="day-badge" data-day="3" onclick="toggleDay(3)">W</div>
-                    <div class="day-badge" data-day="4" onclick="toggleDay(4)">T</div>
-                    <div class="day-badge" data-day="5" onclick="toggleDay(5)">F</div>
-                    <div class="day-badge" data-day="6" onclick="toggleDay(6)">S</div>
-                </div>
-                
-                <!-- Check-in/Check-out Display -->
-                <div class="checkin-checkout" id="checkinCheckout" style="display: none;">
-                    <span><strong>Check-in:</strong> <span id="checkinDay"></span></span>
-                    <span class="separator">•</span>
-                    <span><strong>Check-out:</strong> <span id="checkoutDay"></span></span>
+                    
+                    <!-- Check-in/Check-out Display -->
+                    <div class="checkin-checkout" id="checkinCheckout" style="display: none;">
+                        <span><strong>Check-in:</strong> <span id="checkinDay"></span></span>
+                        <span class="separator">•</span>
+                        <span><strong>Check-out:</strong> <span id="checkoutDay"></span></span>
+                    </div>
                 </div>
                 
                 <button class="hero-cta-button" onclick="exploreRentals()">

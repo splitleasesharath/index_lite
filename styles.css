@@ -425,6 +425,7 @@ body {
     width: auto;
     height: auto;
     object-fit: cover;
+    pointer-events: none;
 }
 
 .hero-video-overlay {
@@ -433,21 +434,30 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, 
-        rgba(0, 0, 0, 0.5) 0%,
-        rgba(0, 0, 0, 0.2) 50%,
-        rgba(0, 0, 0, 0.5) 100%);
+    background: rgba(15, 15, 20, 0.4);
+    background-image: linear-gradient(180deg, 
+        rgba(10, 10, 15, 0.6) 0%,
+        rgba(20, 20, 30, 0.3) 40%,
+        rgba(20, 20, 30, 0.3) 60%,
+        rgba(10, 10, 15, 0.5) 100%);
+    mix-blend-mode: multiply;
     z-index: 1;
 }
 
 .hero-container {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 2;
     width: 100%;
-    max-width: 1200px;
+    max-width: 900px;
     padding: 0 2rem;
-    margin: 0 auto;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-illustration-left {
@@ -508,31 +518,48 @@ body {
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 800px;
+    max-width: 680px;
 }
 
 .hero-title {
-    font-size: clamp(3rem, 6vw, 5rem);
-    font-weight: 800;
-    line-height: 1.1;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.2;
     margin-bottom: 1.5rem;
     color: #ffffff;
-    letter-spacing: -0.03em;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.01em;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
     width: 100%;
-    white-space: nowrap;
+    animation: fadeInSoft 1.2s ease-out;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInSoft {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero-subtitle {
-    font-size: clamp(1.2rem, 2vw, 1.5rem);
-    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.85);
     margin-bottom: 2.5rem;
-    line-height: 1.6;
-    font-weight: 400;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
+    line-height: 1.65;
+    font-weight: 300;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    max-width: 540px;
     margin-left: auto;
     margin-right: auto;
+    letter-spacing: 0.3px;
+    animation: fadeInSoft 1.4s ease-out 0.2s;
+    opacity: 0;
+    animation-fill-mode: forwards;
 }
 
 .hero-tagline {
@@ -543,26 +570,34 @@ body {
 }
 
 .hero-cta-button {
-    background: #5B5FCF;
+    background: rgba(91, 95, 207, 0.9);
     color: white;
     border: none;
-    padding: 1rem 2.5rem;
-    font-size: 1.1rem;
+    padding: 1.1rem 2.8rem;
+    font-size: 1.05rem;
     font-weight: 600;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 1rem;
+    margin-top: 2.5rem;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 0 4px 20px rgba(91, 95, 207, 0.3);
+    box-shadow: 0 6px 20px rgba(91, 95, 207, 0.4);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
 }
 
 .hero-cta-button:hover {
-    background: #7C3AED;
+    background: rgba(91, 95, 207, 1);
     transform: translateY(-2px);
-    box-shadow: 0 6px 30px rgba(91, 95, 207, 0.5);
+    box-shadow: 0 8px 28px rgba(91, 95, 207, 0.5);
+}
+
+.hero-cta-button:active {
+    transform: translateY(0);
+    background: rgba(91, 95, 207, 0.8);
 }
 
 .cta-button {
@@ -585,27 +620,71 @@ body {
 }
 
 
+/* Day Selector Card - Tinted Film Effect */
+.day-selector-card {
+    background: rgba(20, 20, 25, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    margin: 1.75rem auto;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInSoft 1.6s ease-out 0.4s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.day-selector-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(30, 30, 35, 0.3) 0%,
+        transparent 50%,
+        rgba(30, 30, 35, 0.2) 100%);
+    pointer-events: none;
+}
+
+.day-selector-card h3 {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1.25rem;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
 /* Day Selector */
 .day-selector {
-    display: inline-flex;
+    display: flex;
     gap: 0.5rem;
     justify-content: center;
     align-items: center;
-    margin: 0 0 2rem 0;
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    border-radius: 0;
+    border: none;
 }
 
 .calendar-icon {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
+    opacity: 0.8;
+    filter: brightness(1.2) invert(1);
 }
 
 .day-badge {
@@ -616,29 +695,34 @@ body {
     align-items: center;
     justify-content: center;
     font-family: "Inter", -apple-system, sans-serif;
-    font-weight: 600;
-    font-size: 16px !important;
+    font-weight: 500;
+    font-size: 14px !important;
     cursor: pointer;
-    transition: all 0.2s ease;
-    background: rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.3s ease;
+    background: rgba(40, 40, 45, 0.6) !important;
     color: rgba(255, 255, 255, 0.8) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border: none;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 
 .day-badge:hover {
-    transform: translateY(-2px) scale(1.05);
-    background: rgba(255, 255, 255, 0.3) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: translateY(-2px);
+    background: rgba(50, 50, 55, 0.7) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .day-badge.active {
-    background: rgba(91, 95, 207, 0.9) !important;
+    background: rgba(91, 95, 207, 0.85) !important;
     color: #ffffff !important;
     transform: scale(1.05);
-    border-color: #5B5FCF !important;
-    box-shadow: 0 0 20px rgba(91, 95, 207, 0.5);
+    border-color: rgba(91, 95, 207, 0.3) !important;
+    box-shadow: 0 4px 16px rgba(91, 95, 207, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    font-weight: 600;
 }
 
 .day-badge.active:hover {
@@ -652,30 +736,37 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0 2rem 0;
-    padding: 0.75rem 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 8px;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.9);
-    box-shadow: none;
+    gap: 1.5rem;
+    margin: 1.5rem 0 0 0;
+    padding: 1rem 0;
+    background: transparent;
+    border-radius: 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     width: 100%;
+    position: relative;
 }
 
 .checkin-checkout .separator {
-    color: #999;
-    font-weight: normal;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 300;
+    font-size: 0.75rem;
 }
 
 .checkin-checkout strong {
-    font-weight: 600;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 #checkinDay, #checkoutDay {
-    color: var(--bg-purple);
-    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
+    font-size: 0.85rem;
 }
 
 /* Value Propositions */
