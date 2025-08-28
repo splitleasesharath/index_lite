@@ -694,8 +694,8 @@ body {
     align-items: center;
     justify-content: center;
     margin-right: 1rem;
-    opacity: 0.8;
-    filter: brightness(1.2) invert(1);
+    opacity: 0.9;
+    filter: brightness(10) grayscale(1);
 }
 
 .day-badge {
@@ -2816,6 +2816,8 @@ body {
         width: 24px;
         height: 24px;
         margin-right: 0.4rem;
+        filter: brightness(10) grayscale(1) !important;
+        opacity: 0.9 !important;
     }
     
     .checkin-checkout {
