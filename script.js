@@ -1,5 +1,32 @@
 // Split Lease Clone - Interactive JavaScript
 
+// ============================================================================
+// URL LOCK MECHANISM - DO NOT MODIFY WITHOUT EXPLICIT PERMISSION
+// ============================================================================
+// CRITICAL: All redirect URLs must use app.split.lease domain
+// Any changes to these URLs require explicit authorization from the project owner
+// Last authorized change: December 3, 2024
+// ============================================================================
+const URL_LOCK = {
+    AUTHORIZED_DOMAIN: 'app.split.lease',
+    LOCKED: true,
+    LOCK_MESSAGE: '🔒 URL modifications are locked. Contact project owner for authorization.',
+    
+    // Validate that a URL uses the authorized domain
+    validateURL: function(url) {
+        if (!this.LOCKED) return true;
+        return url.includes(this.AUTHORIZED_DOMAIN);
+    },
+    
+    // Get the authorized base URL
+    getBaseURL: function() {
+        return `https://${this.AUTHORIZED_DOMAIN}`;
+    }
+};
+
+// Protect against URL modifications
+Object.freeze(URL_LOCK);
+
 // Auth state management
 let isUserLoggedIn = false;
 let authCheckAttempts = 0;
@@ -41,11 +68,11 @@ function preloadAppSite() {
     if (isPreloading || preloadedIframe) return;
     
     isPreloading = true;
-    console.log('🔄 Preloading app.splitlease.app...');
+    console.log('🔄 Preloading app.split.lease...');
     
     // Create hidden iframe to preload the site
     preloadedIframe = document.createElement('iframe');
-    preloadedIframe.src = 'https://app.splitlease.app';
+    preloadedIframe.src = 'https://app.split.lease';
     preloadedIframe.style.position = 'absolute';
     preloadedIframe.style.width = '1px';
     preloadedIframe.style.height = '1px';
@@ -57,7 +84,7 @@ function preloadAppSite() {
     
     // Listen for load completion
     preloadedIframe.onload = function() {
-        console.log('✅ app.splitlease.app preloaded successfully');
+        console.log('✅ app.split.lease preloaded successfully');
         isPreloading = false;
         
         // Show login alert
@@ -65,7 +92,7 @@ function preloadAppSite() {
         
         // Redirect after 2 seconds
         setTimeout(() => {
-            window.location.href = 'https://app.splitlease.app';
+            window.location.href = 'https://app.split.lease';
         }, 2000);
     };
     
@@ -122,8 +149,8 @@ function handleLoggedInUser() {
 
 // Listen for messages from iframes
 window.addEventListener('message', function(event) {
-    // Accept messages from both app.splitlease.app and www.split.lease
-    if (event.origin !== 'https://app.splitlease.app' && event.origin !== 'https://www.split.lease') {
+    // Accept messages from both app.split.lease and www.split.lease
+    if (event.origin !== 'https://app.split.lease' && event.origin !== 'https://www.split.lease') {
         return;
     }
     
@@ -189,7 +216,7 @@ window.clearLogin = function() {
 
 // Initialize Application
 function initializeApp() {
-    // Enable subdomain access between splitlease.app and app.splitlease.app
+    // Enable subdomain access between splitlease.app and app.split.lease
     // This allows iframe access when deployed to production
     try {
         if (window.location.hostname.includes('splitlease.app')) {
@@ -353,7 +380,7 @@ function setupListings() {
                 ? selectedDays.join(',') 
                 : '1,2,3,4,5,6';
             
-            const searchUrl = `https://app.splitlease.app/search?days-selected=${daysParam}`;
+            const searchUrl = `https://app.split.lease/search?days-selected=${daysParam}`;
             
             window.location.href = searchUrl;
         });
@@ -380,7 +407,7 @@ function setupListings() {
                 ? selectedDays.join(',') 
                 : '1,2,3,4,5';
             
-            const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}&weekly-frequency=Every%20week`;
+            const propertyUrl = `https://app.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}&weekly-frequency=Every%20week`;
             
             window.location.href = propertyUrl;
         });
@@ -471,7 +498,7 @@ function createListingCard(listing) {
             ? selectedDays.join(',') 
             : '1,2,3,4,5';
         
-        const propertyUrl = `https://app.splitlease.app/view-split-lease/${propertyId}?days-selected=${daysParam}`;
+        const propertyUrl = `https://app.split.lease/view-split-lease/${propertyId}?days-selected=${daysParam}`;
         
         window.location.href = propertyUrl;
     });
@@ -504,7 +531,7 @@ function handleSupportAction(type) {
             window.location.href = 'tel:1-800-SPLIT-LEASE';
             break;
         case 'faq':
-            window.location.href = 'https://app.splitlease.app/faq';
+            window.location.href = 'https://app.split.lease/faq';
             break;
     }
 }
@@ -809,7 +836,7 @@ const IframeLoader = {
         if (iframe && (!iframe.src || iframe.src === '' || iframe.src === 'about:blank')) {
             // Loading auth iframe on demand
             this.states.auth = 'LOADING';
-            iframe.src = 'https://app.splitlease.app/signup-login';
+            iframe.src = 'https://app.split.lease/signup-login';
             
             // Update state when loaded
             iframe.addEventListener('load', () => {
@@ -865,7 +892,7 @@ const IframeLoader = {
 // Direct redirect to login page (no modal, no iframe)
 function openAuthModal() {
     // Direct redirect to Split Lease login page
-    window.location.href = 'https://app.splitlease.app/signup-login';
+    window.location.href = 'https://app.split.lease/signup-login';
 }
 
 // Close auth modal (kept for compatibility but not used)
@@ -892,7 +919,7 @@ function openMarketResearchModal() {
         
         // Set iframe source if not already set or preloaded
         if (!iframe.src || iframe.src === '' || iframe.src === 'about:blank' || iframe.src === window.location.href) {
-            iframe.src = 'https://app.splitlease.app/embed-ai-drawer';
+            iframe.src = 'https://app.split.lease/embed-ai-drawer';
             
             // Show loader
             if (loader) {
@@ -923,7 +950,7 @@ function checkBubbleAuthState(iframe) {
     console.log('🔍 Attempting to check Bubble page for auth state...');
     
     // Wait a moment for iframe to be ready and set its document.domain
-    // This is necessary for subdomain access between splitlease.app and app.splitlease.app
+    // This is necessary for subdomain access between splitlease.app and app.split.lease
     if (window.location.hostname.includes('splitlease.app')) {
         try {
             // The iframe also needs to set document.domain='splitlease.app' on its side
@@ -1056,7 +1083,7 @@ function checkBubbleAuthState(iframe) {
         console.log(`   Error: ${e.message}`);
         
         // Note about subdomain access
-        if (window.location.hostname.includes('splitlease.app') && iframe.src.includes('app.splitlease.app')) {
+        if (window.location.hostname.includes('splitlease.app') && iframe.src.includes('app.split.lease')) {
             console.log('💡 Note: Both sites are on splitlease.app subdomains.');
             console.log('   The Bubble app needs to set: document.domain = "splitlease.app"');
             console.log('   to enable cross-subdomain access.');
@@ -1066,7 +1093,7 @@ function checkBubbleAuthState(iframe) {
         try {
             iframe.contentWindow.postMessage(
                 { type: 'request-auth-state' }, 
-                'https://app.splitlease.app'
+                'https://app.split.lease'
             );
             console.log('📨 Sent auth state request via postMessage');
             
@@ -1123,7 +1150,7 @@ function preloadMarketResearchIframe() {
         console.log('🚀 Starting to preload Market Research iframe...');
         
         // Set the iframe source to preload it
-        iframe.src = 'https://app.splitlease.app/embed-ai-drawer';
+        iframe.src = 'https://app.split.lease/embed-ai-drawer';
         
         // Hide the iframe while preloading
         const modal = document.getElementById('marketResearchModal');
@@ -1253,7 +1280,7 @@ const AuthStateManager = {
         
         // Try to fetch current user data from Bubble API
         // This endpoint returns user data if logged in, or empty/error if not
-        fetch('https://app.splitlease.app/version-test/api/1.1/obj/user', {
+        fetch('https://app.split.lease/version-test/api/1.1/obj/user', {
             method: 'GET',
             credentials: 'include', // Include cookies for auth
             headers: {
@@ -1355,7 +1382,7 @@ const AuthStateManager = {
         iframe.style.display = 'none';
         iframe.style.width = '0';
         iframe.style.height = '0';
-        iframe.src = 'https://app.splitlease.app/version-test/api/1.1/obj/user';
+        iframe.src = 'https://app.split.lease/version-test/api/1.1/obj/user';
         
         const timestamp = Date.now();
         let checkComplete = false;
@@ -1448,6 +1475,7 @@ function setupHeroDaySelector() {
     loadStateFromURL();
     updateDayBadges();
     updateCheckinCheckout();
+    updateExploreButtons();  // Initialize button states on page load
 }
 
 function loadStateFromURL() {
@@ -1473,6 +1501,12 @@ function toggleDay(dayIndex) {
     const dayNumber = dayIndex;
     
     if (selectedDays.includes(dayNumber)) {
+        // FAILSAFE: Prevent unselection if only 2 days are selected
+        if (selectedDays.length <= 2) {
+            console.log('Cannot unselect: Minimum 2 days must remain selected');
+            showToast('Minimum 2 days must be selected');
+            return;
+        }
         // Remove the day if it's already selected
         selectedDays = selectedDays.filter(d => d !== dayNumber);
     } else {
@@ -1484,6 +1518,7 @@ function toggleDay(dayIndex) {
     updateDayBadges();
     updateCheckinCheckout();
     updateURL();
+    updateExploreButtons();  // Update button states based on continuity
 }
 
 function updateDayBadges() {
@@ -1508,8 +1543,13 @@ function updateCheckinCheckout() {
         return;
     }
     
+    // Debug logging
+    console.log('updateCheckinCheckout called with selectedDays:', selectedDays);
+    const isContinuous = areDaysContinuous(selectedDays);
+    console.log('areDaysContinuous result:', isContinuous);
+    
     // Check if days are continuous
-    if (!areDaysContinuous(selectedDays)) {
+    if (!isContinuous) {
         // Show error message for non-continuous days
         checkinCheckoutEl.innerHTML = 'Please select a continuous set of days';
         checkinCheckoutEl.style.display = 'block';
@@ -1603,101 +1643,68 @@ function updateCheckinCheckout() {
 }
 
 function areDaysContinuous(days) {
-    if (days.length <= 1) return true;
+    console.log('areDaysContinuous called with:', days);
     
-    // If 6 or more days are selected, they're always continuous
-    if (days.length >= 6) return true;
+    // Edge cases
+    if (days.length <= 1) {
+        console.log('-> Length <= 1, returning true');
+        return true;
+    }
+    
+    if (days.length >= 6) {
+        console.log('-> Length >= 6, returning true');
+        return true;
+    }
     
     const sortedDays = [...days].sort((a, b) => a - b);
+    console.log('-> Sorted days:', sortedDays);
     
-    const hasSunday = sortedDays.includes(0);  // Sunday
-    const hasSaturday = sortedDays.includes(6); // Saturday
-    
-    // Implement the Bubble logic:
-    // Case when both Sunday and Saturday are selected (weekSun == 0 && weekSat == 6)
-    if (hasSunday && hasSaturday) {
-        // This is the wrap-around case (Case 2 in Bubble)
-        // Example: Fri-Sat-Sun-Mon should be considered continuous
-        // The days wrap around from Saturday to Sunday
-        
-        // For wrap-around to be continuous, we need to check if removing the gap
-        // between Sunday and Saturday would make all days continuous
-        
-        // Find the first day after Sunday and the last day before Saturday
-        let firstAfterSunday = -1;
-        let lastBeforeSaturday = -1;
-        
-        for (let i = 0; i < sortedDays.length; i++) {
-            const day = sortedDays[i];
-            if (day > 0 && day < 6) {
-                if (firstAfterSunday === -1) {
-                    firstAfterSunday = day;
-                }
-                lastBeforeSaturday = day;
-            }
+    // STEP 1: Check if selected days are continuous (regular check)
+    let isRegularContinuous = true;
+    for (let i = 1; i < sortedDays.length; i++) {
+        if (sortedDays[i] !== sortedDays[i-1] + 1) {
+            isRegularContinuous = false;
+            break;
         }
-        
-        // Check two groups for continuity:
-        // Group 1: From Sunday (0) to the last day before the gap
-        // Group 2: From the first day after the gap to Saturday (6)
-        
-        // Find where the gap is
-        let hasGap = false;
-        let gapStart = -1;
-        let gapEnd = -1;
-        
-        for (let i = 0; i < sortedDays.length - 1; i++) {
-            if (sortedDays[i + 1] - sortedDays[i] > 1) {
-                // Found a gap
-                if (hasGap) {
-                    // More than one gap means not continuous even with wrap
-                    return false;
-                }
-                hasGap = true;
-                gapStart = sortedDays[i];
-                gapEnd = sortedDays[i + 1];
-            }
-        }
-        
-        if (!hasGap) {
-            // No gap found, all days are already continuous
-            return true;
-        }
-        
-        // For wrap-around to work, the gap must be in the middle of the week
-        // and the days at the start and end of the week must connect
-        
-        // The gap should not include Sunday or Saturday
-        if (gapStart === 0 || gapEnd === 6) {
-            // The gap is at the week boundary, check regular continuity
-            const minDay = Math.min(...sortedDays);
-            const maxDay = Math.max(...sortedDays);
-            const expectedDays = [];
-            for (let i = minDay; i <= maxDay; i++) {
-                expectedDays.push(i);
-            }
-            return expectedDays.length === sortedDays.length &&
-                expectedDays.every(day => sortedDays.includes(day));
-        }
-        
-        // If we have a gap in the middle and both Sunday and Saturday,
-        // this represents a wrap-around selection that is continuous
-        return true;
-    } else {
-        // Case 1 in Bubble: Regular continuity check (no wrap-around)
-        // Create the expected continuous range from min to max
-        const minDay = Math.min(...sortedDays);
-        const maxDay = Math.max(...sortedDays);
-        
-        const expectedDays = [];
-        for (let i = minDay; i <= maxDay; i++) {
-            expectedDays.push(i);
-        }
-        
-        // Check if selected days match the expected continuous range
-        return expectedDays.length === sortedDays.length &&
-            expectedDays.every(day => sortedDays.includes(day));
     }
+    
+    if (isRegularContinuous) {
+        console.log('-> Regular continuous check passed');
+        return true;
+    }
+    
+    // STEP 2: Check if UNSELECTED days are continuous (implies wrap-around)
+    console.log('-> Regular check failed, checking wrap-around via unselected days');
+    
+    const allDays = [0, 1, 2, 3, 4, 5, 6];
+    const unselectedDays = allDays.filter(day => !sortedDays.includes(day));
+    
+    if (unselectedDays.length === 0) {
+        // All days selected
+        return true;
+    }
+    
+    console.log('-> Unselected days:', unselectedDays);
+    
+    // Check if unselected days are continuous
+    const sortedUnselected = [...unselectedDays].sort((a, b) => a - b);
+    for (let i = 1; i < sortedUnselected.length; i++) {
+        if (sortedUnselected[i] !== sortedUnselected[i-1] + 1) {
+            console.log('-> Unselected days not continuous, selection is not valid');
+            return false;
+        }
+    }
+    
+    console.log('-> Unselected days are continuous, selection wraps around!');
+    return true;
+}
+
+// Update Explore Rentals button states based on day continuity
+function updateExploreButtons() {
+    const isContinuous = areDaysContinuous(selectedDays);
+    
+    // Store continuity state globally for explore functions to check
+    window.isDaySelectionContinuous = isContinuous;
 }
 
 function updateURL() {
@@ -1718,11 +1725,13 @@ function updateURL() {
 
 function exploreRentals() {
     if (selectedDays.length === 0) {
+        showToast('Please select at least one day');
         return;
     }
     
     // Check if days are continuous before allowing exploration
     if (!areDaysContinuous(selectedDays)) {
+        showToast('Please select a continuous set of days');
         return;
     }
     
@@ -1730,7 +1739,7 @@ function exploreRentals() {
     const bubbleDays = selectedDays.map(day => day + 1);
     
     // Redirect with selected days using exact format
-    const searchUrl = `https://app.splitlease.app/search?days-selected=${bubbleDays.join(',')}`;
+    const searchUrl = `https://app.split.lease/search?days-selected=${bubbleDays.join(',')}`;
     
     window.location.href = searchUrl;
 }
@@ -1738,7 +1747,7 @@ function exploreRentals() {
 function redirectToSearch(daysSelected, preset) {
     // Note: daysSelected here is already a string like "2,3,4,5,6" for weeknight
     // These are already 1-based from the schedule section, so no conversion needed
-    const searchUrl = `https://app.splitlease.app/search?days-selected=${daysSelected}`;
+    const searchUrl = `https://app.split.lease/search?days-selected=${daysSelected}`;
     
     window.location.href = searchUrl;
 }

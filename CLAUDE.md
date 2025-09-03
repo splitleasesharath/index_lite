@@ -252,6 +252,25 @@ When making changes, verify:
 - [ ] Touch interactions work on mobile devices
 - [ ] Animation performance is smooth across devices
 
+## URL REDIRECT LOCK (CRITICAL - DO NOT MODIFY)
+
+**MANDATORY RESTRICTION**: All redirect URLs MUST use the domain `app.split.lease` (NOT `app.splitlease.app`). 
+
+**🔒 LOCKED STATUS**: URL modifications are LOCKED and require explicit user authorization.
+
+- **Authorized Domain**: `app.split.lease`  
+- **Lock Implementation**: URL_LOCK mechanism in script.js (lines 10-28)
+- **Source of Truth**: `all_split_lease_links.json` (contains all authorized URLs)
+- **Last Authorized Change**: December 3, 2024
+- **Violation Policy**: Any unauthorized URL changes must be reverted immediately
+
+**DO NOT**:
+- Change any URL from app.split.lease to any other domain
+- Modify the URL_LOCK object in script.js
+- Update redirect URLs without explicit user permission
+
+**IF USER REQUESTS URL CHANGES**: Confirm they want to unlock URLs first before proceeding.
+
 ## CRITICAL DEVELOPMENT RULES
 
 **MANDATORY GIT WORKFLOW**: Follow this exact pattern religiously for EVERY change:
