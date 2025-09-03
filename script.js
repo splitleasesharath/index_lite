@@ -387,31 +387,49 @@ function setupDaySelectors() {
     }
     
     function updateCheckInOutDisplay() {
-        const checkInOut = document.querySelector('.check-in-out');
-        if (!checkInOut) return;
+        // Try both the class-based and ID-based selectors
+        const checkInOut = document.querySelector('.check-in-out') || document.querySelector('.check-dates');
+        const checkinDay = document.getElementById('checkinDay');
+        const checkoutDay = document.getElementById('checkoutDay');
         
         if (selectedDays.length === 0) {
-            checkInOut.innerHTML = '<span>Select days</span>';
+            if (checkInOut) {
+                checkInOut.innerHTML = '<span>Select days</span>';
+            } else if (checkinDay && checkoutDay) {
+                checkinDay.textContent = 'Select days';
+                checkoutDay.textContent = '';
+            }
             return;
         }
         
         // Check if days are continuous
         const continuous = areDaysContinuous(selectedDays);
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         
         if (continuous && selectedDays.length > 1) {
-            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const firstDay = dayNames[selectedDays[0] - 1];
             const lastDay = dayNames[selectedDays[selectedDays.length - 1] - 1];
-            checkInOut.innerHTML = `
-                <span>Check-in: ${firstDay} 3PM</span>
-                <span class="separator">→</span>
-                <span>Check-out: ${lastDay} 10AM</span>
-            `;
+            
+            if (checkInOut) {
+                checkInOut.innerHTML = `
+                    <span>Check-in: ${firstDay} 3PM</span>
+                    <span class="separator">→</span>
+                    <span>Check-out: ${lastDay} 10AM</span>
+                `;
+            } else if (checkinDay && checkoutDay) {
+                checkinDay.textContent = `${firstDay} 3PM`;
+                checkoutDay.textContent = `${lastDay} 10AM`;
+            }
         } else {
             // Non-continuous or single day
-            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const selectedDayNames = selectedDays.map(d => dayNames[d - 1]).join(', ');
-            checkInOut.innerHTML = `<span>Selected: ${selectedDayNames}</span>`;
+            
+            if (checkInOut) {
+                checkInOut.innerHTML = `<span>Selected: ${selectedDayNames}</span>`;
+            } else if (checkinDay && checkoutDay) {
+                checkinDay.textContent = selectedDayNames;
+                checkoutDay.textContent = '';
+            }
         }
     }
     
