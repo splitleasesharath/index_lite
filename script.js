@@ -8,16 +8,46 @@ const MAX_AUTH_CHECK_ATTEMPTS = 3;
 
 // ========================================
 // AUTHENTICATION AND SESSION MANAGEMENT
-// Lightweight authentication status check (no iframe required)
-function checkAuthStatus() {
-    // Check authentication status via localStorage/cookies
+
+// Helper function to check cross-domain cookies from .split.lease
+function checkSplitLeaseCookies() {
+    const cookies = document.cookie.split('; ');
+    const loggedInCookie = cookies.find(c => c.startsWith('loggedIn='));
+    const usernameCookie = cookies.find(c => c.startsWith('username='));
     
-    // Check localStorage for auth token or session
+    const isLoggedIn = loggedInCookie ? loggedInCookie.split('=')[1] === 'true' : false;
+    const username = usernameCookie ? decodeURIComponent(usernameCookie.split('=')[1]) : null;
+    
+    // Log the authentication status to console
+    console.log('🔐 Split Lease Auth Check:');
+    console.log('   Logged In:', isLoggedIn);
+    console.log('   Username:', username || 'not set');
+    console.log('   Raw Cookies:', { loggedInCookie, usernameCookie });
+    
+    return { isLoggedIn, username };
+}
+
+// Lightweight authentication status check (now includes cross-domain cookies)
+function checkAuthStatus() {
+    console.log('🔍 Checking authentication status...');
+    
+    // First check cross-domain cookies from .split.lease
+    const splitLeaseAuth = checkSplitLeaseCookies();
+    
+    if (splitLeaseAuth.isLoggedIn) {
+        console.log('✅ User authenticated via Split Lease cookies');
+        console.log('   Username:', splitLeaseAuth.username);
+        isUserLoggedIn = true;
+        handleLoggedInUser(splitLeaseAuth.username);
+        return true;
+    }
+    
+    // Fallback to localStorage check
     const authToken = localStorage.getItem('splitlease_auth_token');
     const sessionId = localStorage.getItem('splitlease_session_id');
     const lastAuthTime = localStorage.getItem('splitlease_last_auth');
     
-    // Check for auth cookie
+    // Check for legacy auth cookie
     const authCookie = document.cookie.split('; ').find(row => row.startsWith('splitlease_auth='));
     
     // Validate session age (24 hours)
@@ -25,16 +55,15 @@ function checkAuthStatus() {
         (Date.now() - parseInt(lastAuthTime)) < 24 * 60 * 60 * 1000;
     
     if ((authToken || sessionId || authCookie) && sessionValid) {
-        // Found valid auth session
+        console.log('✅ User authenticated via localStorage/legacy cookies');
         isUserLoggedIn = true;
-        // Handle logged in user
         handleLoggedInUser();
+        return true;
     } else {
-        // No valid auth session found
+        console.log('❌ User not authenticated');
         isUserLoggedIn = false;
+        return false;
     }
-    
-    return isUserLoggedIn;
 }
 
 // Intent-based preloading system
@@ -83,9 +112,13 @@ function showLoginAlert() {
 }
 
 // Handle logged-in state
-function handleLoggedInUser() {
+function handleLoggedInUser(username = null) {
     // User is logged in - updating UI
     isUserLoggedIn = true;
+    
+    if (username) {
+        console.log(`👤 Welcome back, ${username}!`);
+    }
     
     // Update any UI elements that depend on login status
     const signinBtns = document.querySelectorAll('.btn-primary');
@@ -93,7 +126,7 @@ function handleLoggedInUser() {
         if (btn.textContent.includes('Sign')) {
             btn.disabled = true;
             btn.style.opacity = '0.6';
-            btn.textContent = 'Already logged in';
+            btn.textContent = username ? `Logged in as ${username}` : 'Already logged in';
         }
     });
 }
@@ -155,9 +188,11 @@ window.addEventListener('message', function(event) {
 // ========================================
 // PAGE INITIALIZATION
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 Page loaded - Initializing Split Lease authentication check...');
     
-    // Check auth status immediately (no iframe to wait for)
-    checkAuthStatus();
+    // Check auth status immediately and log results
+    const isAuthenticated = checkAuthStatus();
+    console.log(`📊 Initial auth check complete: ${isAuthenticated ? 'AUTHENTICATED' : 'NOT AUTHENTICATED'}`);
     
     // Test function to simulate logged-in state (for development)
     window.simulateLogin = function() {
@@ -771,7 +806,15 @@ function openMarketResearchModal() {
 
 // Check Bubble auth state using cross-origin safe methods only
 function checkBubbleAuthState(iframe) {
-    console.log('🔍 Checking auth state via postMessage...');
+    console.log('🔍 Iframe loaded - Checking auth state...');
+    
+    // First check cookies set by Bubble app
+    const cookieAuth = checkSplitLeaseCookies();
+    if (cookieAuth.isLoggedIn) {
+        console.log('✅ Iframe auth confirmed via cookies:');
+        console.log('   Username:', cookieAuth.username);
+        return true;
+    }
     
     // Send postMessage to request auth state from iframe
     try {
@@ -847,13 +890,15 @@ function preloadMarketResearchIframe() {
         // When iframe loads, check auth state
         iframe.onload = function() {
             console.log('✅ Market Research iframe preloaded successfully');
+            console.log('🔐 Checking authentication after iframe load...');
             IframeLoader.states.marketResearch = 'LOADED';
             iframe.style.visibility = 'hidden'; // Keep hidden until modal opens
             
             // Check auth state after a delay to allow Bubble page to fully render
             setTimeout(() => {
-                console.log('🕒 Checking auth state after 2 second delay...');
-                checkBubbleAuthState(iframe);
+                console.log('🕒 Delayed auth check (allowing Bubble to set cookies)...');
+                const authResult = checkBubbleAuthState(iframe);
+                console.log(`📊 Iframe auth check result: ${authResult ? 'AUTHENTICATED' : 'CHECKING/NOT AUTHENTICATED'}`);
             }, 2000);
         };
         
