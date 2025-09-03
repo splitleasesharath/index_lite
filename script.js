@@ -434,7 +434,7 @@ function setupDaySelectors() {
     
     function updateExploreURL() {
         if (exploreBtn) {
-            const baseURL = 'https://app.split.lease/search-split-leases';
+            const baseURL = 'https://app.split.lease/search';
             const params = new URLSearchParams();
             
             // Only add parameters if days are selected
@@ -673,7 +673,7 @@ function getSelectedDaysFromURL() {
 function loadMoreListings() {
     // Since this is a demo, redirect to search page with current filters
     const selectedDays = getSelectedDaysFromURL();
-    const baseURL = 'https://app.split.lease/search-split-leases';
+    const baseURL = 'https://app.split.lease/search';
     const params = new URLSearchParams();
     
     if (selectedDays.length > 0) {
@@ -1429,6 +1429,35 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
+// Explore Rentals button handler
+function exploreRentals() {
+    const params = new URLSearchParams();
+    
+    // Get selected days from URL or use default
+    const urlParams = new URLSearchParams(window.location.search);
+    const daysParam = urlParams.get('days-selected');
+    let selectedDays = [];
+    
+    if (daysParam) {
+        selectedDays = daysParam.split(',').map(d => parseInt(d.trim())).filter(d => !isNaN(d));
+    } else {
+        // Default to weeknight selection
+        selectedDays = [2, 3, 4, 5, 6];
+    }
+    
+    // Only add parameters if days are selected
+    if (selectedDays.length > 0) {
+        params.set('Days', selectedDays.join(','));
+        params.set('Frequency', 'Weekly');
+    }
+    
+    const baseURL = 'https://app.split.lease/search';
+    const targetURL = params.toString() ? `${baseURL}?${params.toString()}` : baseURL;
+    
+    console.log('🔍 Redirecting to search with URL:', targetURL);
+    window.open(targetURL, '_blank');
+}
+
 // Emergency Assistance button handler
 function handleEmergencyAssistance() {
     const authStatus = checkSplitLeaseCookies();
@@ -1454,6 +1483,7 @@ window.IframeLoader = IframeLoader;
 window.AuthStateManager = AuthStateManager;
 window.checkBubbleAuthState = checkBubbleAuthState;
 window.handleEmergencyAssistance = handleEmergencyAssistance;
+window.exploreRentals = exploreRentals;
 
 // Empty functions to maintain compatibility
 window.showLoginForm = showLoginForm;
