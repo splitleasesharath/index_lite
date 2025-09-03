@@ -1548,6 +1548,35 @@ body {
     color: white;
 }
 
+/* Emergency Assistance Button */
+.emergency-assistance-btn {
+    display: block;
+    width: 100%;
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 1.5rem 1rem;
+    margin-top: 0.75rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+    min-height: 60px;
+}
+
+.emergency-assistance-btn:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+}
+
+.emergency-assistance-btn:active {
+    transform: translateY(0);
+}
+
 
 .referral-text,
 .import-text {
