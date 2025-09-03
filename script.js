@@ -16,7 +16,12 @@ function checkSplitLeaseCookies() {
     const usernameCookie = cookies.find(c => c.startsWith('username='));
     
     const isLoggedIn = loggedInCookie ? loggedInCookie.split('=')[1] === 'true' : false;
-    const username = usernameCookie ? decodeURIComponent(usernameCookie.split('=')[1]) : null;
+    // Parse username and remove any surrounding quotes
+    let username = usernameCookie ? decodeURIComponent(usernameCookie.split('=')[1]) : null;
+    if (username) {
+        // Remove surrounding quotes if present (both single and double quotes)
+        username = username.replace(/^["']|["']$/g, '');
+    }
     
     // Log the authentication status to console
     console.log('🔐 Split Lease Auth Check:');
