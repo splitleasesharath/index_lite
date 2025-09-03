@@ -1555,15 +1555,16 @@ body {
     background: #dc2626;
     color: white;
     border: none;
-    padding: 0.75rem 1rem;
+    padding: 1.5rem 1rem;
     margin-top: 0.75rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border-radius: var(--radius-md);
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
     box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+    min-height: 60px;
 }
 
 .emergency-assistance-btn:hover {
