@@ -118,16 +118,60 @@ function handleLoggedInUser(username = null) {
     
     if (username) {
         console.log(`👤 Welcome back, ${username}!`);
+        // Store username globally for use in redirects
+        window.currentUsername = username;
     }
     
-    // Update any UI elements that depend on login status
+    // Update all sign-in/sign-up buttons to show Hello username
     const signinBtns = document.querySelectorAll('.btn-primary');
     signinBtns.forEach(btn => {
         if (btn.textContent.includes('Sign')) {
-            btn.disabled = true;
-            btn.style.opacity = '0.6';
-            btn.textContent = username ? `Logged in as ${username}` : 'Already logged in';
+            if (username) {
+                btn.textContent = `Hello ${username}`;
+                // Make button clickable to go to profile
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+                // Update onclick to go to profile instead of login
+                btn.onclick = function() {
+                    window.location.href = 'https://app.split.lease/account-profile';
+                };
+            } else {
+                btn.textContent = 'Already logged in';
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+            }
         }
+    });
+    
+    // Update any links that point to signup-login
+    document.querySelectorAll('[onclick*="openAuthModal"]').forEach(el => {
+        // Check if it's a Sign In or Sign Up link in the nav
+        if (el.textContent.includes('Sign In') || el.textContent.includes('Sign Up')) {
+            if (username) {
+                // Replace both Sign In and Sign Up with Hello username
+                if (el.textContent.includes('Sign In')) {
+                    el.textContent = `Hello ${username}`;
+                    // Also hide the divider and Sign Up link
+                    const divider = el.nextElementSibling;
+                    const signupLink = divider?.nextElementSibling;
+                    if (divider?.classList?.contains('divider')) {
+                        divider.style.display = 'none';
+                    }
+                    if (signupLink?.textContent?.includes('Sign Up')) {
+                        signupLink.style.display = 'none';
+                    }
+                } else if (el.textContent.includes('Sign Up')) {
+                    // Hide Sign Up link when logged in
+                    el.style.display = 'none';
+                }
+            }
+        }
+        
+        // Update onclick to go to profile
+        el.onclick = function() {
+            window.location.href = 'https://app.split.lease/account-profile';
+        };
     });
 }
 
@@ -739,14 +783,23 @@ window.IframeLoader = {
     }
 };
 
-// Direct redirect to login page (no modal, no iframe)
+// Direct redirect to login page or profile if logged in
 function openAuthModal(section) {
-    // Direct redirect to Split Lease login page with section parameter
-    let url = 'https://app.split.lease/signup-login';
-    if (section) {
-        url += `#${section}`;
+    // Check if user is logged in
+    const authStatus = checkSplitLeaseCookies();
+    
+    if (authStatus.isLoggedIn) {
+        // User is logged in, redirect to profile
+        console.log(`🔀 Redirecting to profile for ${authStatus.username}`);
+        window.location.href = 'https://app.split.lease/account-profile';
+    } else {
+        // User not logged in, redirect to login page
+        let url = 'https://app.split.lease/signup-login';
+        if (section) {
+            url += `#${section}`;
+        }
+        window.location.href = url;
     }
-    window.location.href = url;
 }
 
 // Close auth modal (kept for compatibility but not used)
@@ -1371,6 +1424,20 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
+// Emergency Assistance button handler
+function handleEmergencyAssistance() {
+    const authStatus = checkSplitLeaseCookies();
+    
+    if (authStatus.isLoggedIn) {
+        // User is logged in, redirect to profile
+        console.log(`🚨 Emergency Assistance - Redirecting to profile for ${authStatus.username}`);
+        window.location.href = 'https://app.split.lease/account-profile';
+    } else {
+        // User not logged in, redirect to login page
+        window.location.href = 'https://app.split.lease/signup-login';
+    }
+}
+
 // ========================================
 // EXPORT FUNCTIONS FOR GLOBAL ACCESS
 window.showToast = showToast;
@@ -1381,6 +1448,7 @@ window.loadMoreListings = loadMoreListings;
 window.IframeLoader = IframeLoader;
 window.AuthStateManager = AuthStateManager;
 window.checkBubbleAuthState = checkBubbleAuthState;
+window.handleEmergencyAssistance = handleEmergencyAssistance;
 
 // Empty functions to maintain compatibility
 window.showLoginForm = showLoginForm;
