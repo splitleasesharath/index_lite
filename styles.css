@@ -1006,14 +1006,15 @@ body {
 .benefits-section {
     padding: 3rem 0;
     background: transparent;
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 .benefits-wrapper {
     background: linear-gradient(135deg, #E8E3F5 0%, #EDE9F7 50%, #F2EFF9 100%);
     border-radius: 20px;
-    padding: 3rem 4rem;
+    padding: 2rem 1.5rem;
     min-height: 320px;
 }
 
@@ -1062,6 +1063,9 @@ body {
     line-height: 1.5;
     margin: 0;
     padding-top: 2px;
+    flex: 1;
+    max-width: 100%;
+    width: 100%;
 }
 
 .benefits-cta {
@@ -3079,10 +3083,29 @@ body {
         text-align: center;
     }
     
+    .benefits-section {
+        width: 95%;
+        padding: 2rem 0;
+    }
+
+    .benefits-wrapper {
+        padding: 1.5rem 1rem;
+        border-radius: 15px;
+    }
+
     .benefits-section h2 {
         font-size: 1.5rem !important;
         margin-bottom: 1.5rem;
         padding: 0 1rem;
+    }
+
+    .benefit-item {
+        margin-bottom: 1.25rem;
+    }
+
+    .benefit-item p {
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
     
     .referral-section h2 {
