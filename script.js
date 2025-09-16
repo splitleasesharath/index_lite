@@ -693,45 +693,78 @@ function setupReferral() {
 }
 
 // Process referral submission
-function processReferral(method, contact) {
+async function processReferral(method, contact) {
     // Enhanced validation
     if (method === 'email') {
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(contact)) {
+            alert('Please enter a valid email address');
             return;
         }
     } else if (method === 'text') {
         // Phone validation - basic check for 10+ digits
         const phoneDigits = contact.replace(/\D/g, '');
         if (phoneDigits.length < 10) {
+            alert('Please enter a valid phone number with at least 10 digits');
             return;
         }
     }
-    
+
     // Show loading state
     const shareBtn = document.querySelector('.share-btn');
     const originalText = shareBtn.textContent;
     shareBtn.textContent = 'Sending...';
     shareBtn.disabled = true;
-    
+
     // Add spinner
     shareBtn.classList.add('loading');
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+        // Make real API call to Split Lease
+        const response = await fetch('https://app.split.lease/api/1.1/wf/referral-index-lite', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                mode: method === 'text' ? 'phone' : 'email',
+                contact: contact
+            })
+        });
+
+        // Reset button state
         shareBtn.textContent = originalText;
         shareBtn.disabled = false;
         shareBtn.classList.remove('loading');
-        
-        // Referral processed successfully
-        
-        // Clear input and reset radio
-        document.querySelector('.referral-input').value = '';
-        document.querySelectorAll('input[name="referral"]').forEach(radio => {
-            radio.checked = false;
-        });
-    }, 2000);
+
+        if (response.ok) {
+            // Success - show popup
+            alert('🎉 Referral sent successfully! Thank you for spreading the word about Split Lease.');
+
+            // Clear input and reset radio
+            document.querySelector('.referral-input').value = '';
+            document.querySelectorAll('input[name="referral"]').forEach(radio => {
+                radio.checked = false;
+            });
+
+            console.log('✅ Referral API response:', response.status);
+        } else {
+            // Error response from server
+            console.error('❌ Referral API error:', response.status);
+            alert('Sorry, there was an issue sending your referral. Please try again later.');
+        }
+    } catch (error) {
+        // Network or other error
+        console.error('❌ Referral API error:', error);
+
+        // Reset button state
+        shareBtn.textContent = originalText;
+        shareBtn.disabled = false;
+        shareBtn.classList.remove('loading');
+
+        alert('Sorry, there was a network error. Please check your connection and try again.');
+    }
 }
 
 // Animations and Effects
