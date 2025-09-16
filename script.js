@@ -49,36 +49,61 @@ function getUsernameFromCookies() {
     return null;
 }
 
+// Check Split Lease cookies (from Bubble app)
+function checkSplitLeaseCookies() {
+    const cookies = document.cookie.split('; ');
+    const loggedInCookie = cookies.find(c => c.startsWith('loggedIn='));
+    const usernameCookie = cookies.find(c => c.startsWith('username='));
+
+    const isLoggedIn = loggedInCookie ? loggedInCookie.split('=')[1] === 'true' : false;
+    const username = getUsernameFromCookies();
+
+    // Log the authentication status to console
+    console.log('🔐 Split Lease Cookie Auth Check:');
+    console.log('   Logged In:', isLoggedIn);
+    console.log('   Username:', username || 'not set');
+    console.log('   Raw Cookies:', { loggedInCookie, usernameCookie });
+
+    return { isLoggedIn, username };
+}
+
 // Lightweight authentication status check (no iframe required)
 function checkAuthStatus() {
-    // Check authentication status via localStorage/cookies
+    console.log('🔍 Checking authentication status...');
 
-    // Check localStorage for auth token or session
+    // First check cross-domain cookies from .split.lease
+    const splitLeaseAuth = checkSplitLeaseCookies();
+
+    if (splitLeaseAuth.isLoggedIn) {
+        console.log('✅ User authenticated via Split Lease cookies');
+        console.log('   Username:', splitLeaseAuth.username);
+        isUserLoggedIn = true;
+        handleLoggedInUser(splitLeaseAuth.username);
+        return true;
+    }
+
+    // Fallback to localStorage check
     const authToken = localStorage.getItem('splitlease_auth_token');
     const sessionId = localStorage.getItem('splitlease_session_id');
     const lastAuthTime = localStorage.getItem('splitlease_last_auth');
 
-    // Check cookies as fallback
+    // Check for legacy auth cookie
     const authCookie = document.cookie.split('; ').find(row => row.startsWith('splitlease_auth='));
-
-    // Check for username cookie
-    const username = getUsernameFromCookies();
 
     // Validate session age (24 hours)
     const sessionValid = lastAuthTime &&
         (Date.now() - parseInt(lastAuthTime)) < 24 * 60 * 60 * 1000;
 
     if ((authToken || sessionId || authCookie) && sessionValid) {
-        // Found valid auth session
+        console.log('✅ User authenticated via localStorage/legacy cookies');
         isUserLoggedIn = true;
-        // Handle logged in user with username
-        handleLoggedInUser(username);
+        handleLoggedInUser();
+        return true;
     } else {
-        // No valid auth session found
+        console.log('❌ User not authenticated');
         isUserLoggedIn = false;
+        return false;
     }
-
-    return isUserLoggedIn;
 }
 
 // Preload the app site in background
@@ -1013,7 +1038,23 @@ function openMarketResearchModal() {
 // Check Bubble auth state by examining iframe content
 function checkBubbleAuthState(iframe) {
     console.log('🔍 Attempting to check Bubble page for auth state...');
-    
+
+    // First check cookies before trying iframe access
+    const cookieAuth = checkSplitLeaseCookies();
+    if (cookieAuth.isLoggedIn) {
+        console.log('✅ Auth confirmed via Split Lease cookies:');
+        console.log('   Username:', cookieAuth.username);
+
+        // Handle logged in user
+        handleLoggedInUser(cookieAuth.username);
+
+        // Cache the result
+        localStorage.setItem('bubble_market_research_auth', 'true');
+        localStorage.setItem('bubble_market_research_auth_time', Date.now().toString());
+
+        return true;
+    }
+
     // Wait a moment for iframe to be ready and set its document.domain
     // This is necessary for subdomain access between splitlease.app and app.split.lease
     if (window.location.hostname.includes('splitlease.app')) {
@@ -1024,7 +1065,7 @@ function checkBubbleAuthState(iframe) {
             // Domain setting might fail in development
         }
     }
-    
+
     try {
         // Try to access the iframe document
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
