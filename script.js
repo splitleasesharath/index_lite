@@ -34,32 +34,50 @@ const MAX_AUTH_CHECK_ATTEMPTS = 3;
 let preloadedIframe = null;
 let isPreloading = false;
 
+// Parse username from cookies
+function getUsernameFromCookies() {
+    const cookies = document.cookie.split('; ');
+    const usernameCookie = cookies.find(c => c.startsWith('username='));
+
+    if (usernameCookie) {
+        let username = decodeURIComponent(usernameCookie.split('=')[1]);
+        // Remove surrounding quotes if present (both single and double quotes)
+        username = username.replace(/^["']|["']$/g, '');
+        return username;
+    }
+
+    return null;
+}
+
 // Lightweight authentication status check (no iframe required)
 function checkAuthStatus() {
     // Check authentication status via localStorage/cookies
-    
+
     // Check localStorage for auth token or session
     const authToken = localStorage.getItem('splitlease_auth_token');
     const sessionId = localStorage.getItem('splitlease_session_id');
     const lastAuthTime = localStorage.getItem('splitlease_last_auth');
-    
+
     // Check cookies as fallback
     const authCookie = document.cookie.split('; ').find(row => row.startsWith('splitlease_auth='));
-    
+
+    // Check for username cookie
+    const username = getUsernameFromCookies();
+
     // Validate session age (24 hours)
-    const sessionValid = lastAuthTime && 
+    const sessionValid = lastAuthTime &&
         (Date.now() - parseInt(lastAuthTime)) < 24 * 60 * 60 * 1000;
-    
+
     if ((authToken || sessionId || authCookie) && sessionValid) {
         // Found valid auth session
         isUserLoggedIn = true;
-        // Handle logged in user
-        handleLoggedInUser();
+        // Handle logged in user with username
+        handleLoggedInUser(username);
     } else {
         // No valid auth session found
         isUserLoggedIn = false;
     }
-    
+
     return isUserLoggedIn;
 }
 
@@ -122,27 +140,72 @@ function showLoginAlert() {
 }
 
 // Handle logged-in state
-function handleLoggedInUser() {
+function handleLoggedInUser(username = null) {
     // User is logged in - updating UI
     isUserLoggedIn = true;
-    
+
+    if (username) {
+        console.log(`👤 Welcome back, ${username}!`);
+        // Store username globally for use in redirects
+        window.currentUsername = username;
+    }
+
+    // Update Sign In and Sign Up links to show Hello username
+    const navLinks = document.querySelectorAll('a[onclick*="openAuthModal"]');
+    navLinks.forEach(link => {
+        if (link.textContent.includes('Sign In')) {
+            if (username) {
+                link.textContent = `Hello ${username}`;
+                link.onclick = function() {
+                    window.location.href = 'https://app.split.lease/account-profile';
+                };
+            } else {
+                link.textContent = 'Already logged in';
+                link.style.opacity = '0.7';
+            }
+
+            // Hide the divider and Sign Up link
+            const divider = link.nextElementSibling;
+            const signUpLink = divider?.nextElementSibling;
+            if (divider?.textContent === '|') {
+                divider.style.display = 'none';
+            }
+            if (signUpLink?.textContent?.includes('Sign Up')) {
+                signUpLink.style.display = 'none';
+            }
+        } else if (link.textContent.includes('Sign Up')) {
+            // Hide Sign Up link when logged in
+            link.style.display = 'none';
+        }
+    });
+
     // Disable sign in and sign up buttons
     const signInBtns = document.querySelectorAll('.sign-in');
     const signUpBtns = document.querySelectorAll('.sign-up');
-    
+
     signInBtns.forEach(btn => {
-        btn.disabled = true;
-        btn.style.opacity = '0.5';
-        btn.style.cursor = 'not-allowed';
-        btn.textContent = 'Already logged in';
+        if (username) {
+            btn.textContent = `Hello ${username}`;
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+            btn.onclick = function() {
+                window.location.href = 'https://app.split.lease/account-profile';
+            };
+        } else {
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'not-allowed';
+            btn.textContent = 'Already logged in';
+        }
     });
-    
+
     signUpBtns.forEach(btn => {
         btn.disabled = true;
         btn.style.opacity = '0.5';
         btn.style.cursor = 'not-allowed';
     });
-    
+
     // Start preloading the app site
     preloadAppSite();
 }
@@ -158,12 +221,14 @@ window.addEventListener('message', function(event) {
     
     // Check if user is logged in
     if (event.data.type === 'auth-status' && event.data.isLoggedIn === true) {
-        handleLoggedInUser();
+        const username = getUsernameFromCookies();
+        handleLoggedInUser(username);
     }
-    
+
     // Alternative message format
     if (event.data.authenticated === true || event.data.loggedIn === true) {
-        handleLoggedInUser();
+        const username = getUsernameFromCookies();
+        handleLoggedInUser(username);
     }
     
     // Handle auth state response from Market Research iframe
