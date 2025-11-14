@@ -1202,10 +1202,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.25;
+    background: #E3DEF2;
+    opacity: 1;
     z-index: 0;
 }
 
