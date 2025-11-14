@@ -1143,23 +1143,23 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: #6366f1;
+    background: var(--primary-color);
     color: white;
-    padding: 16px 32px;
+    padding: 1rem 2.5rem;
     border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
+    border-radius: var(--radius-lg);
+    font-size: 1.125rem;
+    font-weight: 600;
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    box-shadow: var(--shadow-md);
 }
 
 .local-primary-button:hover {
-    background: #5558e3;
+    background: var(--primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(99, 102, 241, 0.5);
+    box-shadow: var(--shadow-lg);
 }
 
 .local-secondary-button {
@@ -1167,21 +1167,23 @@ body {
     align-items: center;
     gap: 10px;
     background: white;
-    color: #6366f1;
-    padding: 16px 32px;
-    border: 2px solid white;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
+    color: var(--primary-color);
+    padding: 1rem 2.5rem;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius-lg);
+    font-size: 1.125rem;
+    font-weight: 600;
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .local-secondary-button:hover {
-    background: transparent;
-    border-color: white;
+    background: var(--primary-color);
+    border-color: var(--primary-color);
     color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .local-right-section {
